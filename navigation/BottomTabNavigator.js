@@ -7,8 +7,8 @@ import LinksScreen from '../screens/LinksScreen';
 import ScanScreen from '../screens/ScanScreen';
 import BlankScreen from '../screens/BlankScreen';
 
-const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
+const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigator({ navigation, route }) {
   // Set the header title on the parent stack navigator depending on the
@@ -32,7 +32,7 @@ export default function BottomTabNavigator({ navigation, route }) {
       />
       <BottomTab.Screen
         name="Account"
-        component={LinksScreen}
+        component={BlankScreen}
         options={{
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="account" />,
         }}
@@ -61,10 +61,8 @@ function getHeaderTitle(route) {
   switch (routeName) {
     case 'Home':
       return 'lucky';
-    case 'Links':
-      return 'Links to learn more';
     case 'Scan':
-      return "Add Item";
+      return "Scan Item";
     default:
       return "Nothing Yet";
   }
@@ -79,5 +77,4 @@ function getHeaderTitleStyle(route) {
                      height: 70};
   const otherStyle = {}
   return (routeName === 'Home') ? homeStyle : otherStyle;
-  
 }
