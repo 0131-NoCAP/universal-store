@@ -4,6 +4,8 @@ import * as React from 'react';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
+import ScanScreen from '../screens/ScanScreen';
+import BlankScreen from '../screens/BlankScreen';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -12,15 +14,19 @@ export default function BottomTabNavigator({ navigation, route }) {
   // Set the header title on the parent stack navigator depending on the
   // currently active tab. Learn more in the documentation:
   // https://reactnavigation.org/docs/en/screen-options-resolution.html
-  navigation.setOptions({ headerTitle: getHeaderTitle(route) });
+  navigation.setOptions({ headerTitle: getHeaderTitle(route),
+                          headerTitleStyle: getHeaderTitleStyle(route)});
 
   return (
-    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+    <BottomTab.Navigator
+      initialRouteName={INITIAL_ROUTE_NAME}
+      tabBarOptions={{
+        showLabel: false
+      }}>
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          title: 'Home',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="home" />,
         }}
       />
@@ -28,23 +34,20 @@ export default function BottomTabNavigator({ navigation, route }) {
         name="Account"
         component={LinksScreen}
         options={{
-          title: 'Account',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="account" />,
         }}
       />
       <BottomTab.Screen
         name="Scan"
-        component={HomeScreen}
+        component={ScanScreen}
         options={{
-          title: 'Scan Item',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="barcode-scan" />,
         }}
       />
       <BottomTab.Screen
         name="Cart"
-        component={HomeScreen}
+        component={BlankScreen}
         options={{
-          title: 'Cart',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="cart" />,
         }}
       />
@@ -57,8 +60,24 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Home':
-      return 'Home';
+      return 'lucky';
     case 'Links':
       return 'Links to learn more';
+    case 'Scan':
+      return "Add Item";
+    default:
+      return "Nothing Yet";
   }
+}
+
+function getHeaderTitleStyle(route) {
+  const routeName = route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
+  const homeStyle = {fontFamily: 'pacifico',
+                     fontSize: 32,
+                     color: '#9c27b0',
+                     textAlign: 'center',
+                     height: 70};
+  const otherStyle = {}
+  return (routeName === 'Home') ? homeStyle : otherStyle;
+  
 }
