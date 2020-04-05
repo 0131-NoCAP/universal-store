@@ -1,28 +1,28 @@
 // TODO: Test Camera Permissions
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
-// import { Permissions } from 'expo-permissions';
+import { Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { Camera } from 'expo-camera';
+import Modal from 'react-native-modal';
 
 export default class ScanScreen extends React.Component {
 
+  // Instance variables
   state = {
     barcodeType: '',
     barcodeData: '',
     cameraOn: false,
+    scanned: false
   }
 
-
+  // Checks if current screen is mounted to turn camera on or off
   componentDidMount() {
-    //const { navigation } = this.props;
     this._unsubscribe = this.props.navigation.addListener('focus', () =>
-      this.setState({ cameraOn: true })
+      this.setState({ cameraOn: true, scanned: false })
     );
     this._unsubscribe2 = this.props.navigation.addListener('blur', () =>
-      this.setState({ cameraOn: false })
+      this.setState({ cameraOn: false, scanned: false })
     );
   }
-
   componentWillUnmount() {
     this._unsubscribe();
     this._unsubscribe2();
@@ -30,8 +30,9 @@ export default class ScanScreen extends React.Component {
 
   render() {
 
+    // Asks for camera permissions hopefully :(
     const { hasCameraPermissions } = getCameraAsync();
-    const { cameraOn } = this.state;
+    // Edge cases
     if (hasCameraPermissions === null) {
       return <Text>Requesting Camera Permissions</Text>;
     }
@@ -41,35 +42,67 @@ export default class ScanScreen extends React.Component {
 
     console.log(this.state);
 
-    if (cameraOn) {
-      return (
-        <View style={{ flex: 1 }}>
-          
-          {(
-          <BarCodeScanner
-            onBarCodeScanned={this.handleBarCodeScanned}
-            style={StyleSheet.absoluteFill}
-          />
-          )}
-        </View>
-      );
-    } else {
-      return <Text>Camera Off</Text>
-    }
+    return (
+      <View style={{ flex: 1 }}>
+        {(this.state.cameraOn &&
+        <Camera
+          onBarCodeScanned={this.handleBarCodeScanned}
+          style={StyleSheet.absoluteFill}
+        />
+        )}
+        
+        <Modal
+          isVisible={this.state.scanned}
+          customBackdrop={
+            <TouchableWithoutFeedback onPress={() => {this.setState({scanned: false, cameraOn: true})}}>
+              <View style={{flex: 1, backgroundColor: 'black'}} />
+            </TouchableWithoutFeedback>
+          }
+          animationIn='zoomIn'
+          animationOut='zoomOut'
+        >
+          <TouchableWithoutFeedback onPress={() => {this.setState({scanned: false, cameraOn: true})}}>
+              <View style={{flex: 1}} />
+          </TouchableWithoutFeedback>
+          <View style={{
+            flex: 3,
+            alignItems: 'center',
+            justifyContent: 'center', 
+            backgroundColor: 'white',
+            borderRadius: 20,
+            alignItems: 'stretch'
+          }}>
+            <View style = {{flex: 1, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1}}>
+              <Text>
+                Item Added
+              </Text>
+            </View>
+            <Text style = {{flex: 8, alignItems: 'center', justifyContent: 'center'}}>
+              {this.state.barcodeData}
+            </Text>
+          </View>
+          <TouchableWithoutFeedback onPress={() => {this.setState({scanned: false, cameraOn: true})}}>
+            <View style={{flex: 1}} />
+          </TouchableWithoutFeedback>
+        </Modal>
+      </View>
+    );
+
   }
 
   handleBarCodeScanned = ({ type, data }) => {
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     let barcodeType = type;
     let barcodeData = data;
     this.setState({
       barcodeType: barcodeType,
       barcodeData: barcodeData,
+      cameraOn: false,
+      scanned: true
     });
   }
 }
 
 async function getCameraAsync() {
-  const { status } = await BarCodeScanner.requestPermissionsAsync();
+  const { status } = await Camera.requestPermissionsAsync();
   return status === 'granted';
 }
