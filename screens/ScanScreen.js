@@ -66,20 +66,21 @@ export default class ScanScreen extends React.Component {
           </TouchableWithoutFeedback>
           <View style={{
             flex: 3,
-            alignItems: 'center',
             justifyContent: 'center', 
             backgroundColor: 'white',
             borderRadius: 20,
             alignItems: 'stretch'
           }}>
-            <View style = {{flex: 1, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1}}>
-              <Text>
+            <View style = {{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1}}>
+              <Text style = {{fontSize: 30}}>
                 Item Added
               </Text>
             </View>
-            <Text style = {{flex: 8, alignItems: 'center', justifyContent: 'center'}}>
-              {this.state.barcodeData}
-            </Text>
+            <View style = {{alignItems: 'center', flex: 8, justifyContent: 'center'}}>
+              <Text style = {{fontSize: 15}}>
+                {this.state.barcodeData}
+              </Text>
+            </View>
           </View>
           <TouchableWithoutFeedback onPress={() => {this.setState({scanned: false, cameraOn: true})}}>
             <View style={{flex: 1}} />
