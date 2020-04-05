@@ -1,47 +1,75 @@
-// TODO: turn off camera when this screen is not focused
-
+// TODO: Test Camera Permissions
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
-//import { withNavigationFocus } from 'react-navigation';
+import { Text, View, StyleSheet } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+// import { Permissions } from 'expo-permissions';
+
+export default class ScanScreen extends React.Component {
+
+  state = {
+    barcodeType: '',
+    barcodeData: '',
+    cameraOn: false,
+  }
 
 
-export default function ScanScreen() {
-  const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
+  componentDidMount() {
+    //const { navigation } = this.props;
+    this._unsubscribe = this.props.navigation.addListener('focus', () =>
+      this.setState({ cameraOn: true })
+    );
+    this._unsubscribe2 = this.props.navigation.addListener('blur', () =>
+      this.setState({ cameraOn: false })
+    );
+  }
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
+  componentWillUnmount() {
+    this._unsubscribe();
+    this._unsubscribe2();
+  }
 
-  const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
+  render() {
+
+    const { hasCameraPermissions } = getCameraAsync();
+    const { cameraOn } = this.state;
+    if (hasCameraPermissions === null) {
+      return <Text>Requesting Camera Permissions</Text>;
+    }
+    if (hasCameraPermissions === false) {
+      return <Text>No access to camera</Text>;
+    }
+
+    console.log(this.state);
+
+    if (cameraOn) {
+      return (
+        <View style={{ flex: 1 }}>
+          
+          {(
+          <BarCodeScanner
+            onBarCodeScanned={this.handleBarCodeScanned}
+            style={StyleSheet.absoluteFill}
+          />
+          )}
+        </View>
+      );
+    } else {
+      return <Text>Camera Off</Text>
+    }
+  }
+
+  handleBarCodeScanned = ({ type, data }) => {
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-  };
-
-  if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+    let barcodeType = type;
+    let barcodeData = data;
+    this.setState({
+      barcodeType: barcodeType,
+      barcodeData: barcodeData,
+    });
   }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
+}
 
-  return (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-      }}>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
-      />
-
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
-    </View>
-  );
+async function getCameraAsync() {
+  const { status } = await BarCodeScanner.requestPermissionsAsync();
+  return status === 'granted';
 }
