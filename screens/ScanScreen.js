@@ -3,7 +3,7 @@ import React from 'react';
 import { Text, View, StyleSheet, TouchableWithoutFeedback, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import Modal from 'react-native-modal';
-var BARCODESPIDER_API_KEY = '';
+var BARCODESPIDER_API_KEY = 'ce057e14c2cb19f18e45';
 export default class ScanScreen extends React.Component {
 
   // Instance variables
@@ -134,15 +134,14 @@ async function getBarcodeFromApiAsync(barcodeData) {
     if (barcodeData.length == 13) {
       barcodeData = barcodeData.substring(1);
     }
-    console.log(process.env);
     let response = await fetch(`https://api.barcodespider.com/v1/lookup?token=${BARCODESPIDER_API_KEY}&upc=${barcodeData}`);
     let responseJson = await response.json();
     var name = responseJson['item_attributes']['title'];
     var image = responseJson['item_attributes']['image'];
-    console.log([name, image]);
     return [name, image];
     
   } catch (error) {
     console.log(error);
+    return ['No item', 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'];
   }
 }
