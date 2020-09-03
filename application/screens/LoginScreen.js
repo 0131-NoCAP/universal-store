@@ -23,8 +23,8 @@ export default class LoginScreen extends React.Component {
             style={styles.inputText}
             placeholder="Email"
             placeholderTextColor="#003f5c"
-            value={this.email}
-            onChangeText={this.setEmail}
+            value={this.state.email}
+            onChangeText={(email) => this.setState({ email })}
           />
         </View>
         <View style={styles.inputView} >
@@ -33,15 +33,15 @@ export default class LoginScreen extends React.Component {
             style={styles.inputText}
             placeholder="Password"
             placeholderTextColor="#003f5c"
-            value={this.password}
-            onChangeText={this.setPassword}
+            value={this.state.password}
+            onChangeText={(password) => this.setState({ password })}
           />
         </View>
         <TouchableOpacity>
           <Text style={styles.forgot}>Forgot Password?</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => this.context.signIn(this.email, this.password)}
+          onPress={() => this.context.signIn(this.state.email, this.state.password)}
           style={styles.loginBtn}
         >
           <Text style={styles.loginText}>Log In</Text>
