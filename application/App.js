@@ -10,10 +10,15 @@ import AsyncStorage from '@react-native-community/async-storage';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import useLinking from './navigation/useLinking';
 
-import LoginScreen from './screens/LoginScreen';
+import LandingPageNavigator from './navigation/LandingPageNavigator';
 import { AuthContext } from './providers/auth';
-const Stack = createStackNavigator();
 
+/**
+*  This is the entry point for the application
+*/
+
+
+const Stack = createStackNavigator();
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -91,12 +96,12 @@ export default function App(props) {
         dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
-      signUp: async data => {
+      signUp: async (firstName, lastName, email, password, confirmPassword) => {
         // In a production app, we need to send user data to server and get a token
         // We will also need to handle errors if sign up failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
-
+        console.log("First Name: " + firstName + " Last: " + lastName + "Email: " + email + " Pass: " + password)
         dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
       },
     }),
@@ -116,7 +121,7 @@ export default function App(props) {
               // No token found, user isn't signed in
               <Stack.Screen
                 name="SignIn"
-                component={LoginScreen}
+                component={LandingPageNavigator}
                 options={{
                   title: 'lucky',
                   headerShown: false,
