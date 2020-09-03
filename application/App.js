@@ -11,9 +11,9 @@ import BottomTabNavigator from './navigation/BottomTabNavigator';
 import useLinking from './navigation/useLinking';
 
 import LoginScreen from './screens/LoginScreen';
-
+import { AuthContext } from './providers/auth';
 const Stack = createStackNavigator();
-const AuthContext = React.createContext();
+
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);

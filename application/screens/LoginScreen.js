@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { AuthContext } from '../providers/auth';
 
 export default class LoginScreen extends React.Component {
 
@@ -10,6 +11,8 @@ export default class LoginScreen extends React.Component {
     password:'',
     setPassword:''
   }
+
+  static contextType = AuthContext;
 
   render(){
     return (
@@ -37,7 +40,10 @@ export default class LoginScreen extends React.Component {
         <TouchableOpacity>
           <Text style={styles.forgot}>Forgot Password?</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginBtn}>
+        <TouchableOpacity
+          onPress={() => this.context.signIn(this.email, this.password)}
+          style={styles.loginBtn}
+        >
           <Text style={styles.loginText}>Log In</Text>
         </TouchableOpacity>
         <TouchableOpacity>
