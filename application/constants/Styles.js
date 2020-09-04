@@ -50,6 +50,16 @@ const landingPageStyles = StyleSheet.create({
     marginTop: 40,
     marginBottom: 10,
   },
+  disabledLoginButton: {
+    width: "80%",
+    backgroundColor: "#C8C8C8",
+    borderRadius: 25,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+    marginBottom: 10,
+  },
   loginText: {
     color: "white",
   },
