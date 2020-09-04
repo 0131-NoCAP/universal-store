@@ -72,6 +72,9 @@ const landingPageStyles = StyleSheet.create({
     color: "#27B09B",
     fontSize: 18,
   },
+  registerPageHead: {
+    marginBottom: 35
+  }
 });
 
 export { landingPageStyles };

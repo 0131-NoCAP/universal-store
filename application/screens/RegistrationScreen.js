@@ -24,7 +24,7 @@ export default class RegistrationScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View>
+        <View style={styles.registerPageHead}>
           <Text style={styles.registerText}>Register for a new account</Text>
         </View>
         <View style={styles.inputView}>
