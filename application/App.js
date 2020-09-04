@@ -13,6 +13,10 @@ import useLinking from './navigation/useLinking';
 import LandingPageNavigator from './navigation/LandingPageNavigator';
 import { AuthContext } from './providers/auth';
 
+import { login, register } from './api/mockapi';
+import { Logs } from 'expo';
+Logs.enableExpoCliLogging()
+
 /**
 *  This is the entry point for the application
 */
@@ -93,7 +97,12 @@ export default function App(props) {
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
         console.log("Email: " + email + " Pass: " + password)
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+
+        // call login from api
+        login(email, password).then(() => {
+          dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+        }).catch((error) => console.log('error: ', error.message));
+
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
       signUp: async (firstName, lastName, email, password, confirmPassword) => {
@@ -101,8 +110,13 @@ export default function App(props) {
         // We will also need to handle errors if sign up failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
-        console.log("First Name: " + firstName + " Last: " + lastName + "Email: " + email + " Pass: " + password)
-        dispatch({ type: 'SIGN_IN', token: null });
+        console.log("First: " + firstName + " Last: " + lastName + " Email: " + email + " Pass: " + password)
+        
+        // call register from api
+        register(firstName, lastName, email, password).then(() => {
+          dispatch({ type: 'SIGN_IN', token: null });
+        }).catch((error) => console.log('error: ', error.message));
+
       },
     }),
     []
