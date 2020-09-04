@@ -82,7 +82,16 @@ export default class RegistrationScreen extends React.Component {
             this.context.signUp(this.state.email, this.state.password);
             navigate("LoginScreen");
           }}
-          style={styles.loginBtn}
+          style={
+            this.state.email === "" || this.state.firstName === "" ||
+            this.state.lastName === "" || this.state.password === "" ||
+            this.state.confirmPassword === ""
+              ? styles.disabledLoginButton
+              : styles.loginBtn
+          }
+          disabled={this.state.email === "" || this.state.firstName === "" ||
+            this.state.lastName === "" || this.state.password === "" ||
+            this.state.confirmPassword === ""}
         >
           <Text style={styles.loginText}>Create Account</Text>
         </TouchableOpacity>
