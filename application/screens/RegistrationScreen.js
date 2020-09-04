@@ -1,25 +1,33 @@
-import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-import { AuthContext } from '../providers/auth';
-import { landingPageStyles as styles} from '../constants/Styles';
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import { AuthContext } from "../providers/auth";
+import { landingPageStyles as styles } from "../constants/Styles";
 
 export default class RegistrationScreen extends React.Component {
-
   // Instance variables
   state = {
-    firstName:'',
-    lastName:'',
-    email:'',
-    password:'',
-    confirmPassword:''
-  }
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  };
 
   static contextType = AuthContext;
 
-  render(){
+  render() {
     return (
       <View style={styles.container}>
-        <View style={styles.inputView} >
+        <View>
+          <Text style={styles.registerText}>Register for a new account</Text>
+        </View>
+        <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
             placeholder="First Name"
@@ -28,7 +36,7 @@ export default class RegistrationScreen extends React.Component {
             onChangeText={(firstName) => this.setState({ firstName })}
           />
         </View>
-        <View style={styles.inputView} >
+        <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
             placeholder="Last Name"
@@ -37,7 +45,7 @@ export default class RegistrationScreen extends React.Component {
             onChangeText={(lastName) => this.setState({ lastName })}
           />
         </View>
-        <View style={styles.inputView} >
+        <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
             placeholder="Email"
@@ -46,7 +54,7 @@ export default class RegistrationScreen extends React.Component {
             onChangeText={(email) => this.setState({ email })}
           />
         </View>
-        <View style={styles.inputView} >
+        <View style={styles.inputView}>
           <TextInput
             secureTextEntry
             style={styles.inputText}
@@ -56,24 +64,26 @@ export default class RegistrationScreen extends React.Component {
             onChangeText={(password) => this.setState({ password })}
           />
         </View>
-        <View style={styles.inputView} >
+        <View style={styles.inputView}>
           <TextInput
             secureTextEntry
             style={styles.inputText}
             placeholder="Confirm Password"
             placeholderTextColor="#003f5c"
             value={this.state.confirmPassword}
-            onChangeText={(confirmPassword) => this.setState({ confirmPassword })}
+            onChangeText={(confirmPassword) =>
+              this.setState({ confirmPassword })
+            }
           />
         </View>
         <TouchableOpacity
-          onPress={() => this.context.signUp(this.state.email, this.state.password)}
+          onPress={() =>
+            this.context.signUp(this.state.email, this.state.password)
+          }
           style={styles.loginBtn}
         >
           <Text style={styles.loginText}>Create Account</Text>
         </TouchableOpacity>
-
-
       </View>
     );
   }
