@@ -6,7 +6,6 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import ScanScreen from '../screens/ScanScreen';
 import BlankScreen from '../screens/BlankScreen';
-import LoginScreen from '../screens/LoginScreen';
 
 const INITIAL_ROUTE_NAME = 'Home';
 const BottomTab = createBottomTabNavigator();
