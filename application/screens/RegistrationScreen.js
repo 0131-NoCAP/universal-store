@@ -80,9 +80,7 @@ export default class RegistrationScreen extends React.Component {
         <TouchableOpacity
           onPress={() => {
             this.context.signUp(this.state.firstName, this.state.lastName,
-              this.state.email, this.state.password,
-              this.state.confirmPassword);
-            navigate("LoginScreen");
+              this.state.email, this.state.password);
           }}
           style={
             this.state.email === "" || this.state.firstName === "" ||

@@ -14,8 +14,6 @@ import LandingPageNavigator from './navigation/LandingPageNavigator';
 import { AuthContext } from './providers/auth';
 
 import { login, register } from './api/mockapi';
-import { Logs } from 'expo';
-Logs.enableExpoCliLogging()
 
 /**
 *  This is the entry point for the application
@@ -99,13 +97,17 @@ export default function App(props) {
         console.log("Email: " + email + " Pass: " + password)
 
         // call login from api
-        login(email, password).then(() => {
-          dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+        login(email, password).then((value) => {
+          dispatch({ type: 'SIGN_IN', token: value.token });
         }).catch((error) => console.log('error: ', error.message));
-
       },
-      signOut: () => dispatch({ type: 'SIGN_OUT' }),
-      signUp: async (firstName, lastName, email, password, confirmPassword) => {
+
+      signOut: () => {
+        dispatch({ type: 'SIGN_OUT' });
+        console.log("Logging out.");
+      },
+
+      signUp: async (firstName, lastName, email, password) => {
         // In a production app, we need to send user data to server and get a token
         // We will also need to handle errors if sign up failed
         // After getting token, we need to persist the token using `AsyncStorage`
@@ -113,10 +115,12 @@ export default function App(props) {
         console.log("First: " + firstName + " Last: " + lastName + " Email: " + email + " Pass: " + password)
         
         // call register from api
-        register(firstName, lastName, email, password).then(() => {
-          dispatch({ type: 'SIGN_IN', token: null });
-        }).catch((error) => console.log('error: ', error.message));
-
+        register(firstName, lastName, email, password).then((value) => {
+          dispatch({ type: 'SIGN_IN', token: value.token });
+        }).catch((error) => {
+          console.log('error: ', error.message);
+          // pop up
+        });
       },
     }),
     []
@@ -125,7 +129,7 @@ export default function App(props) {
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return null;
   } else {
-    console.log(process.env.REACT_APP_API_KEY);
+    //console.log(process.env.REACT_APP_API_KEY);
     return (
       <AuthContext.Provider value={authContext}>
         {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
