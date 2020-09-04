@@ -22,6 +22,7 @@ export default class RegistrationScreen extends React.Component {
   static contextType = AuthContext;
 
   render() {
+    const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
         <View style={styles.registerPageHead}>
@@ -77,9 +78,10 @@ export default class RegistrationScreen extends React.Component {
           />
         </View>
         <TouchableOpacity
-          onPress={() =>
-            this.context.signUp(this.state.email, this.state.password)
-          }
+          onPress={() => {
+            this.context.signUp(this.state.email, this.state.password);
+            navigate("LoginScreen");
+          }}
           style={styles.loginBtn}
         >
           <Text style={styles.loginText}>Create Account</Text>

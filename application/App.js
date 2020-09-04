@@ -102,7 +102,7 @@ export default function App(props) {
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
         console.log("First Name: " + firstName + " Last: " + lastName + "Email: " + email + " Pass: " + password)
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+        dispatch({ type: 'SIGN_IN', token: null });
       },
     }),
     []
