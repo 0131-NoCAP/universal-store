@@ -156,7 +156,7 @@ export default class RegistrationScreen extends ValidationComponent {
                   this.setState({ modalVisible: !this.state.modalVisible });
                 }}
               >
-                <Text style={styles.textStyle}>Ok</Text>
+                <Text style={styles.textStyle}>Close</Text>
               </TouchableHighlight>
             </View>
           </View>

@@ -102,7 +102,8 @@ const landingPageStyles = StyleSheet.create({
   openButton: {
     backgroundColor: "#F194FF",
     borderRadius: 20,
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 40,
     elevation: 2,
   },
   textStyle: {

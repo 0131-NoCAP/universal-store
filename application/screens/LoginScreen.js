@@ -1,5 +1,5 @@
 import React from "react";
-import { 
+import {
   Button,
   Text,
   View,
@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import { AuthContext } from "../providers/auth";
 import { landingPageStyles as styles } from "../constants/Styles";
-import Modal from 'react-native-modal'
-import { login, register } from '../api/mockapi';
+import Modal from "react-native-modal";
+import { login, register } from "../api/mockapi";
 
 export default class LoginScreen extends React.Component {
   // Instance variables
@@ -66,21 +66,17 @@ export default class LoginScreen extends React.Component {
 
         <TouchableOpacity
           onPress={() => {
-            login(
-              this.state.email,
-              this.state.password
-            ).then((value) => {
-              this.context.signIn(
-                this.state.email,
-                this.state.password
-              );
-            }).catch((error) => {
-              console.log('error: ', error.message);
-              this.setState({
-                modalVisible: true,
-                errorMessage: error.message,
+            login(this.state.email, this.state.password)
+              .then((value) => {
+                this.context.signIn(this.state.email, this.state.password);
               })
-            })
+              .catch((error) => {
+                console.log("error: ", error.message);
+                this.setState({
+                  modalVisible: true,
+                  errorMessage: error.message,
+                });
+              });
           }}
           style={
             this.state.email === "" || this.state.password === ""
@@ -112,7 +108,7 @@ export default class LoginScreen extends React.Component {
                   this.setState({ modalVisible: !this.state.modalVisible });
                 }}
               >
-                <Text style={styles.textStyle}>Ok</Text>
+                <Text style={styles.textStyle}>Close</Text>
               </TouchableHighlight>
             </View>
           </View>
