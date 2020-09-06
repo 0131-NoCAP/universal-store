@@ -10,8 +10,9 @@ import {
 import { AuthContext } from "../providers/auth";
 import { landingPageStyles as styles } from "../constants/Styles";
 import { register } from "../api/mockapi";
+import ValidationComponent from "react-native-form-validator";
 
-export default class RegistrationScreen extends React.Component {
+export default class RegistrationScreen extends ValidationComponent {
   // Instance variables
   state = {
     firstName: "",
@@ -40,11 +41,11 @@ export default class RegistrationScreen extends React.Component {
         errorMessage: "Password and confirm password do not match",
       });
       modalVisible = true;
-      // } else if (!validator.validate(this.state.email)) {
-      //   this.setState({
-      //     errorMessage: "Please enter a valid email.",
-      //   });
-      //   modalVisible = true;
+    } else if (!this.validate({ email: { email: true } })) {
+      this.setState({
+        errorMessage: "Please enter a valid email.",
+      });
+      modalVisible = true;
     } else {
       modalVisible = false;
     }
