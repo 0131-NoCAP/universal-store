@@ -34,7 +34,7 @@ export default class RegistrationScreen extends ValidationComponent {
       this.state.password === "" ||
       this.state.confirmPassword === ""
     ) {
-      this.setState({ errorMessage: "Please fill out all fields" });
+      this.setState({ errorMessage: "Please fill out all fields." });
       modalVisible = true;
     } else if (this.state.password !== this.state.confirmPassword) {
       this.setState({
@@ -136,7 +136,7 @@ export default class RegistrationScreen extends ValidationComponent {
           }}
           style={styles.loginBtn}
         >
-          <Text style={styles.loginText}>Create Account</Text>
+          <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>
         <Modal
           animationType="slide"
@@ -151,12 +151,12 @@ export default class RegistrationScreen extends ValidationComponent {
               <Text style={styles.modalText}>{this.state.errorMessage}</Text>
 
               <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                style={{ ...styles.openButton }}
                 onPress={() => {
                   this.setState({ modalVisible: !this.state.modalVisible });
                 }}
               >
-                <Text style={styles.textStyle}>Close</Text>
+                <Text style={styles.buttonText}>Close</Text>
               </TouchableHighlight>
             </View>
           </View>

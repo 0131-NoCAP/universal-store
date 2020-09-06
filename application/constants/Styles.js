@@ -60,7 +60,7 @@ const landingPageStyles = StyleSheet.create({
     marginTop: 40,
     marginBottom: 10,
   },
-  loginText: {
+  buttonText: {
     color: "white",
   },
   signupText: {
@@ -100,16 +100,11 @@ const landingPageStyles = StyleSheet.create({
     elevation: 5,
   },
   openButton: {
-    backgroundColor: "#F194FF",
+    backgroundColor: "#27B09B",
     borderRadius: 20,
     paddingVertical: 10,
     paddingHorizontal: 40,
     elevation: 2,
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
   },
   modalText: {
     marginBottom: 15,

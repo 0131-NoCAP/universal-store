@@ -85,7 +85,7 @@ export default class LoginScreen extends React.Component {
           }
           disabled={this.state.email === "" || this.state.password === ""}
         >
-          <Text style={styles.loginText}>Log In</Text>
+          <Text style={styles.buttonText}>Log In</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigate("RegistrationScreen")}>
           <Text style={styles.signupText}>Sign Up</Text>
