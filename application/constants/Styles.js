@@ -74,6 +74,9 @@ const landingPageStyles = StyleSheet.create({
   },
   registerPageHead: {
     marginBottom: 35
+  },
+  errorText: {
+    color: "red",
   }
 });
 

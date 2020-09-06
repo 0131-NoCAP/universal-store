@@ -96,10 +96,8 @@ export default function App(props) {
         // In the example, we'll use a dummy token
         console.log("Email: " + email + " Pass: " + password)
 
-        // call login from api
-        login(email, password).then((value) => {
-          dispatch({ type: 'SIGN_IN', token: value.token });
-        }).catch((error) => console.log('error: ', error.message));
+        // can pass token through param
+        dispatch({ type: 'SIGN_IN', token: 'token' });
       },
 
       signOut: () => {
@@ -114,13 +112,8 @@ export default function App(props) {
         // In the example, we'll use a dummy token
         console.log("First: " + firstName + " Last: " + lastName + " Email: " + email + " Pass: " + password)
         
+        dispatch({ type: 'SIGN_IN', token: 'token' });
         // call register from api
-        register(firstName, lastName, email, password).then((value) => {
-          dispatch({ type: 'SIGN_IN', token: value.token });
-        }).catch((error) => {
-          console.log('error: ', error.message);
-          // pop up
-        });
       },
     }),
     []

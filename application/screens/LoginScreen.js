@@ -1,7 +1,9 @@
 import React from "react";
-import { Text, View, TextInput, TouchableOpacity } from "react-native";
+import { Button, Text, View, TextInput, TouchableOpacity } from "react-native";
 import { AuthContext } from "../providers/auth";
 import { landingPageStyles as styles } from "../constants/Styles";
+import Modal from 'react-native-modal'
+import { login, register } from '../api/mockapi';
 
 export default class LoginScreen extends React.Component {
   // Instance variables
@@ -10,6 +12,8 @@ export default class LoginScreen extends React.Component {
     setEmail: "",
     password: "",
     setPassword: "",
+    errorState: false,
+    errorMessage: "",
   };
 
   static contextType = AuthContext;
@@ -45,9 +49,24 @@ export default class LoginScreen extends React.Component {
         <TouchableOpacity>
           <Text style={styles.forgot}>Forgot Password?</Text>
         </TouchableOpacity>
+
+        <View visible = {this.state.errorState}>
+          <Text style={styles.errorText}>
+            {this.state.errorMessage}
+          </Text>
+        </View>
+
         <TouchableOpacity
           onPress={() => {
-            this.context.signIn(this.state.email, this.state.password);
+            login(this.state.email, this.state.password).then((value) => {
+              this.context.signIn(this.state.email, this.state.password);
+            }).catch((error) => {
+              console.log('error: ', error.message);
+              this.setState({
+                errorState: true,
+                errorMessage: error.message,
+              })
+            })
           }}
           style={
             this.state.email === "" || this.state.password === ""

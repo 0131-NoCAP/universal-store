@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { AuthContext } from "../providers/auth";
 import { landingPageStyles as styles } from "../constants/Styles";
+import { register } from "../api/mockapi";
 
 export default class RegistrationScreen extends React.Component {
   // Instance variables
@@ -79,8 +80,14 @@ export default class RegistrationScreen extends React.Component {
         </View>
         <TouchableOpacity
           onPress={() => {
-            this.context.signUp(this.state.firstName, this.state.lastName,
-              this.state.email, this.state.password);
+            register(this.state.firstName, this.state.lastName,
+              this.state.email, this.state.password).then((value) => {
+                this.context.signUp(this.state.firstName, this.state.lastName,
+                  this.state.email, this.state.password);
+            }).catch((error) => {
+              console.log('error: ', error.message);
+              // set state and have modal pop up
+            })
           }}
           style={
             this.state.email === "" || this.state.firstName === "" ||
