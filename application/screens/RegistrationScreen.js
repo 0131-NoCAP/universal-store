@@ -1,10 +1,11 @@
-import React from "react";
+import React, { isValidElement } from "react";
 import {
-  StyleSheet,
+  Modal,
   Text,
   View,
   TextInput,
   TouchableOpacity,
+  TouchableHighlight,
 } from "react-native";
 import { AuthContext } from "../providers/auth";
 import { landingPageStyles as styles } from "../constants/Styles";
@@ -18,10 +19,38 @@ export default class RegistrationScreen extends React.Component {
     email: "",
     password: "",
     confirmPassword: "",
+    modalVisible: false,
+    errorMessage: "",
   };
-
   static contextType = AuthContext;
-
+  validateInput() {
+    //let validator = require("email-validator");
+    let modalVisible;
+    if (
+      this.state.email === "" ||
+      this.state.firstName === "" ||
+      this.state.lastName === "" ||
+      this.state.password === "" ||
+      this.state.confirmPassword === ""
+    ) {
+      this.setState({ errorMessage: "Please fill out all fields" });
+      modalVisible = true;
+    } else if (this.state.password !== this.state.confirmPassword) {
+      this.setState({
+        errorMessage: "Password and confirm password do not match",
+      });
+      modalVisible = true;
+      // } else if (!validator.validate(this.state.email)) {
+      //   this.setState({
+      //     errorMessage: "Please enter a valid email.",
+      //   });
+      //   modalVisible = true;
+    } else {
+      modalVisible = false;
+    }
+    this.setState({ modalVisible });
+    return !modalVisible;
+  }
   render() {
     const { navigate } = this.props.navigation;
     return (
@@ -80,28 +109,57 @@ export default class RegistrationScreen extends React.Component {
         </View>
         <TouchableOpacity
           onPress={() => {
-            register(this.state.firstName, this.state.lastName,
-              this.state.email, this.state.password).then((value) => {
-                this.context.signUp(this.state.firstName, this.state.lastName,
-                  this.state.email, this.state.password);
-            }).catch((error) => {
-              console.log('error: ', error.message);
-              // set state and have modal pop up
-            })
+            if (this.validateInput()) {
+              register(
+                this.state.firstName,
+                this.state.lastName,
+                this.state.email,
+                this.state.password
+              )
+                .then((_token) => {
+                  this.context.signUp(
+                    this.state.firstName,
+                    this.state.lastName,
+                    this.state.email,
+                    this.state.password
+                  );
+                })
+                .catch((error) => {
+                  this.setState({
+                    errorMessage: error.message,
+                    modalVisible: true,
+                  });
+                  // set state and have modal pop up
+                });
+            }
           }}
-          style={
-            this.state.email === "" || this.state.firstName === "" ||
-            this.state.lastName === "" || this.state.password === "" ||
-            this.state.confirmPassword === ""
-              ? styles.disabledLoginButton
-              : styles.loginBtn
-          }
-          disabled={this.state.email === "" || this.state.firstName === "" ||
-            this.state.lastName === "" || this.state.password === "" ||
-            this.state.confirmPassword === ""}
+          style={styles.loginBtn}
         >
           <Text style={styles.loginText}>Create Account</Text>
         </TouchableOpacity>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>{this.state.errorMessage}</Text>
+
+              <TouchableHighlight
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={() => {
+                  this.setState({ modalVisible: !this.state.modalVisible });
+                }}
+              >
+                <Text style={styles.textStyle}>Ok</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
