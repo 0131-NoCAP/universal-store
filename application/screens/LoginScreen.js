@@ -1,5 +1,12 @@
 import React from "react";
-import { Button, Text, View, TextInput, TouchableOpacity } from "react-native";
+import { 
+  Button,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  TouchableHighlight,
+} from "react-native";
 import { AuthContext } from "../providers/auth";
 import { landingPageStyles as styles } from "../constants/Styles";
 import Modal from 'react-native-modal'
@@ -14,6 +21,7 @@ export default class LoginScreen extends React.Component {
     setPassword: "",
     errorState: false,
     errorMessage: "",
+    modalVisible: false,
   };
 
   static contextType = AuthContext;
@@ -50,20 +58,26 @@ export default class LoginScreen extends React.Component {
           <Text style={styles.forgot}>Forgot Password?</Text>
         </TouchableOpacity>
 
-        <View visible = {this.state.errorState}>
+        {/* <View visible = {this.state.errorState}>
           <Text style={styles.errorText}>
             {this.state.errorMessage}
           </Text>
-        </View>
+        </View> */}
 
         <TouchableOpacity
           onPress={() => {
-            login(this.state.email, this.state.password).then((value) => {
-              this.context.signIn(this.state.email, this.state.password);
+            login(
+              this.state.email,
+              this.state.password
+            ).then((value) => {
+              this.context.signIn(
+                this.state.email,
+                this.state.password
+              );
             }).catch((error) => {
               console.log('error: ', error.message);
               this.setState({
-                errorState: true,
+                modalVisible: true,
                 errorMessage: error.message,
               })
             })
@@ -80,6 +94,29 @@ export default class LoginScreen extends React.Component {
         <TouchableOpacity onPress={() => navigate("RegistrationScreen")}>
           <Text style={styles.signupText}>Sign Up</Text>
         </TouchableOpacity>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>{this.state.errorMessage}</Text>
+
+              <TouchableHighlight
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={() => {
+                  this.setState({ modalVisible: !this.state.modalVisible });
+                }}
+              >
+                <Text style={styles.textStyle}>Ok</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }

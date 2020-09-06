@@ -4,13 +4,13 @@ var users = new Object();
 
 const mockSuccess = (value) => {
   return new Promise((resolve) => {
-      setTimeout(() => resolve(value), 300);
+      setTimeout(() => resolve(value), 100);
   });
 };
 
 const mockFailure = (value) => {
   return new Promise((resolve, reject) => {
-      setTimeout(() => reject(value), 300)
+      setTimeout(() => reject(value), 100)
   });
 }
 
