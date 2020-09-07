@@ -103,12 +103,12 @@ export default class LoginScreen extends React.Component {
               <Text style={styles.modalText}>{this.state.errorMessage}</Text>
 
               <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                style={{ ...styles.openButton }}
                 onPress={() => {
                   this.setState({ modalVisible: !this.state.modalVisible });
                 }}
               >
-                <Text style={styles.textStyle}>Close</Text>
+                <Text style={styles.buttonText}>Close</Text>
               </TouchableHighlight>
             </View>
           </View>
