@@ -40,6 +40,7 @@ def post_perm_access_token(shop: str, code: str):
     shopify_keys = get_secret("shopify_keys")
     client_id = shopify_keys.get('shopify_client_id')
     client_secret = shopify_keys.get('shopify_client_secret')
+    print(shopify_keys)
     data = {'client_id': client_id, 'client_secret': client_secret, 'code': code}
     requests.post(url, data=data)
     return 1
