@@ -31,7 +31,7 @@ jobs:
       - name: Create Zip File
         uses: montudor/action-zip@v0.1.0
         with:
-          args: zip -qq -r ./bundle.zip ./server
+          args: cd ./server && zip -qq -r ./bundle.zip ./
 
       - name: AWS Lambda Deploy
         # You may pin to the exact commit or the version.
@@ -47,4 +47,4 @@ jobs:
           # AWS lambda function name
           function_name: universal-store-auth
           # AWS lambda zip file
-          zip_file: bundle.zip
+          zip_file: ./server/bundle.zip

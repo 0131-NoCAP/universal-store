@@ -1,0 +1,35 @@
+import json, re, requests
+
+def lambda_handler(event, context):
+    bad_request = {
+        'statusCode': 400,
+        'body': json.dumps('Bad Request')
+    }
+
+    print(event.get('queryStringParameters'))
+
+    query_string_parameters = event.get('queryStringParameters')
+    if query_string_parameters:
+        code = query_string_parameters.get('code')
+        shop = query_string_parameters.get('shop')
+        hmac = query_string_parameters.get('hmac')
+        state = query_string_parameters.get('state')
+        timestamp = query_string_parameters.get('timestamp')
+    else:
+        return bad_request
+    # need to check nonce (state) with server generated install url
+    # need to check if hmac is valid
+    # need to check hostname parameter is valid
+    valid_hostname = re.compile(r'/(https|http)\:\/\/[a-zA-Z0-9][a-zA-Z0-9\-]*\.myshopify\.com[\/]?/')
+    if not re.match(valid_hostname, shop):
+        return bad_request
+    return {
+        'statusCode': 100,
+        'body': json.dumps('Default Request')
+    }
+
+def post_perm_access_token(shop: str, code: str):
+    url = 'https://' + shop +'.myshopify.com/admin/oauth/access_token'
+    data = {'client_id': '???', 'client_secret': '???', 'code': code}
+    requests.post(url, data=data)
+    return 0
