@@ -31,7 +31,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --target ./server/package --system -r requirements.txt
+          pip install --target ./server/package -r requirements.txt
 
       - name: Create Zip File
         run: cd ./server && zip -qq -r ./bundle.zip ./
