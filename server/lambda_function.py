@@ -29,7 +29,7 @@ def lambda_handler(event, context):
     if not re.match(valid_hostname, shop):
         return bad_request
     print(shop, code)
-    post_perm_access_token(shop, code):
+    post_perm_access_token(shop, code)
     return {
         'statusCode': 100,
         'body': json.dumps('Default Request')
