@@ -134,7 +134,7 @@ export default class RegistrationScreen extends ValidationComponent {
                 });
             }
           }}
-          style={styles.loginBtn}
+          style={styles.wideBtn}
         >
           <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>

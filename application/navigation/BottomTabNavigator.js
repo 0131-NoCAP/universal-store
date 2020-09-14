@@ -6,6 +6,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import ScanScreen from '../screens/ScanScreen';
 import BlankScreen from '../screens/BlankScreen';
+import AccountScreen from '../screens/AccountScreen';
 
 const INITIAL_ROUTE_NAME = 'Home';
 const BottomTab = createBottomTabNavigator();
@@ -32,7 +33,7 @@ export default function BottomTabNavigator({ navigation, route }) {
       />
       <BottomTab.Screen
         name="Account"
-        component={BlankScreen}
+        component={AccountScreen}
         options={{
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="account" />,
         }}
@@ -61,6 +62,8 @@ function getHeaderTitle(route) {
   switch (routeName) {
     case 'Home':
       return 'lucky';
+    case 'Account':
+      return "Account Details";
     case 'Scan':
       return "Scan Item";
     default:
