@@ -11,9 +11,13 @@ def lambda_handler(event, context):
 
     query_string_parameters = event.get('queryStringParameters')
     if query_string_parameters:
+        # authorization code
         code = query_string_parameters.get('code')
+        # hostname
         shop = query_string_parameters.get('shop')
+        # signed by shopify
         hmac = query_string_parameters.get('hmac')
+        # nonce
         state = query_string_parameters.get('state')
         timestamp = query_string_parameters.get('timestamp')
     else:
@@ -24,6 +28,8 @@ def lambda_handler(event, context):
     valid_hostname = re.compile(r'/(https|http)\:\/\/[a-zA-Z0-9][a-zA-Z0-9\-]*\.myshopify\.com[\/]?/')
     if not re.match(valid_hostname, shop):
         return bad_request
+    print(shop, code)
+    post_perm_access_token(shop, code):
     return {
         'statusCode': 100,
         'body': json.dumps('Default Request')

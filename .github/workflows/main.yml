@@ -28,6 +28,11 @@ jobs:
           # Version range or exact version of a Python version to use, using SemVer's version range syntax.
           python-version: 3.8
 
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --target ./server/package -system -r requirements.txt
+
       - name: Create Zip File
         run: cd ./server && zip -qq -r ./bundle.zip ./
 
