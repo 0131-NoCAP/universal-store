@@ -1,4 +1,5 @@
-import json, re, requests
+import json, re, requests, os
+from secret_manager import get_secret
 
 def lambda_handler(event, context):
     bad_request = {
@@ -30,6 +31,9 @@ def lambda_handler(event, context):
 
 def post_perm_access_token(shop: str, code: str):
     url = 'https://' + shop +'.myshopify.com/admin/oauth/access_token'
-    data = {'client_id': '???', 'client_secret': '???', 'code': code}
+    shopify_keys = get_secret("shopify_keys")
+    client_id = shopify_keys.get('shopify_client_id')
+    client_secret = shopify_keys.get('shopify_client_secret')
+    data = {'client_id': client_id, 'client_secret': client_secret, 'code': code}
     requests.post(url, data=data)
-    return 0
+    return 1
