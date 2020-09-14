@@ -23,6 +23,10 @@ def lambda_handler(event, context):
     valid_hostname = re.compile(r'/(https|http)\:\/\/[a-zA-Z0-9][a-zA-Z0-9\-]*\.myshopify\.com[\/]?/')
     if not re.match(valid_hostname, shop):
         return bad_request
+    return {
+        'statusCode': 100,
+        'body': json.dumps('Default Request')
+    }
 
 def post_perm_access_token(shop: str, code: str):
     url = 'https://' + shop +'.myshopify.com/admin/oauth/access_token'
