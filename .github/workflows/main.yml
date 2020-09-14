@@ -29,8 +29,7 @@ jobs:
           python-version: 3.8
 
       - name: Create Zip File
-        run:
-          args: cd ./server && zip -qq -r ./bundle.zip ./
+        run: cd ./server && zip -qq -r ./bundle.zip ./
 
       - name: AWS Lambda Deploy
         # You may pin to the exact commit or the version.
