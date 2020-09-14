@@ -11,6 +11,7 @@ def lambda_handler(event, context):
 
     query_string_parameters = event.get('queryStringParameters')
     if query_string_parameters:
+        print('GOT QUERY STRING PARAMS')
         # authorization code
         code = query_string_parameters.get('code')
         # hostname
