@@ -1,5 +1,6 @@
 import boto3
 import base64
+import json
 from botocore.exceptions import ClientError
 
 
@@ -48,7 +49,6 @@ def get_secret(secret_name: str):
         # Depending on whether the secret is a string or binary, one of these fields will be populated.
         if 'SecretString' in get_secret_value_response:
             secret = get_secret_value_response['SecretString']
-            return secret
         else:
-            decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary'])
-            return decoded_binary_secret
+            secret = base64.b64decode(get_secret_value_response['SecretBinary'])
+    return json.loads(secret)
