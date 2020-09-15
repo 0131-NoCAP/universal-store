@@ -54,4 +54,5 @@ def get_secret(secret_name: str):
             secret = base64.b64decode(get_secret_value_response['SecretBinary'])
         if secret:
             return json.loads(secret)
+    print('failed :( ', get_secret_value_response)
     return None
