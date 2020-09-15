@@ -26,7 +26,7 @@ def lambda_handler(event, context):
     # need to check nonce (state) with server generated install url
     # need to check if hmac is valid
     # need to check hostname parameter is valid
-    valid_hostname = re.compile(r'/(https|http)\:\/\/[a-zA-Z0-9][a-zA-Z0-9\-]*\.myshopify\.com[\/]?/')
+    valid_hostname = re.compile(r'(https\:\/\/|http\:\/\/)?[a-zA-Z0-9][a-zA-Z0-9\-]*\.myshopify\.com[\/]?')
     if not re.match(valid_hostname, shop):
         return bad_request
     print(shop, code)
