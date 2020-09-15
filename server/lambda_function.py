@@ -38,7 +38,10 @@ def lambda_handler(event, context):
 
 def post_perm_access_token(shop: str, code: str):
     url = 'https://' + shop +'.myshopify.com/admin/oauth/access_token'
-    shopify_keys = get_secret("shopify_keys")
+    shopify_keys = get_secret('shopify_keys')
+    if not shopify_keys:
+        print('key retrieval failed')
+        return 0
     client_id = shopify_keys.get('shopify_client_id')
     client_secret = shopify_keys.get('shopify_client_secret')
     print(shopify_keys)
