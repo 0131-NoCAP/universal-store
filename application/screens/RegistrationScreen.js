@@ -24,6 +24,31 @@ export default class RegistrationScreen extends ValidationComponent {
     errorMessage: "",
   };
   static contextType = AuthContext;
+  submit() {
+    if (this.validateInput()) {
+      register(
+        this.state.firstName,
+        this.state.lastName,
+        this.state.email,
+        this.state.password
+      )
+        .then((_token) => {
+          this.context.signUp(
+            this.state.firstName,
+            this.state.lastName,
+            this.state.email,
+            this.state.password
+          );
+        })
+        .catch((error) => {
+          this.setState({
+            errorMessage: error.message,
+            modalVisible: true,
+          });
+          // set state and have modal pop up
+        });
+    }
+  }
   validateInput() {
     //let validator = require("email-validator");
     let modalVisible;
@@ -66,6 +91,8 @@ export default class RegistrationScreen extends ValidationComponent {
             placeholderTextColor="#003f5c"
             value={this.state.firstName}
             onChangeText={(firstName) => this.setState({ firstName })}
+            onSubmitEditing={() => this.lastNameTextInput.focus()}
+            blurOnSubmit={false}
           />
         </View>
         <View style={styles.inputView}>
@@ -75,6 +102,11 @@ export default class RegistrationScreen extends ValidationComponent {
             placeholderTextColor="#003f5c"
             value={this.state.lastName}
             onChangeText={(lastName) => this.setState({ lastName })}
+            ref={(input) => {
+              this.lastNameTextInput = input;
+            }}
+            onSubmitEditing={() => this.emailTextInput.focus()}
+            blurOnSubmit={false}
           />
         </View>
         <View style={styles.inputView}>
@@ -84,6 +116,11 @@ export default class RegistrationScreen extends ValidationComponent {
             placeholderTextColor="#003f5c"
             value={this.state.email}
             onChangeText={(email) => this.setState({ email })}
+            ref={(input) => {
+              this.emailTextInput = input;
+            }}
+            onSubmitEditing={() => this.passwordTextInput.focus()}
+            blurOnSubmit={false}
           />
         </View>
         <View style={styles.inputView}>
@@ -94,6 +131,11 @@ export default class RegistrationScreen extends ValidationComponent {
             placeholderTextColor="#003f5c"
             value={this.state.password}
             onChangeText={(password) => this.setState({ password })}
+            ref={(input) => {
+              this.passwordTextInput = input;
+            }}
+            onSubmitEditing={() => this.confirmPasswordTextInput.focus()}
+            blurOnSubmit={false}
           />
         </View>
         <View style={styles.inputView}>
@@ -106,33 +148,15 @@ export default class RegistrationScreen extends ValidationComponent {
             onChangeText={(confirmPassword) =>
               this.setState({ confirmPassword })
             }
+            ref={(input) => {
+              this.confirmPasswordTextInput = input;
+            }}
+            onSubmitEditing={() => this.submit()}
           />
         </View>
         <TouchableOpacity
           onPress={() => {
-            if (this.validateInput()) {
-              register(
-                this.state.firstName,
-                this.state.lastName,
-                this.state.email,
-                this.state.password
-              )
-                .then((_token) => {
-                  this.context.signUp(
-                    this.state.firstName,
-                    this.state.lastName,
-                    this.state.email,
-                    this.state.password
-                  );
-                })
-                .catch((error) => {
-                  this.setState({
-                    errorMessage: error.message,
-                    modalVisible: true,
-                  });
-                  // set state and have modal pop up
-                });
-            }
+            this.submit();
           }}
           style={styles.loginBtn}
         >
