@@ -1,4 +1,4 @@
-import json, re, requests, os
+import json, re, requests, os, flask
 from secret_manager import get_secret
 
 def lambda_handler(event, context):
@@ -30,11 +30,9 @@ def lambda_handler(event, context):
     if not re.match(valid_hostname, shop):
         return bad_request
     print(shop, code)
-    post_perm_access_token(shop, code)
-    return {
-        'statusCode': 100,
-        'body': json.dumps('Default Request')
-    }
+    output = post_perm_access_token(shop, code)
+    print('all good???')
+    return output
 
 def post_perm_access_token(shop: str, code: str):
     url = 'https://' + shop + '/admin/oauth/access_token'
@@ -44,10 +42,10 @@ def post_perm_access_token(shop: str, code: str):
         return 0
     client_id = shopify_keys.get('shopify_client_id')
     client_secret = shopify_keys.get('shopify_client_secret')
-    print(shopify_keys)
     data = {'client_id': client_id, 'client_secret': client_secret, 'code': code}
+    print(shopify_keys)
     try:
-        requests.post(url, data=data)
+        output = requests.post(url, data=data)
     except request.exceptions.RequestException as e:
         print(e)
-    return 1
+    return flask.jsonify(output)
