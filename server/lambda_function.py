@@ -33,7 +33,7 @@ def lambda_handler(event, context):
     api_response = post_perm_access_token(shop, code)
     print(api_response)
     return {
-        'statusCode': 100,
+        'statusCode': 200,
         'body': json.dumps('Default Request')
     }
 
