@@ -25,9 +25,22 @@ export default class LoginScreen extends React.Component {
   };
 
   static contextType = AuthContext;
-
+  attemptLogin() {
+    login(this.state.email, this.state.password)
+      .then((value) => {
+        this.context.signIn(this.state.email, this.state.password);
+      })
+      .catch((error) => {
+        console.log("error: ", error.message);
+        this.setState({
+          modalVisible: true,
+          errorMessage: error.message,
+        });
+      });
+  }
   render() {
     const { navigate } = this.props.navigation;
+
     return (
       <View style={styles.container}>
         <Text style={styles.logo}>lucky</Text>
@@ -40,6 +53,7 @@ export default class LoginScreen extends React.Component {
             onChangeText={(email) => {
               this.setState({ email });
             }}
+            onSubmitEditing={() => this.passwordTextInput.focus()}
           />
         </View>
         <View style={styles.inputView}>
@@ -52,6 +66,10 @@ export default class LoginScreen extends React.Component {
             onChangeText={(password) => {
               this.setState({ password });
             }}
+            ref={(input) => {
+              this.passwordTextInput = input;
+            }}
+            onSubmitEditing={() => this.attemptLogin()}
           />
         </View>
         <TouchableOpacity>
@@ -66,17 +84,7 @@ export default class LoginScreen extends React.Component {
 
         <TouchableOpacity
           onPress={() => {
-            login(this.state.email, this.state.password)
-              .then((value) => {
-                this.context.signIn(this.state.email, this.state.password);
-              })
-              .catch((error) => {
-                console.log("error: ", error.message);
-                this.setState({
-                  modalVisible: true,
-                  errorMessage: error.message,
-                });
-              });
+            this.attemptLogin();
           }}
           style={
             this.state.email === "" || this.state.password === ""
