@@ -158,7 +158,7 @@ export default class RegistrationScreen extends ValidationComponent {
           onPress={() => {
             this.submit();
           }}
-          style={styles.loginBtn}
+          style={styles.wideBtn}
         >
           <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>

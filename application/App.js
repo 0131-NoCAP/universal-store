@@ -1,24 +1,21 @@
-import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { SplashScreen } from 'expo';
-import * as Font from 'expo-font';
-import { Ionicons } from '@expo/vector-icons';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-community/async-storage';
+import * as React from "react";
+import { Platform, StatusBar, StyleSheet } from "react-native";
+import { SplashScreen } from "expo";
+import * as Font from "expo-font";
+import { Ionicons } from "@expo/vector-icons";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import AsyncStorage from "@react-native-community/async-storage";
 
-import BottomTabNavigator from './navigation/BottomTabNavigator';
-import useLinking from './navigation/useLinking';
+import BottomTabNavigator from "./navigation/BottomTabNavigator";
+import useLinking from "./navigation/useLinking";
 
-import LandingPageNavigator from './navigation/LandingPageNavigator';
-import { AuthContext } from './providers/auth';
-
-import { login, register } from './api/mockapi';
+import LandingPageNavigator from "./navigation/LandingPageNavigator";
+import { AuthContext } from "./providers/auth";
 
 /**
-*  This is the entry point for the application
-*/
-
+ *  This is the entry point for the application
+ */
 
 const Stack = createStackNavigator();
 
@@ -30,19 +27,19 @@ export default function App(props) {
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
-        case 'RESTORE_TOKEN':
+        case "RESTORE_TOKEN":
           return {
             ...prevState,
             userToken: action.token,
             isLoading: false,
           };
-        case 'SIGN_IN':
+        case "SIGN_IN":
           return {
             ...prevState,
             isSignout: false,
             userToken: action.token,
           };
-        case 'SIGN_OUT':
+        case "SIGN_OUT":
           return {
             ...prevState,
             isSignout: true,
@@ -63,7 +60,7 @@ export default function App(props) {
       let userToken;
       try {
         SplashScreen.preventAutoHide();
-        userToken = await AsyncStorage.getItem('userToken');
+        userToken = await AsyncStorage.getItem("userToken");
 
         // Load our initial navigation state
         setInitialNavigationState(await getInitialState());
@@ -71,14 +68,14 @@ export default function App(props) {
         // Load fonts
         await Font.loadAsync({
           ...Ionicons.font,
-          'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-          'pacifico': require('./assets/fonts/Pacifico-Regular.ttf'),
+          "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
+          pacifico: require("./assets/fonts/Pacifico-Regular.ttf"),
         });
       } catch (e) {
         // We might want to provide this error information to an error reporting service
         console.warn(e);
       } finally {
-        dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+        dispatch({ type: "RESTORE_TOKEN", token: userToken });
         setLoadingComplete(true);
         SplashScreen.hide();
       }
@@ -94,14 +91,14 @@ export default function App(props) {
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
-        console.log("Email: " + email + " Pass: " + password)
+        console.log("Email: " + email + " Pass: " + password);
 
         // can pass token through param
-        dispatch({ type: 'SIGN_IN', token: 'token' });
+        dispatch({ type: "SIGN_IN", token: "token" });
       },
 
       signOut: () => {
-        dispatch({ type: 'SIGN_OUT' });
+        dispatch({ type: "SIGN_OUT" });
         console.log("Logging out.");
       },
 
@@ -110,9 +107,18 @@ export default function App(props) {
         // We will also need to handle errors if sign up failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
-        console.log("First: " + firstName + " Last: " + lastName + " Email: " + email + " Pass: " + password)
-        
-        dispatch({ type: 'SIGN_IN', token: 'token' });
+        console.log(
+          "First: " +
+            firstName +
+            " Last: " +
+            lastName +
+            " Email: " +
+            email +
+            " Pass: " +
+            password
+        );
+
+        dispatch({ type: "SIGN_IN", token: "token" });
         // call register from api
       },
     }),
@@ -125,8 +131,11 @@ export default function App(props) {
     //console.log(process.env.REACT_APP_API_KEY);
     return (
       <AuthContext.Provider value={authContext}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
-        <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
+        {Platform.OS === "ios" && <StatusBar barStyle="dark-content" />}
+        <NavigationContainer
+          ref={containerRef}
+          initialState={initialNavigationState}
+        >
           <Stack.Navigator>
             {state.userToken == null ? (
               // No token found, user isn't signed in
@@ -134,11 +143,11 @@ export default function App(props) {
                 name="SignIn"
                 component={LandingPageNavigator}
                 options={{
-                  title: 'lucky',
+                  title: "lucky",
                   headerShown: false,
                   // When logging out, a pop animation feels intuitive
                   // You can remove this if you want the default 'push' animation
-                  animationTypeForReplace: state.isSignout ? 'pop' : 'push',
+                  animationTypeForReplace: state.isSignout ? "pop" : "push",
                 }}
               />
             ) : (
@@ -154,6 +163,6 @@ export default function App(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
 });
