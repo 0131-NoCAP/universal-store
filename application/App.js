@@ -14,6 +14,9 @@ import LandingPageNavigator from './navigation/LandingPageNavigator';
 import { AuthContext } from './providers/auth';
 
 import { login, register } from './api/mockapi';
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from './aws-exports';
+Amplify.configure(awsconfig);
 
 /**
 *  This is the entry point for the application
@@ -111,7 +114,7 @@ export default function App(props) {
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
         console.log("First: " + firstName + " Last: " + lastName + " Email: " + email + " Pass: " + password)
-        
+
         dispatch({ type: 'SIGN_IN', token: 'token' });
         // call register from api
       },
