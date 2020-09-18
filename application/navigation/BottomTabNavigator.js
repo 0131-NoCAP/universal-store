@@ -73,11 +73,8 @@ function getHeaderTitle(route) {
   switch (routeName) {
     case "Home":
       return "lucky";
-<<<<<<< HEAD
-=======
     case "Account":
       return "Account Details";
->>>>>>> master
     case "Scan":
       return "Scan Item";
     default:
