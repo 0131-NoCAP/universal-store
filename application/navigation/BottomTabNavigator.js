@@ -7,7 +7,7 @@ import PaymentMethodScreen from "../screens/PaymentMethodScreen";
 import ScanScreen from "../screens/ScanScreen";
 import BlankScreen from "../screens/BlankScreen";
 
-const INITIAL_ROUTE_NAME = "Cart";
+const INITIAL_ROUTE_NAME = "Home";
 const BottomTab = createBottomTabNavigator();
 
 export default function BottomTabNavigator({ navigation, route }) {
