@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "universalstoreb6fc3454": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}
