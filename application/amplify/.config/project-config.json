@@ -7,8 +7,8 @@
     "config": {
       "SourceDir": "/",
       "DistributionDir": "/",
-      "BuildCommand": "npm run-script build",
-      "StartCommand": "npm run-script start"
+      "BuildCommand": "expo start",
+      "StartCommand": "expo start"
     }
   },
   "providers": [
