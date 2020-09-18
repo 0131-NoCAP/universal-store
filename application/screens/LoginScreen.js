@@ -88,8 +88,8 @@ export default class LoginScreen extends React.Component {
           }}
           style={
             this.state.email === "" || this.state.password === ""
-              ? styles.disabledLoginButton
-              : styles.loginBtn
+              ? styles.disabledButton
+              : styles.wideBtn
           }
           disabled={this.state.email === "" || this.state.password === ""}
         >
