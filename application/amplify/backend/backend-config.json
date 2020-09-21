@@ -1,6 +1,6 @@
 {
   "auth": {
-    "universalstoreb6fc3454": {
+    "application65a9f04a65a9f04a": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],

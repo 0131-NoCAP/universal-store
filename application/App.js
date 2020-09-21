@@ -16,6 +16,7 @@ import { AuthContext } from './providers/auth';
 import { login, register } from './api/mockapi';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
+
 Amplify.configure(awsconfig);
 
 /**
@@ -98,6 +99,8 @@ export default function App(props) {
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
         console.log("Email: " + email + " Pass: " + password)
+        const user = await Auth.signIn(email, password)
+        console.log(user)
 
         // can pass token through param
         dispatch({ type: 'SIGN_IN', token: 'token' });
@@ -113,9 +116,14 @@ export default function App(props) {
         // We will also need to handle errors if sign up failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
-        console.log("First: " + firstName + " Last: " + lastName + " Email: " + email + " Pass: " + password)
-
-        dispatch({ type: 'SIGN_IN', token: 'token' });
+        console.log("First: " + firstName + " Last: " + lastName + " Email: " + email + " Pass: " + password);
+        const user = await Auth.signUp({
+          username: email,
+          password: password,
+          attributes: { name: firstName + " " + lastName }
+        });
+        console.log(user);
+        dispatch({ type: 'SIGN_IN' });
         // call register from api
       },
     }),

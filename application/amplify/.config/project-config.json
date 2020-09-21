@@ -1,5 +1,5 @@
 {
-  "projectName": "universalStore",
+  "projectName": "application",
   "version": "3.0",
   "frontend": "javascript",
   "javascript": {
@@ -7,7 +7,7 @@
     "config": {
       "SourceDir": "/",
       "DistributionDir": "/",
-      "BuildCommand": "expo start",
+      "BuildCommand": "expo build:android",
       "StartCommand": "expo start"
     }
   },

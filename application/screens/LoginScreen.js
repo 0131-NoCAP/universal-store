@@ -26,10 +26,7 @@ export default class LoginScreen extends React.Component {
 
   static contextType = AuthContext;
   attemptLogin() {
-    login(this.state.email, this.state.password)
-      .then((value) => {
-        this.context.signIn(this.state.email, this.state.password);
-      })
+    this.context.signIn(this.state.email, this.state.password)
       .catch((error) => {
         console.log("error: ", error.message);
         this.setState({

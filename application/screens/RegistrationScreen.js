@@ -26,20 +26,12 @@ export default class RegistrationScreen extends ValidationComponent {
   static contextType = AuthContext;
   submit() {
     if (this.validateInput()) {
-      register(
+      this.context.signUp(
         this.state.firstName,
         this.state.lastName,
         this.state.email,
         this.state.password
       )
-        .then((_token) => {
-          this.context.signUp(
-            this.state.firstName,
-            this.state.lastName,
-            this.state.email,
-            this.state.password
-          );
-        })
         .catch((error) => {
           this.setState({
             errorMessage: error.message,

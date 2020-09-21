@@ -1,10 +1,8 @@
 {
-    "identityPoolName": "universalstoreb6fc3454_identitypool_b6fc3454",
-    "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "univerb6fc3454",
-    "userPoolName": "universalstoreb6fc3454_userpool_b6fc3454",
+    "resourceNameTruncated": "applic65a9f04a",
+    "userPoolName": "application65a9f04a_userpool_65a9f04a",
     "autoVerifiedAttributes": [
-        "email"
+        "phone_number"
     ],
     "mfaConfiguration": "OFF",
     "mfaTypes": [
@@ -18,22 +16,21 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-        "email",
         "name"
     ],
     "userpoolClientGenerateSecret": true,
-    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientRefreshTokenValidity": "3650",
     "userpoolClientWriteAttributes": [
         "email"
     ],
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "univerb6fc3454_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "applic65a9f04a_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "b6fc3454",
-    "resourceName": "universalstoreb6fc3454",
-    "authSelections": "identityPoolAndUserPool",
+    "sharedId": "65a9f04a",
+    "resourceName": "application65a9f04a65a9f04a",
+    "authSelections": "userPoolOnly",
     "authRoleArn": {
         "Fn::GetAtt": [
             "AuthRole",
@@ -46,11 +43,11 @@
             "Arn"
         ]
     },
-    "useDefault": "default",
-    "usernameAttributes": [
-        "email"
-    ],
+    "useDefault": "manual",
+    "userPoolGroups": false,
+    "adminQueries": false,
     "triggers": "{}",
+    "hostedUI": false,
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "parentStack": {
