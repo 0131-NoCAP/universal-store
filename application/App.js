@@ -101,9 +101,11 @@ export default function App(props) {
         console.log("Email: " + email + " Pass: " + password)
         const user = await Auth.signIn(email, password)
         console.log(user)
+        Auth.currentSession().then(data => {
+          dispatch({ type: 'SIGN_IN', token: data.accessToken.jwtToken });
+        });
 
-        // can pass token through param
-        dispatch({ type: 'SIGN_IN', token: 'token' });
+
       },
 
       signOut: () => {
@@ -117,13 +119,20 @@ export default function App(props) {
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
         console.log("First: " + firstName + " Last: " + lastName + " Email: " + email + " Pass: " + password);
-        const user = await Auth.signUp({
+        await Auth.signUp({
           username: email,
           password: password,
           attributes: { name: firstName + " " + lastName }
         });
+        const user = await Auth.signIn(email, password);
         console.log(user);
-        dispatch({ type: 'SIGN_IN' });
+        Auth.currentSession().then(data => {
+          dispatch({ type: 'SIGN_IN', token: data.accessToken.jwtToken });
+        });
+        console.log(`token: ${token}`)
+
+        // can pass token through param
+        dispatch({ type: 'SIGN_IN', token: token });
         // call register from api
       },
     }),
