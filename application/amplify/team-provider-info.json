@@ -13,7 +13,10 @@
     },
     "categories": {
       "auth": {
-        "application65a9f04a65a9f04a": {}
+        "universalStoreAuth": {}
+      },
+      "function": {
+        "universalStoreAuthPreSignup": {}
       }
     }
   }

@@ -1,8 +1,8 @@
 {
-    "resourceNameTruncated": "applic65a9f04a",
-    "userPoolName": "application65a9f04a_userpool_65a9f04a",
+    "resourceNameTruncated": "univera009f2f9",
+    "userPoolName": "universal_store_applicationa009f2f9_userpool_a009f2f9",
     "autoVerifiedAttributes": [
-        "phone_number"
+        "email"
     ],
     "mfaConfiguration": "OFF",
     "mfaTypes": [
@@ -16,6 +16,7 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
+        "email",
         "name"
     ],
     "userpoolClientGenerateSecret": true,
@@ -26,10 +27,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "applic65a9f04a_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "univera009f2f9_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "65a9f04a",
-    "resourceName": "application65a9f04a65a9f04a",
+    "sharedId": "a009f2f9",
+    "resourceName": "universalStoreAuth",
     "authSelections": "userPoolOnly",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -44,9 +45,12 @@
         ]
     },
     "useDefault": "manual",
+    "usernameAttributes": [
+        "email"
+    ],
     "userPoolGroups": false,
     "adminQueries": false,
-    "triggers": "{}",
+    "triggers": "{\n  \"PreSignup\": [\n    \"custom\"\n  ]\n}",
     "hostedUI": false,
     "userPoolGroupList": [],
     "serviceName": "Cognito",
@@ -54,5 +58,15 @@
         "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "dependsOn": []
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "universalStoreAuthPreSignup",
+            "triggerProvider": "Cognito",
+            "attributes": [
+                "Arn",
+                "Name"
+            ]
+        }
+    ]
 }

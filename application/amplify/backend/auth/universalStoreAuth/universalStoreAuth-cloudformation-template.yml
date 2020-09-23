@@ -9,6 +9,18 @@ Parameters:
     Type: String
   
   
+  
+  
+  functionuniversalStoreAuthPreSignupArn: 
+    Type: String
+    Default: functionuniversalStoreAuthPreSignupArn
+  
+  functionuniversalStoreAuthPreSignupName: 
+    Type: String
+    Default: functionuniversalStoreAuthPreSignupName
+  
+  
+  
 
     
   resourceNameTruncated:
@@ -79,7 +91,10 @@ Parameters:
                                       
   useDefault:
     Type: String
-                
+                      
+  usernameAttributes:
+    Type: CommaDelimitedList
+        
   userPoolGroups:
     Type: String
               
@@ -94,7 +109,7 @@ Parameters:
                     
   userPoolGroupList:
     Type: CommaDelimitedList
-                  
+      
   serviceName:
     Type: String
                     
@@ -106,7 +121,7 @@ Parameters:
               
   dependsOn:
     Type: CommaDelimitedList
-    
+                
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
 
@@ -118,7 +133,7 @@ Resources:
   # Created to allow the UserPool SMS Config to publish via the Simple Notification Service during MFA Process
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, 'applic65a9f04a_sns-role', !Join ['',[ 'sns', '65a9f04a', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, 'univera009f2f9_sns-role', !Join ['',[ 'sns', 'a009f2f9', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
       AssumeRolePolicyDocument: 
         Version: "2012-10-17"
         Statement: 
@@ -130,10 +145,10 @@ Resources:
               - "sts:AssumeRole"
             Condition: 
               StringEquals:
-                sts:ExternalId: applic65a9f04a_role_external_id
+                sts:ExternalId: univera009f2f9_role_external_id
       Policies: 
         - 
-          PolicyName: applic65a9f04a-sns-policy
+          PolicyName: univera009f2f9-sns-policy
           PolicyDocument: 
             Version: "2012-10-17"
             Statement: 
@@ -154,15 +169,36 @@ Resources:
       Schema: 
         
         -
+          Name: email
+          Required: true
+          Mutable: true
+        
+        -
           Name: name
           Required: true
           Mutable: true
         
       
       
+      LambdaConfig:
+        
+        
+        
+        
+        
+        
+        
+          PreSignUp: !Ref functionuniversalStoreAuthPreSignupArn
+        
+        
+        
+      
       
       AutoVerifiedAttributes: !Ref autoVerifiedAttributes
       
+      
+      EmailVerificationMessage: !Ref emailVerificationMessage
+      EmailVerificationSubject: !Ref emailVerificationSubject
             
       Policies:
         PasswordPolicy:
@@ -171,12 +207,14 @@ Resources:
           RequireNumbers: false
           RequireSymbols: false
           RequireUppercase: false
+      
+      UsernameAttributes: !Ref usernameAttributes
           
       MfaConfiguration: !Ref mfaConfiguration
       SmsVerificationMessage: !Ref smsVerificationMessage
       SmsConfiguration: 
         SnsCallerArn: !GetAtt SNSRole.Arn
-        ExternalId: applic65a9f04a_role_external_id
+        ExternalId: univera009f2f9_role_external_id
     
   
     
@@ -185,6 +223,15 @@ Resources:
     
     
   
+  
+  UserPoolPreSignupLambdaInvokePermission: 
+    Type: "AWS::Lambda::Permission"
+    DependsOn: UserPool
+    Properties: 
+      Action: "lambda:invokeFunction"
+      Principal: "cognito-idp.amazonaws.com"
+      FunctionName: !Ref functionuniversalStoreAuthPreSignupName
+      SourceArn: !GetAtt UserPool.Arn
   
    
     
@@ -196,7 +243,7 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: applic65a9f04a_app_clientWeb
+      ClientName: univera009f2f9_app_clientWeb
       
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
       UserPoolId: !Ref UserPool
@@ -206,7 +253,7 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: applic65a9f04a_app_client
+      ClientName: univera009f2f9_app_client
       
       GenerateSecret: !Ref userpoolClientGenerateSecret
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
@@ -217,7 +264,7 @@ Resources:
   # Created to execute Lambda which gets userpool app client config values
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, !Ref userpoolClientLambdaRole, !Join ['',['upClientLambdaRole', '65a9f04a', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, !Ref userpoolClientLambdaRole, !Join ['',['upClientLambdaRole', 'a009f2f9', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -271,7 +318,7 @@ Resources:
   # Marked as depending on UserPoolClientRole for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: applic65a9f04a_userpoolclient_lambda_iam_policy
+      PolicyName: univera009f2f9_userpoolclient_lambda_iam_policy
       Roles: 
         - !Ref UserPoolClientRole
       PolicyDocument:
@@ -288,7 +335,7 @@ Resources:
   # Marked as depending on UserPoolClientLambdaPolicy for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: applic65a9f04a_userpoolclient_lambda_log_policy
+      PolicyName: univera009f2f9_userpoolclient_lambda_log_policy
       Roles: 
         - !Ref UserPoolClientRole
       PolicyDocument:
