@@ -33,6 +33,7 @@ export default class RegistrationScreen extends ValidationComponent {
         this.state.password
       )
         .catch((error) => {
+          console.log("error: ", error.message);
           this.setState({
             errorMessage: error.message,
             modalVisible: true,

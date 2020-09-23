@@ -13,7 +13,6 @@ import useLinking from './navigation/useLinking';
 import LandingPageNavigator from './navigation/LandingPageNavigator';
 import { AuthContext } from './providers/auth';
 
-import { login, register } from './api/mockapi';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
 
@@ -98,7 +97,7 @@ export default function App(props) {
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
-        console.log("Email: " + email + " Pass: " + password)
+        console.log("Signing in with: email: " + email + " pass: " + password)
         const user = await Auth.signIn(email, password)
         console.log(user)
         Auth.currentSession().then(data => {
@@ -108,9 +107,10 @@ export default function App(props) {
 
       },
 
-      signOut: () => {
+      signOut: async () => {
+        await Auth.signOut();
         dispatch({ type: 'SIGN_OUT' });
-        console.log("Logging out.");
+        console.log("Signing out.");
       },
 
       signUp: async (firstName, lastName, email, password) => {
