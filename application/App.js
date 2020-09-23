@@ -13,6 +13,7 @@ import useLinking from './navigation/useLinking';
 import LandingPageNavigator from './navigation/LandingPageNavigator';
 import { AuthContext } from './providers/auth';
 
+import { login, register } from './api/mockapi';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
 
@@ -89,7 +90,7 @@ export default function App(props) {
 
     loadResourcesAndDataAsync();
   }, []);
-
+  // TODO: Move authContext to separate module in components
   const authContext = React.useMemo(
     () => ({
       signIn: async (email, password) => {
@@ -97,20 +98,16 @@ export default function App(props) {
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
-        console.log("Signing in with: email: " + email + " pass: " + password)
-        const user = await Auth.signIn(email, password)
-        console.log(user)
+        console.log("Email: " + email + " Pass: " + password)
+        await Auth.signIn(email, password)
         Auth.currentSession().then(data => {
           dispatch({ type: 'SIGN_IN', token: data.accessToken.jwtToken });
         });
-
-
       },
 
-      signOut: async () => {
-        await Auth.signOut();
+      signOut: () => {
         dispatch({ type: 'SIGN_OUT' });
-        console.log("Signing out.");
+        console.log("Logging out.");
       },
 
       signUp: async (firstName, lastName, email, password) => {
@@ -124,12 +121,10 @@ export default function App(props) {
           password: password,
           attributes: { name: firstName + " " + lastName }
         });
-        const user = await Auth.signIn(email, password);
-        console.log(user);
+        await Auth.signIn(email, password);
         Auth.currentSession().then(data => {
           dispatch({ type: 'SIGN_IN', token: data.accessToken.jwtToken });
         });
-        console.log(`token: ${token}`)
 
         // can pass token through param
         dispatch({ type: 'SIGN_IN', token: token });
