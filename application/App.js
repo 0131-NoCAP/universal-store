@@ -10,8 +10,15 @@ import AsyncStorage from "@react-native-community/async-storage";
 import BottomTabNavigator from "./navigation/BottomTabNavigator";
 import useLinking from "./navigation/useLinking";
 
-import LandingPageNavigator from "./navigation/LandingPageNavigator";
-import { AuthContext } from "./providers/auth";
+import LandingPageNavigator from './navigation/LandingPageNavigator';
+import { AuthContext } from './providers/auth';
+
+import { login, register } from './api/mockapi';
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from './aws-exports';
+
+
+Amplify.configure(awsconfig);
 
 /**
  *  This is the entry point for the application
@@ -83,20 +90,18 @@ export default function App(props) {
 
     loadResourcesAndDataAsync();
   }, []);
-
+  // TODO: Move authContext to separate module in components
   const authContext = React.useMemo(
     () => ({
       signIn: async (email, password) => {
-        // In a production app, we need to send some data (usually username, password) to server and get a token
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
-        console.log("Email: " + email + " Pass: " + password);
-
-        // can pass token through param
-        dispatch({ type: "SIGN_IN", token: "token" });
+        console.log("Email: " + email + " Pass: " + password)
+        await Auth.signIn(email, password)
+        Auth.currentSession().then(data => {
+          dispatch({ type: 'SIGN_IN', token: data.accessToken.jwtToken });
+        });
       },
-
       signOut: () => {
         dispatch({ type: "SIGN_OUT" });
         console.log("Logging out.");
@@ -107,18 +112,19 @@ export default function App(props) {
         // We will also need to handle errors if sign up failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
-        console.log(
-          "First: " +
-            firstName +
-            " Last: " +
-            lastName +
-            " Email: " +
-            email +
-            " Pass: " +
-            password
-        );
+        console.log("First: " + firstName + " Last: " + lastName + " Email: " + email + " Pass: " + password);
+        await Auth.signUp({
+          username: email,
+          password: password,
+          attributes: { name: firstName + " " + lastName }
+        });
+        await Auth.signIn(email, password);
+        Auth.currentSession().then(data => {
+          dispatch({ type: 'SIGN_IN', token: data.accessToken.jwtToken });
+        });
 
-        dispatch({ type: "SIGN_IN", token: "token" });
+        // can pass token through param
+        dispatch({ type: 'SIGN_IN', token: token });
         // call register from api
       },
     }),
