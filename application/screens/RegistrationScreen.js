@@ -27,12 +27,13 @@ export default class RegistrationScreen extends ValidationComponent {
   static contextType = AuthContext;
   submit() {
     if (this.validateInput()) {
-      this.context.signUp(
-        this.state.firstName,
-        this.state.lastName,
-        this.state.email,
-        this.state.password
-      )
+      this.context
+        .signUp(
+          this.state.firstName,
+          this.state.lastName,
+          this.state.email,
+          this.state.password
+        )
         .catch((error) => {
           console.log("error: ", error.message);
           this.setState({
@@ -146,7 +147,6 @@ export default class RegistrationScreen extends ValidationComponent {
               ref={(input) => {
                 this.confirmPasswordTextInput = input;
               }}
-              onSubmitEditing={() => this.submit()}
             />
           </View>
           <TouchableOpacity
