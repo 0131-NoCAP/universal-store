@@ -1,7 +1,7 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
+    "start": "npm install && expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -27,15 +27,20 @@
     "expo-font": "~8.1.0",
     "expo-permissions": "~8.1.0",
     "expo-web-browser": "~8.1.0",
+    "logkitty": ">=0.7.1",
+    "mem": ">=4.0.0",
+    "node-fetch": ">=2.6.1",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.0.tar.gz",
+    "react-native-credit-card-input": "^0.4.1",
     "react-native-form-validator": "^0.3.2",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-modal": "^11.5.6",
     "react-native-safe-area-context": "0.7.3",
     "react-native-screens": "~2.2.0",
-    "react-native-web": "~0.11.7"
+    "react-native-web": "~0.11.7",
+    "yargs-parser": ">=13.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

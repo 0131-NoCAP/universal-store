@@ -3,8 +3,8 @@ import * as React from "react";
 
 import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
+import PaymentMethodScreen from "../screens/PaymentMethodScreen";
 import ScanScreen from "../screens/ScanScreen";
-import BlankScreen from "../screens/BlankScreen";
 import AccountScreen from "../screens/AccountScreen";
 
 const INITIAL_ROUTE_NAME = "Home";
@@ -55,7 +55,7 @@ export default function BottomTabNavigator({ navigation, route }) {
       />
       <BottomTab.Screen
         name="Cart"
-        component={BlankScreen}
+        component={PaymentMethodScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="cart" />
