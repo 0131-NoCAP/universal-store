@@ -13,7 +13,6 @@ import useLinking from "./navigation/useLinking";
 import LandingPageNavigator from './navigation/LandingPageNavigator';
 import { AuthContext } from './providers/auth';
 
-import { login, register } from './api/mockapi';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
 
@@ -100,10 +99,12 @@ export default function App(props) {
         await Auth.signIn(email, password)
         Auth.currentSession().then(data => {
           dispatch({ type: 'SIGN_IN', token: data.accessToken.jwtToken });
+          AsyncStorage.setItem('userToken', data.accessToken.jwtToken);
         });
       },
       signOut: () => {
         dispatch({ type: "SIGN_OUT" });
+        AsyncStorage.removeItem('userToken');
         console.log("Logging out.");
       },
 
@@ -121,6 +122,7 @@ export default function App(props) {
         await Auth.signIn(email, password);
         Auth.currentSession().then(data => {
           dispatch({ type: 'SIGN_IN', token: data.accessToken.jwtToken });
+          AsyncStorage.setItem('userToken', data.accessToken.jwtToken);
         });
 
         // call register from api
