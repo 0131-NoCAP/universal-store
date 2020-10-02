@@ -123,8 +123,6 @@ export default function App(props) {
           dispatch({ type: 'SIGN_IN', token: data.accessToken.jwtToken });
         });
 
-        // can pass token through param
-        dispatch({ type: 'SIGN_IN', token: token });
         // call register from api
       },
     }),
