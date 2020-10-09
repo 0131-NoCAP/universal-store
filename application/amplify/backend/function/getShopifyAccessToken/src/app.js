@@ -30,7 +30,7 @@ app.get('/accessKey', function(req, res) {
   })
 });
 
-async function fetchContacts () {
+async function getAccessKeys () {
 	const contactData = await API.get('shopifyAccessTokenAPI', '/accessKey');
 	console.log({ contactData });
 }
