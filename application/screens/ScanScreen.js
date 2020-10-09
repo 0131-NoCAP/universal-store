@@ -106,7 +106,7 @@ export default class ScanScreen extends React.Component {
 
 
             <View style = {{flex: 1, flexDirection: 'row', alignItems: 'left', justifyContent: 'left', borderBottomWidth: 1, padding: 10}}>
-              <Text style = {{fontSize: 15}}>
+              <Text style = {{fontSize: 20}}>
                 Item Added
               </Text>
             </View>
@@ -115,19 +115,20 @@ export default class ScanScreen extends React.Component {
             <View style = {{alignItems: 'center', flex: 8, justifyContent: 'center'}}>
 
 
-              <Text style = {{fontSize: 15, textAlign: 'center', padding: 5}}>
+              <Text style = {{fontSize: 20, textAlign: 'center', padding: 5}}>
                 {this.state.itemName}{"\n"}has been added to your cart.{"\n"}
                 Cart Total: ${this.state.cartTotal + (this.state.itemQuantity * this.state.itemPrice)}
               </Text>
 
-              <View style={{ display: 'flex', flexDirection: 'row', padding: 10, marginLeft: 20, marginBottom: 20 }}>
+              <View style={{ fontSize: 20, display: 'flex', flexDirection: 'row', padding: 10, marginLeft: 20, marginBottom: 20 }}>
                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center',marginTop:10 }}>
+
+                      <Text style={{ fontSize: 20, display: 'flex', justifyContent: 'left'}}>Quantity: </Text>
                        <TouchableOpacity onPress={this.decreaseQuantity}>
                            <Text> - </Text>
                        </TouchableOpacity>
                        <TextInput
-
-                           style = {{fontSize: 15, textAlign: 'center', padding: 5}}
+                           style = {{fontSize: 20, textAlign: 'center', padding: 5}}
                            onChangeText={(itemQuantity) => this.setState({ itemQuantity })}
                            value={`${this.state.itemQuantity}`}
                            keyboardType="numeric"
@@ -136,12 +137,10 @@ export default class ScanScreen extends React.Component {
                            <Text> + </Text>
                        </TouchableOpacity>
                    </View>
-
               </View>
 
               <Image
-                style={{width: 100,
-                        height: 100}}
+                style={{width: 100, height: 100}}
                 source={{url: this.state.itemImage}}
               />
 
