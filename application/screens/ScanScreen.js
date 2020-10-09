@@ -1,6 +1,6 @@
 // TODO: Test Camera Permissions
 import React from 'react';
-import { Text, View, StyleSheet, TouchableWithoutFeedback, Image } from 'react-native';
+import { Text, View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, TextInput, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import Modal from 'react-native-modal';
 var BARCODESPIDER_API_KEY = 'ce057e14c2cb19f18e45';
@@ -13,7 +13,10 @@ export default class ScanScreen extends React.Component {
     cameraOn: false,
     scanned: false,
     itemName: null,
-    itemImage: null
+    itemImage: null,
+    itemPrice: null,
+    itemQuantity: null
+
   }
 
   // Checks if current screen is mounted to turn camera on or off
@@ -30,8 +33,36 @@ export default class ScanScreen extends React.Component {
     this._unsubscribe2();
   }
 
+  //decrease quantity
+      decreaseQuantity = () => {
+          if(this.state.itemQuantity <= 1) {
+              return;
+          } else {
+              this.setState({
+                  itemQuantity: this.state.itemQuantity - 1
+              });
+          }
+      }
+
+  //increase quantity
+      increaseQuantity = () => {
+          this.setState({
+              itemQuantity: this.state.itemQuantity + 1
+          });
+      }
+
+  //set Cart Total
+      // setCartTotal = () => {
+      //   this.setState({
+      //     cartTotal: this.state.itemPrice * this.state.itemQuantity
+      //   });
+      //
+      // }
+
+
   render() {
 
+// I don't think it asks for permissions properly
     // Asks for camera permissions hopefully :(
     const { hasCameraPermissions } = getCameraAsync();
     // Edge cases
@@ -52,12 +83,12 @@ export default class ScanScreen extends React.Component {
           style={StyleSheet.absoluteFill}
         />
         )}
-        
+
         <Modal
           isVisible={this.state.scanned}
           customBackdrop={
             <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
-              <View style={{flex: 1, backgroundColor: 'black'}} />
+              <View style={{flex: 1, backgroundColor: 'white'}} />
             </TouchableWithoutFeedback>
           }
           animationIn='zoomIn'
@@ -68,26 +99,58 @@ export default class ScanScreen extends React.Component {
           </TouchableWithoutFeedback>
           <View style={{
             flex: 3,
-            justifyContent: 'center', 
+            justifyContent: 'center',
             backgroundColor: 'white',
             borderRadius: 20,
             alignItems: 'stretch'
           }}>
-            <View style = {{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1}}>
-              <Text style = {{fontSize: 30}}>
+
+
+            <View style = {{flex: 1, flexDirection: 'row', alignItems: 'left', justifyContent: 'center', borderBottomWidth: 1}}>
+              <Text style = {{fontSize: 15}}>
                 Item Added
               </Text>
             </View>
+
+
             <View style = {{alignItems: 'center', flex: 8, justifyContent: 'center'}}>
 
-              <Text style = {{fontSize: 15, textAlign: 'center', fontSize: 20, padding: 5}}>
+              //name of item here
+              <Text style = {{fontSize: 15, textAlign: 'center', padding: 5}}>
                 {this.state.itemName}{"\n"}has been added to your cart.
               </Text>
-              <Image 
+
+
+
+
+              <View style={{ display: 'flex', flexDirection: 'row', padding: 10, marginLeft: 20, marginBottom: 20 }}>
+                             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center',marginTop:10 }}>
+                                 <TouchableOpacity onPress={this.decreaseQuantity}>
+                                     <Text> - </Text>
+                                 </TouchableOpacity>
+                                 <TextInput
+
+                                     style = {{fontSize: 15, textAlign: 'center', padding: 5}}
+                                     onChangeText={(itemQuantity) => this.setState({ itemQuantity })}
+                                     value={`${this.state.itemQuantity}`}
+                                     keyboardType="numeric"
+                                 />
+                                 <TouchableOpacity onPress={this.increaseQuantity} >
+                                     <Text> + </Text>
+                                 </TouchableOpacity>
+                             </View>
+
+              </View>
+
+              //image from barcode inserted here
+              <Image
                 style={{width: 100,
                         height: 100}}
                 source={{url: this.state.itemImage}}
               />
+              //text box for price and cart total
+
+
             </View>
           </View>
           <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
@@ -105,7 +168,10 @@ export default class ScanScreen extends React.Component {
       cameraOn: true,
       barcodeData: '',
       barcodeType: '',
-      itemData: null
+      itemData: null,
+      itemPrice: null,
+      itemQuantity: null,
+      cartTotal: null
     });
   }
 
@@ -119,7 +185,11 @@ export default class ScanScreen extends React.Component {
       cameraOn: false,
       scanned: true,
       itemName: itemData[0],
-      itemImage: itemData[1]
+      itemImage: itemData[1],
+      itemPrice: 5,
+      itemQuantity: 1
+      // cartTotal: this.state.itemPrice * this.state.itemQuantity
+
     });
   };
 }
@@ -139,7 +209,7 @@ async function getBarcodeFromApiAsync(barcodeData) {
     var name = responseJson['item_attributes']['title'];
     var image = responseJson['item_attributes']['image'];
     return [name, image];
-    
+
   } catch (error) {
     console.log(error);
     return ['No item', 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'];
