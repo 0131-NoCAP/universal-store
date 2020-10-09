@@ -15,7 +15,8 @@ export default class ScanScreen extends React.Component {
     itemName: null,
     itemImage: null,
     itemPrice: null,
-    itemQuantity: null
+    itemQuantity: null,
+    cartTotal: null
 
   }
 
@@ -40,7 +41,13 @@ export default class ScanScreen extends React.Component {
           } else {
               this.setState({
                   itemQuantity: this.state.itemQuantity - 1
+
               });
+
+              this.setState(
+                {
+                cartTotal: this.state.cartTotal + ((this.state.itemQuantity - 1) * this.state.itemPrice)
+                });
           }
       }
 
@@ -48,6 +55,11 @@ export default class ScanScreen extends React.Component {
       increaseQuantity = () => {
           this.setState({
               itemQuantity: this.state.itemQuantity + 1
+
+          });
+
+          this.setState({
+            cartTotal: this.state.cartTotal + ((this.state.itemQuantity + 1) * this.state.itemPrice)
           });
       }
 
@@ -115,41 +127,36 @@ export default class ScanScreen extends React.Component {
 
             <View style = {{alignItems: 'center', flex: 8, justifyContent: 'center'}}>
 
-              //name of item here
+
               <Text style = {{fontSize: 15, textAlign: 'center', padding: 5}}>
-                {this.state.itemName}{"\n"}has been added to your cart.
+                {this.state.itemName}{"\n"}has been added to your cart.{"\n"}
+                Cart Total: ${this.state.cartTotal}
               </Text>
 
-
-
-
               <View style={{ display: 'flex', flexDirection: 'row', padding: 10, marginLeft: 20, marginBottom: 20 }}>
-                             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center',marginTop:10 }}>
-                                 <TouchableOpacity onPress={this.decreaseQuantity}>
-                                     <Text> - </Text>
-                                 </TouchableOpacity>
-                                 <TextInput
+                   <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center',marginTop:10 }}>
+                       <TouchableOpacity onPress={this.decreaseQuantity}>
+                           <Text> - </Text>
+                       </TouchableOpacity>
+                       <TextInput
 
-                                     style = {{fontSize: 15, textAlign: 'center', padding: 5}}
-                                     onChangeText={(itemQuantity) => this.setState({ itemQuantity })}
-                                     value={`${this.state.itemQuantity}`}
-                                     keyboardType="numeric"
-                                 />
-                                 <TouchableOpacity onPress={this.increaseQuantity} >
-                                     <Text> + </Text>
-                                 </TouchableOpacity>
-                             </View>
+                           style = {{fontSize: 15, textAlign: 'center', padding: 5}}
+                           onChangeText={(itemQuantity) => this.setState({ itemQuantity })}
+                           value={`${this.state.itemQuantity}`}
+                           keyboardType="numeric"
+                       />
+                       <TouchableOpacity onPress={this.increaseQuantity} >
+                           <Text> + </Text>
+                       </TouchableOpacity>
+                   </View>
 
               </View>
 
-              //image from barcode inserted here
               <Image
                 style={{width: 100,
                         height: 100}}
                 source={{url: this.state.itemImage}}
               />
-              //text box for price and cart total
-
 
             </View>
           </View>
@@ -179,6 +186,7 @@ export default class ScanScreen extends React.Component {
     let barcodeType = type;
     let barcodeData = data;
     let itemData = await getBarcodeFromApiAsync(barcodeData);
+    let cartTotal = this.state.cartTotal + (this.state.itemPrice * this.state.itemQuantity);
     this.setState({
       barcodeType: barcodeType,
       barcodeData: barcodeData,
@@ -187,8 +195,8 @@ export default class ScanScreen extends React.Component {
       itemName: itemData[0],
       itemImage: itemData[1],
       itemPrice: 5,
-      itemQuantity: 1
-      // cartTotal: this.state.itemPrice * this.state.itemQuantity
+      itemQuantity: 1,
+      cartTotal: cartTotal
 
     });
   };
