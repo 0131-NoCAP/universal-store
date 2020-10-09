@@ -34,32 +34,19 @@ export default class ScanScreen extends React.Component {
     this._unsubscribe2();
   }
 
-  //decrease quantity
       decreaseQuantity = () => {
           if(this.state.itemQuantity <= 1) {
               return;
           } else {
               this.setState({
-                  itemQuantity: this.state.itemQuantity - 1
-
+                  itemQuantity: this.state.itemQuantity - 1,
               });
-
-              this.setState(
-                {
-                cartTotal: this.state.cartTotal + ((this.state.itemQuantity - 1) * this.state.itemPrice)
-                });
           }
       }
 
-  //increase quantity
       increaseQuantity = () => {
           this.setState({
               itemQuantity: this.state.itemQuantity + 1
-
-          });
-
-          this.setState({
-            cartTotal: this.state.cartTotal + ((this.state.itemQuantity + 1) * this.state.itemPrice)
           });
       }
 
@@ -118,7 +105,7 @@ export default class ScanScreen extends React.Component {
           }}>
 
 
-            <View style = {{flex: 1, flexDirection: 'row', alignItems: 'left', justifyContent: 'center', borderBottomWidth: 1}}>
+            <View style = {{flex: 1, flexDirection: 'row', alignItems: 'left', justifyContent: 'left', borderBottomWidth: 1, padding: 10}}>
               <Text style = {{fontSize: 15}}>
                 Item Added
               </Text>
@@ -130,7 +117,7 @@ export default class ScanScreen extends React.Component {
 
               <Text style = {{fontSize: 15, textAlign: 'center', padding: 5}}>
                 {this.state.itemName}{"\n"}has been added to your cart.{"\n"}
-                Cart Total: ${this.state.cartTotal}
+                Cart Total: ${this.state.cartTotal + (this.state.itemQuantity * this.state.itemPrice)}
               </Text>
 
               <View style={{ display: 'flex', flexDirection: 'row', padding: 10, marginLeft: 20, marginBottom: 20 }}>
@@ -186,7 +173,7 @@ export default class ScanScreen extends React.Component {
     let barcodeType = type;
     let barcodeData = data;
     let itemData = await getBarcodeFromApiAsync(barcodeData);
-    let cartTotal = this.state.cartTotal + (this.state.itemPrice * this.state.itemQuantity);
+
     this.setState({
       barcodeType: barcodeType,
       barcodeData: barcodeData,
@@ -195,8 +182,7 @@ export default class ScanScreen extends React.Component {
       itemName: itemData[0],
       itemImage: itemData[1],
       itemPrice: 5,
-      itemQuantity: 1,
-      cartTotal: cartTotal
+      itemQuantity: 1
 
     });
   };
