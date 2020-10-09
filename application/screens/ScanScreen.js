@@ -3,6 +3,7 @@ import React from 'react';
 import { Text, View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, TextInput, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import Modal from 'react-native-modal';
+import { landingPageStyles as styles } from "../constants/Styles";
 var BARCODESPIDER_API_KEY = 'ce057e14c2cb19f18e45';
 export default class ScanScreen extends React.Component {
 
@@ -121,7 +122,7 @@ export default class ScanScreen extends React.Component {
                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center',marginTop: 5 }}>
                       <Text style={{ fontSize: 20}}>Quantity: </Text>
                        <TouchableOpacity onPress={this.decreaseQuantity}>
-                           <Text style={{fontSize: 20, fontWeight: "bold", color: 'purple'}}> - </Text>
+                           <Text style={{fontSize: 20, fontWeight: "bold", color: styles.logo.color}}> - </Text>
                        </TouchableOpacity>
                        <TextInput
                            style = {{fontSize: 20, textAlign: 'center', padding: 5}}
@@ -130,7 +131,7 @@ export default class ScanScreen extends React.Component {
                            keyboardType="numeric"
                        />
                        <TouchableOpacity onPress={this.increaseQuantity} >
-                           <Text style={{fontSize: 20, fontWeight: "bold", color: 'purple'}}> + </Text>
+                           <Text style={{fontSize: 20, fontWeight: "bold", color: styles.logo.color}}> + </Text>
                        </TouchableOpacity>
                    </View>
               </View>
