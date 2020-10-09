@@ -16,7 +16,7 @@ export default class ScanScreen extends React.Component {
     itemImage: null,
     itemPrice: null,
     itemQuantity: null,
-    cartTotal: null
+    previousCartTotal: null
 
   }
 
@@ -49,15 +49,6 @@ export default class ScanScreen extends React.Component {
               itemQuantity: this.state.itemQuantity + 1
           });
       }
-
-  //set Cart Total
-      // setCartTotal = () => {
-      //   this.setState({
-      //     cartTotal: this.state.itemPrice * this.state.itemQuantity
-      //   });
-      //
-      // }
-
 
   render() {
 
@@ -105,27 +96,32 @@ export default class ScanScreen extends React.Component {
           }}>
 
 
-            <View style = {{flex: 1, flexDirection: 'row', alignItems: 'left', justifyContent: 'left', borderBottomWidth: 1, padding: 10}}>
-              <Text style = {{fontSize: 20}}>
+            <View style = {{flex: 1, flexDirection: 'row', alignItems: 'left', justifyContent: 'left', borderBottomWidth: 1, padding: 5, margin: 'auto'}}>
+              <Text style = {{fontSize: 20, fontWeight: "bold"}}>
                 Item Added
               </Text>
             </View>
 
 
-            <View style = {{alignItems: 'center', flex: 8, justifyContent: 'center'}}>
+            <View style = {{alignItems: 'center', flex: 8, justifyContent: 'center', margin: 'auto' }}>
 
 
-              <Text style = {{fontSize: 20, textAlign: 'center', padding: 5}}>
+              <Text style = {{fontSize: 20, textAlign: 'center', margin: 'auto' }}>
                 {this.state.itemName}{"\n"}has been added to your cart.{"\n"}
-                Cart Total: ${this.state.cartTotal + (this.state.itemQuantity * this.state.itemPrice)}
               </Text>
 
-              <View style={{ fontSize: 20, display: 'flex', flexDirection: 'row', padding: 10, marginLeft: 20, marginBottom: 20 }}>
-                   <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center',marginTop:10 }}>
 
-                      <Text style={{ fontSize: 20, display: 'flex', justifyContent: 'left'}}>Quantity: </Text>
+              <Image
+                style={{width: 100, height: 100}}
+                source={{url: this.state.itemImage}}
+              />
+
+
+              <View style={{ fontSize: 20, display: 'flex', flexDirection: 'row', padding: 5, margin: 'auto' }}>
+                   <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center',marginTop: 5 }}>
+                      <Text style={{ fontSize: 20}}>Quantity: </Text>
                        <TouchableOpacity onPress={this.decreaseQuantity}>
-                           <Text> - </Text>
+                           <Text style={{fontSize: 20, fontWeight: "bold", color: 'purple'}}> - </Text>
                        </TouchableOpacity>
                        <TextInput
                            style = {{fontSize: 20, textAlign: 'center', padding: 5}}
@@ -134,16 +130,15 @@ export default class ScanScreen extends React.Component {
                            keyboardType="numeric"
                        />
                        <TouchableOpacity onPress={this.increaseQuantity} >
-                           <Text> + </Text>
+                           <Text style={{fontSize: 20, fontWeight: "bold", color: 'purple'}}> + </Text>
                        </TouchableOpacity>
                    </View>
               </View>
 
-              <Image
-                style={{width: 100, height: 100}}
-                source={{url: this.state.itemImage}}
-              />
-
+              <Text style = {{fontSize: 20, textAlign: 'center', padding: 5}}>
+                Item Price: ${this.state.itemPrice}{"\n"}
+                Cart Total: ${this.state.previousCartTotal + (this.state.itemQuantity * this.state.itemPrice)}
+              </Text>
             </View>
           </View>
           <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
@@ -164,7 +159,7 @@ export default class ScanScreen extends React.Component {
       itemData: null,
       itemPrice: null,
       itemQuantity: null,
-      cartTotal: null
+      previousCartTotal: null
     });
   }
 
@@ -200,6 +195,7 @@ async function getBarcodeFromApiAsync(barcodeData) {
     let response = await fetch(`https://api.barcodespider.com/v1/lookup?token=${BARCODESPIDER_API_KEY}&upc=${barcodeData}`);
     let responseJson = await response.json();
     var name = responseJson['item_attributes']['title'];
+    if (name.length > 50) name = name.slice(0, 49) + "...";
     var image = responseJson['item_attributes']['image'];
     return [name, image];
 
