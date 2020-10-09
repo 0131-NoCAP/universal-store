@@ -78,7 +78,7 @@ def redirect(shop: str):
 
 def put_merchant_access_token(store_url, access_token):
     dynamodb = boto3.client('dynamodb')
-    dynamodb.put_item(TableName='merchant_access_tokens', Item={'store_url': {'S': store_url}, 'access_token': {'S': access_token}})
+    dynamodb.put_item(TableName='merchant_access_token-dev', Item={'store_url': {'S': store_url}, 'access_token': {'S': access_token}})
 
 def generate_nonce(length=8):
     """Generate pseudorandom number."""
