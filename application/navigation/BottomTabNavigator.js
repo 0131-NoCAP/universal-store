@@ -6,6 +6,7 @@ import HomeScreen from "../screens/HomeScreen";
 import PaymentMethodScreen from "../screens/PaymentMethodScreen";
 import ScanScreen from "../screens/ScanScreen";
 import AccountScreen from "../screens/AccountScreen";
+import { headerStyles } from "../constants/Styles";
 
 const INITIAL_ROUTE_NAME = "Home";
 const BottomTab = createBottomTabNavigator();

@@ -3,7 +3,7 @@ import React from 'react';
 import { Text, View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, TextInput, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import Modal from 'react-native-modal';
-import { landingPageStyles as styles } from "../constants/Styles";
+import { scanScreenStyles as styles } from "../constants/Styles";
 var BARCODESPIDER_API_KEY = 'ce057e14c2cb19f18e45';
 export default class ScanScreen extends React.Component {
 
@@ -18,7 +18,6 @@ export default class ScanScreen extends React.Component {
     itemPrice: null,
     itemQuantity: null,
     previousCartTotal: null
-
   }
 
   // Checks if current screen is mounted to turn camera on or off
@@ -35,21 +34,21 @@ export default class ScanScreen extends React.Component {
     this._unsubscribe2();
   }
 
-      decreaseQuantity = () => {
-          if(this.state.itemQuantity <= 1) {
-              return;
-          } else {
-              this.setState({
-                  itemQuantity: this.state.itemQuantity - 1,
-              });
-          }
-      }
-
-      increaseQuantity = () => {
+  decreaseQuantity = () => {
+      if(this.state.itemQuantity <= 1) {
+          return;
+      } else {
           this.setState({
-              itemQuantity: this.state.itemQuantity + 1
+              itemQuantity: this.state.itemQuantity - 1,
           });
       }
+  }
+
+  increaseQuantity = () => {
+      this.setState({
+          itemQuantity: this.state.itemQuantity + 1
+      });
+  }
 
   render() {
 
@@ -67,7 +66,7 @@ export default class ScanScreen extends React.Component {
     console.log(this.state);
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={styles.camera}>
         {(this.state.cameraOn &&
         <Camera
           onBarCodeScanned={this.handleBarCodeScanned}
@@ -88,41 +87,35 @@ export default class ScanScreen extends React.Component {
           <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
               <View style={{flex: 1}} />
           </TouchableWithoutFeedback>
-          <View style={{
-            flex: 3,
-            justifyContent: 'center',
-            backgroundColor: 'white',
-            borderRadius: 20,
-            alignItems: 'stretch'
-          }}>
+          <View style={styles.view2}>
 
 
-            <View style = {{flex: 1, flexDirection: 'row', alignItems: 'left', justifyContent: 'left', borderBottomWidth: 1, padding: 5, margin: 'auto'}}>
-              <Text style = {{fontSize: 20, fontWeight: "bold"}}>
+            <View style = {styles.view3}>
+              <Text style = {styles.itemAddedHeader}>
                 Item Added
               </Text>
             </View>
 
 
-            <View style = {{alignItems: 'center', flex: 8, justifyContent: 'center', margin: 'auto' }}>
+            <View style = {styles.view4}>
 
 
-              <Text style = {{fontSize: 20, textAlign: 'center', margin: 'auto' }}>
+              <Text style = {styles.itemAdded}>
                 {this.state.itemName}{"\n"}has been added to your cart.{"\n"}
               </Text>
 
 
               <Image
-                style={{width: 100, height: 100}}
+                style={styles.itemAddedImage}
                 source={{url: this.state.itemImage}}
               />
 
 
-              <View style={{ fontSize: 20, display: 'flex', flexDirection: 'row', padding: 5, margin: 'auto' }}>
-                   <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center',marginTop: 5 }}>
+              <View style={styles.view5}>
+                   <View style={styles.view6}>
                       <Text style={{ fontSize: 20}}>Quantity: </Text>
                        <TouchableOpacity onPress={this.decreaseQuantity}>
-                           <Text style={{fontSize: 20, fontWeight: "bold", color: styles.logo.color}}> - </Text>
+                           <Text style={styles.quantityText}> - </Text>
                        </TouchableOpacity>
                        <TextInput
                            style = {{fontSize: 20, textAlign: 'center', padding: 5}}
@@ -131,7 +124,7 @@ export default class ScanScreen extends React.Component {
                            keyboardType="numeric"
                        />
                        <TouchableOpacity onPress={this.increaseQuantity} >
-                           <Text style={{fontSize: 20, fontWeight: "bold", color: styles.logo.color}}> + </Text>
+                           <Text style={styles.quantityText}> + </Text>
                        </TouchableOpacity>
                    </View>
               </View>

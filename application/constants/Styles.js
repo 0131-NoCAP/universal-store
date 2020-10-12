@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { logoColor } from "./Colors"
 
 const landingPageStyles = StyleSheet.create({
   container: {
@@ -10,7 +11,7 @@ const landingPageStyles = StyleSheet.create({
   logo: {
     fontFamily: "pacifico",
     fontSize: 120,
-    color: "#9c27b0",
+    color: '#9c27b0',
     marginBottom: 60,
   },
   inputView: {
@@ -112,4 +113,73 @@ const landingPageStyles = StyleSheet.create({
   },
 });
 
-export { landingPageStyles };
+const headerStyles = StyleSheet.create({
+  home: {
+    fontFamily: "pacifico",
+    fontSize: 32,
+    color: logoColor,
+    textAlign: "center",
+    height: 70,
+  }
+});
+
+const scanScreenStyles = StyleSheet.create({
+  camera: {
+    flex: 1
+  },
+  view2: {
+    flex: 3,
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    alignItems: 'stretch'
+  },
+  view3: {
+    flex: 1,
+    flexDirection: 'row',
+    // alignItems: 'left',
+    // justifyContent: 'left',
+    borderBottomWidth: 1,
+    padding: 5,
+    margin: 'auto'
+  },
+  itemAddedHeader: {
+    fontSize: 20,
+    fontWeight: "bold"
+  },
+  view4: {
+    alignItems: 'center',
+    flex: 8,
+    justifyContent: 'center',
+    margin: 'auto'
+  },
+  itemAdded: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 'auto'
+  },
+  itemAddedImage: {
+    width: 100,
+    height: 100
+  },
+  view5: {
+    fontSize: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 5,
+    margin: 'auto'
+  },
+  view6: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 5
+  },
+  quantityText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: logoColor
+  }
+});
+
+export { landingPageStyles, scanScreenStyles, headerStyles };
