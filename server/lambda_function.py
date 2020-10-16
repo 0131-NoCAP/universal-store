@@ -66,7 +66,7 @@ def redirect(shop: str):
     api_key = shopify_keys.get('shopify_client_id')
     redirect_uri = 'https://gozbyp62l6.execute-api.us-east-2.amazonaws.com/prod'
     access_mode = 'per-user'
-    scopes = 'read_inventory,read_orders,write_orders,read_customers,read_products,read_product_listings'
+    scopes = 'read_inventory,read_orders,write_orders,read_customers,read_products,read_product_listings,read_checkouts,write_checkouts'
     nonce = generate_nonce()
     url = f'https://{shop}/admin/oauth/authorize?client_id={api_key}&scope={scopes}&redirect_uri={redirect_uri}&state={nonce}&grant_options[]={access_mode}'
     request = {
@@ -78,7 +78,7 @@ def redirect(shop: str):
 
 def put_merchant_access_token(store_url, access_token):
     dynamodb = boto3.client('dynamodb')
-    dynamodb.put_item(TableName='merchant_access_tokens', Item={'store_url': {'S': store_url}, 'access_token': {'S': access_token}})
+    dynamodb.put_item(TableName='merchant_access_token-dev', Item={'store_url': {'S': store_url}, 'access_token': {'S': access_token}})
 
 def generate_nonce(length=8):
     """Generate pseudorandom number."""
