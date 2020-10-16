@@ -3,6 +3,9 @@ import React from 'react';
 import { Text, View, StyleSheet, TouchableWithoutFeedback, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import Modal from 'react-native-modal';
+import { landingPageStyles as styles } from "../constants/Styles";
+import {getItemFromBarcode} from "../api/api"
+
 var BARCODESPIDER_API_KEY = 'ce057e14c2cb19f18e45';
 export default class ScanScreen extends React.Component {
 
@@ -131,6 +134,7 @@ async function getCameraAsync() {
 
 async function getBarcodeFromApiAsync(barcodeData) {
   try {
+<<<<<<< HEAD
     if (barcodeData.length == 13) {
       barcodeData = barcodeData.substring(1);
     }
@@ -138,10 +142,16 @@ async function getBarcodeFromApiAsync(barcodeData) {
     let responseJson = await response.json();
     var name = responseJson['item_attributes']['title'];
     var image = responseJson['item_attributes']['image'];
+=======
+    let responseJson = await getItemFromBarcode(barcodeData);
+    var name = responseJson['product']['title'];
+    if (name.length > 50) name = name.slice(0, 49) + "...";
+    var image = responseJson['product']['images'][0]['src'];
+>>>>>>> aefdaf26... Full stack scan functionality
     return [name, image];
     
   } catch (error) {
-    console.log(error);
+    console.log("ERROR:\n" + error);
     return ['No item', 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'];
   }
 }
