@@ -4,7 +4,8 @@ import { Text, View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Tex
 import { Camera } from 'expo-camera';
 import Modal from 'react-native-modal';
 import { landingPageStyles as styles } from "../constants/Styles";
-var BARCODESPIDER_API_KEY = 'ce057e14c2cb19f18e45';
+import {getItemFromBarcode} from "../api/api"
+
 export default class ScanScreen extends React.Component {
 
   // Instance variables
@@ -190,18 +191,13 @@ async function getCameraAsync() {
 
 async function getBarcodeFromApiAsync(barcodeData) {
   try {
-    if (barcodeData.length == 13) {
-      barcodeData = barcodeData.substring(1);
-    }
-    let response = await fetch(`https://api.barcodespider.com/v1/lookup?token=${BARCODESPIDER_API_KEY}&upc=${barcodeData}`);
-    let responseJson = await response.json();
-    var name = responseJson['item_attributes']['title'];
+    let responseJson = await getItemFromBarcode(barcodeData);
+    var name = responseJson['product']['title'];
     if (name.length > 50) name = name.slice(0, 49) + "...";
-    var image = responseJson['item_attributes']['image'];
+    var image = responseJson['product']['images'][0]['src'];
     return [name, image];
-
   } catch (error) {
-    console.log(error);
+    console.log("ERROR:\n" + error);
     return ['No item', 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'];
   }
 }
