@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Deploy to Lambda
+name: Deploy Auth to Lambda
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -31,10 +31,10 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --target ./server -r ./server/requirements.txt
+          pip install --target ./server/shopify_auth -r ./server/shopify_auth/requirements.txt
 
       - name: Create Zip File
-        run: cd ./server && zip -qq -r ./bundle.zip ./
+        run: cd ./server/shopify_auth && zip -qq -r ./bundle.zip ./
 
       - name: AWS Lambda Deploy
         # You may pin to the exact commit or the version.
@@ -50,4 +50,4 @@ jobs:
           # AWS lambda function name
           function_name: universal-store-auth
           # AWS lambda zip file
-          zip_file: ./server/bundle.zip
+          zip_file: ./server/shopify_auth/bundle.zip
