@@ -2,7 +2,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { landingPageStyles as styles } from "../constants/Styles";
+import { landingPageStyles as styles } from "../../constants/Styles";
 
 const CartHeader = () => {
   return (

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import Item from './CartItem';
-import { landingPageStyles as styles } from "../constants/Styles";
+import { landingPageStyles as styles } from "../../constants/Styles";
 
 class ItemContainer extends Component {
   render() {
