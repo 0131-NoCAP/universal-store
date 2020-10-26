@@ -84,6 +84,7 @@ const landingPageStyles = StyleSheet.create({
     alignItems: "center",
     marginTop: 22,
   },
+
   modalView: {
     margin: 20,
     backgroundColor: "white",
@@ -99,6 +100,7 @@ const landingPageStyles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+
   openButton: {
     backgroundColor: "#27B09B",
     borderRadius: 20,
@@ -110,6 +112,118 @@ const landingPageStyles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
   },
+
+  cartStyle: {
+   flexDirection: 'row',
+   justifyContent: 'space-between',
+   paddingLeft: 15,
+   paddingRight: 15,
+   paddingTop: 10,
+   paddingBottom: 10,
+   borderBottomWidth: 1,
+   borderColor: '#9c27b0',
+   backgroundColor: '#27B09B'
+ },
+
+ cartFooterStyle: {
+    flex: 1,
+    paddingRight: 15,
+    paddingLeft: 15,
+    borderTopWidth: 1,
+    borderColor: '#e2e2e2',
+  },
+
+  buttonContainerStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 15,
+  },
+  closeCartButtonStyle: {
+    backgroundColor: '#7f8c8d',
+    padding: 10,
+    paddingRight: 30,
+    paddingLeft: 30,
+    borderRadius: 3,
+  },
+  checkoutCartButtonStyle: {
+    backgroundColor: '#f39c12',
+    padding: 10,
+    paddingRight: 60,
+    paddingLeft: 60,
+    borderRadius: 3,
+  },
+  headerCartStyle: {
+    flex: 0.4,
+    elevation: 2,
+    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderBottomWidth: 1,
+    borderColor: '#e2e2e2'
+  },
+
+  containerItemStyle: {
+    flexDirection: 'row',
+    flex: 1,
+    borderBottomWidth: 1,
+    borderColor: '#e2e2e2',
+    padding: 10,
+    paddingLeft: 15,
+    backgroundColor: '#fff'
+  },
+  lastItemStyle: {
+    flexDirection: 'row',
+    flex: 1,
+    padding: 10,
+    paddingLeft: 15,
+    backgroundColor: '#fff'
+  },
+  imageCartStyle: {
+    width: 50,
+    height: 50,
+    marginRight: 20
+  },
+  textCartStyle: {
+    flex: 2,
+    justifyContent: 'center'
+  },
+  priceCartStyle: {
+    backgroundColor: '#ddd',
+    width: 40,
+    alignItems: 'center',
+    marginTop: 3,
+    borderRadius: 3
+  },
+  counterCartStyle: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+
+  itemContainterStyle: {
+    flex: 4,
+    backgroundColor: '#DCDCDC'
+  },
+
+  containerTCStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 15
+  },
+  goodsCartStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  totalCartStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  }
+
+
 });
 
 export { landingPageStyles };
