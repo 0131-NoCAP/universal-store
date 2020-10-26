@@ -1,0 +1,35 @@
+{
+    "paths": [
+        {
+            "name": "/accessKey",
+            "lambdaFunction": "getShopifyAccessToken",
+            "privacy": {
+                "open": true
+            },
+            "policyResourceName": "/accessKey"
+        }
+    ],
+    "resourceName": "shopifyAccessTokenAPI",
+    "apiName": "shopifyAccessTokenAPI",
+    "functionArns": [
+        {
+            "lambdaFunction": "getShopifyAccessToken"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "amplify-application-dev-151656-authRole",
+        "unAuthRoleName": "amplify-application-dev-151656-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "getShopifyAccessToken",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

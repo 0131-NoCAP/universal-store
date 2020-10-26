@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import Header from './components/CartHeader';
-import ItemsContainer from './components/ItemContainer';
-import BasketContainer from './components/CartComponent';
-import Footer from './components/CartFooter';
+import CartHeader from '../components/checkout/CartHeader';
+import ItemContainer from '../components/checkout/ItemContainer';
+import CartComponent from '../components/checkout/CartComponent';
+import CartFooter from '../components/checkout/CartFooter';
 
 export default class Cart extends Component {
   render() {
@@ -11,7 +11,7 @@ export default class Cart extends Component {
       <View style={{ flex: 1 }}>
         <CartHeader />
         <ItemContainer />
-        <CartContainer />
+        <CartComponent />
         <CartFooter />
       </View>
 

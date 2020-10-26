@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import TotalComp from './TotalComponent';
-import { landingPageStyles as styles } from "../constants/Styles";
+import { landingPageStyles as styles } from "../../constants/Styles";
 
 const CartFooter = () => {
 

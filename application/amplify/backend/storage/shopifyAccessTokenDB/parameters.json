@@ -1,0 +1,5 @@
+{
+    "tableName": "merchant_access_token",
+    "partitionKeyName": "store_url",
+    "partitionKeyType": "S"
+}

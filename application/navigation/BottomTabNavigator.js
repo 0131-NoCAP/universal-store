@@ -6,7 +6,7 @@ import HomeScreen from "../screens/HomeScreen";
 import PaymentMethodScreen from "../screens/PaymentMethodScreen";
 import ScanScreen from "../screens/ScanScreen";
 import AccountScreen from "../screens/AccountScreen";
-
+import CartScreen from "../screens/CartScreen"
 const INITIAL_ROUTE_NAME = "Home";
 const BottomTab = createBottomTabNavigator();
 
@@ -55,7 +55,7 @@ export default function BottomTabNavigator({ navigation, route }) {
       />
       <BottomTab.Screen
         name="Cart"
-        component={PaymentMethodScreen}
+        component={CartScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="cart" />
