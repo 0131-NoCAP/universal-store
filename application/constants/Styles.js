@@ -135,7 +135,7 @@ const landingPageStyles = StyleSheet.create({
 
   buttonContainerStyle: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingTop: 15,
   },
   closeCartButtonStyle: {

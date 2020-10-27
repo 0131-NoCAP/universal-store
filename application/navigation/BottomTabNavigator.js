@@ -77,6 +77,8 @@ function getHeaderTitle(route) {
       return "Account Details";
     case "Scan":
       return "Scan Item";
+    case "Cart":
+      return "Shopping Cart"
     default:
       return "Nothing Yet";
   }

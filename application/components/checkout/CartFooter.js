@@ -9,9 +9,9 @@ const CartFooter = () => {
     <View style={styles.cartFooterStyle}>
       <TotalComp />
       <View style={styles.buttonContainerStyle}>
-        <View style={styles.closeCartButtonStyle}>
+        {/* <View style={styles.closeCartButtonStyle}>
           <Text style={{ color: '#9c27b0' }}>Close</Text>
-        </View>
+        </View> */}
 
         <View style={styles.checkoutCartButtonStyle}>
           <Text style={{ color: '#9c27b0' }}>Go to checkout</Text>

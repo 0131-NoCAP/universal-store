@@ -5,14 +5,14 @@ import {
   CreditCardInput,
   LiteCreditCardInput,
 } from "react-native-credit-card-input";
-import DismissKeyboard from "../components/DismissKeyboard";
+// import DismissKeyboard from "../components/DismissKeyboard";
 
 export default function PaymentMethodScreen() {
   return (
-    <DismissKeyboard>
+    // <DismissKeyboard>
       <View>
         <CreditCardInput onChange={() => {}} allowScroll />
       </View>
-    </DismissKeyboard>
+    /* </DismissKeyboard> */
   );
 }
