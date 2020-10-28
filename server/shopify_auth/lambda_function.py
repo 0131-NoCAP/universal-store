@@ -66,7 +66,7 @@ def redirect(shop: str):
     api_key = shopify_keys.get('shopify_client_id')
     redirect_uri = 'https://gozbyp62l6.execute-api.us-east-2.amazonaws.com/prod'
     access_mode = ''
-    scopes = 'read_inventory,read_orders,write_orders,read_customers,read_products,read_product_listings,read_checkouts,write_checkouts,unauthenticated_write_checkouts'
+    scopes = 'read_inventory,read_orders,write_orders,read_customers,read_products,read_product_listings,read_checkouts,write_checkouts,unauthenticated_write_checkouts,unauthenticated_read_product_listings'
     nonce = generate_nonce()
     url = f'https://{shop}/admin/oauth/authorize?client_id={api_key}&scope={scopes}&redirect_uri={redirect_uri}&state={nonce}&grant_options[]={access_mode}'
     request = {
