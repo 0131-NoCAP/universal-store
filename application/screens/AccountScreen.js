@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../providers/auth";
-
+import { createCheckout } from "../api/ApiRequestHandler";
 import { landingPageStyles as styles } from "../constants/Styles";
 export default function AccountScreen() {
   const authContext = React.useContext(AuthContext);
@@ -13,6 +13,12 @@ export default function AccountScreen() {
         style={styles.wideBtn}
       >
         <Text style={styles.buttonText}>Log Out</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => createCheckout('andrew-and-david-bridal-services.myshopify.com')}
+        style={styles.wideBtn}
+      >
+        <Text style={styles.buttonText}>TEST BUTTON</Text>
       </TouchableOpacity>
     </View>
   );
