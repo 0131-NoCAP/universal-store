@@ -24,8 +24,12 @@ async function callAPI(api_name, store_url) {
     })
 }
 
-
 export async function createCheckout(store_url) {
   response = await callAPI("createCheckout", store_url);
   console.log(response);
+}
+
+export async function get_store_urls() {
+  response = await callAPI("getStoreUrls", None);
+  return response;
 }
