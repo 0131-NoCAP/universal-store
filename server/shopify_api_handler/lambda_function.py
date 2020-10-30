@@ -4,8 +4,8 @@ from botocore.exceptions import ClientError
 def lambda_handler(event, context):
     # TODO implement
     response = json.dumps(get_merchant_access_key('andrew-and-david-bridal-services.myshopify.com'))
-    # if event.get(api_name) == 'getCheckout':
-    #     response = get_checkout()
+    if event.get(api_name) == 'getStoreNames':
+        response = get_store_names()
     return {
         'statusCode': 200,
         'body': response

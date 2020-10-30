@@ -29,7 +29,7 @@ export async function createCheckout(store_url) {
   console.log(response);
 }
 
-export async function get_store_urls() {
-  response = await callAPI("getStoreUrls", None);
+export async function getStoreNames() {
+  response = await callAPI("getStoreNames", None);
   return response;
 }
