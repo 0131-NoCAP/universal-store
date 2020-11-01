@@ -190,6 +190,8 @@ async function getCameraAsync() {
 
 async function getBarcodeFromApiAsync(barcodeData) {
   try {
+    // TODO: Add store selection options
+    // TODO: Store item in a cart with persistence
     let responseJson = await getItemFromBarcode(barcodeData, 'andrew-and-david-bridal-services.myshopify.com');
     var name = responseJson['displayName'];
     if (name.includes(' - Default Title')) {

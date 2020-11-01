@@ -3,7 +3,7 @@ from botocore.exceptions import ClientError
 from base64 import b64encode
 
 def lambda_handler(event, context):
-    # TODO implement
+
     response = 'nothing'
     if event.get('api_name') == 'getStoreNames':
         response = get_store_names()
