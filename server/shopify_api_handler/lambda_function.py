@@ -64,7 +64,7 @@ def get_storefront_access_key(store_url):
     return storefront_token
 
 
-def create_checkout(store_url: str, items: str):
+def create_checkout(store_url: str, items: list):
 
     url = 'https://' + store_url + '/api/2020-10/graphql.json'
     storefront_token = get_storefront_access_key(store_url)
