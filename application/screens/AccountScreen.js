@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../providers/auth";
-
+import { createCheckout } from "../api/ApiRequestHandler";
 import { landingPageStyles as styles } from "../constants/Styles";
 export default function AccountScreen() {
   const authContext = React.useContext(AuthContext);

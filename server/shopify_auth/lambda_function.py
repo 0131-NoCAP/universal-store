@@ -77,8 +77,13 @@ def redirect(shop: str):
     return request
 
 def put_merchant_access_token(store_url, access_token):
+    try:
+        response = requests.get('https://' + store_url + '/admin/api/2020-10/shop.json', headers={'X-Shopify-Access-Token': access_token, 'Content-Type': 'application/json'})
+        store_name = response.json().get('shop').get('name')
+    except:
+        store_name = store_url
     dynamodb = boto3.client('dynamodb')
-    dynamodb.put_item(TableName='merchant_access_token-dev', Item={'store_url': {'S': store_url}, 'access_token': {'S': access_token}})
+    dynamodb.put_item(TableName='merchant_access_token-dev', Item={'store_url': {'S': store_url}, 'store_name': {'S': store_name}, 'access_token': {'S': access_token}})
 
 def generate_nonce(length=8):
     """Generate pseudorandom number."""
