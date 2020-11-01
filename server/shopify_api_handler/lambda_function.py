@@ -4,17 +4,17 @@ from base64 import b64encode
 
 def lambda_handler(event, context):
     # TODO implement
-    response = json.dumps(get_merchant_access_key('andrew-and-david-bridal-services.myshopify.com'))
-    if event.get(api_name) == 'getStoreNames':
+    response = 'nothing'
+    if event.get('api_name') == 'getStoreNames':
         response = get_store_names()
     elif event.get('api_name') == 'createCheckout':
         store_url = event.get('store_url')
         items = event.get('items')
         response = create_checkout(store_url, items)
-    elif event.get('api_name') == 'getIDFromBarcode':
+    elif event.get('api_name') == 'getItemFromBarcode':
         store_url = event.get('store_url')
         barcode = event.get('barcode')
-        response = get_id_from_barcode(store_url, barcode)
+        response = get_item_from_barcode(store_url, barcode)
     return {
         'statusCode': 200,
         'body': response
@@ -46,7 +46,7 @@ def get_store_names():
 
 
 def get_storefront_access_key(store_url):
-    
+
     url = 'https://' + store_url + '/admin/api/2020-10/storefront_access_tokens.json'
     headers = {
         'X-Shopify-Access-Token': get_merchant_access_key(store_url),
@@ -147,9 +147,7 @@ def modify_checkout(store_url: str, items: dict, checkout_id: str):
     r = requests.post(url, data=mutation, headers=headers)
     return r.json()
 
-
-
-def get_id_from_barcode(store_url: str, barcode: str):
+def get_item_from_barcode(store_url: str, barcode: str):
 
     url = 'https://' + store_url + '/admin/api/2020-10/graphql.json'
     headers = {
@@ -163,12 +161,30 @@ def get_id_from_barcode(store_url: str, barcode: str):
                 node {
                     barcode
                     id
+                    displayName
+                    product {
+                        media(first:1) {
+                            edges {
+                                node {
+                                    preview {
+                                        image {
+                                            originalSrc
+                                            transformedSrc
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    availableForSale
+                    inventoryQuantity
+                    price
+                    sku
                 }
             }
         }
     }""" % barcode
 
     r = requests.post(url, data=query, headers=headers)
-    gid = r.json()['data']['productVariants']['edges'][0]['node']['id']
-    gid_b64 = b64encode(gid.encode('ascii')).decode('ascii')
-    return gid_b64
+    item_data = r.json()['data']['productVariants']['edges'][0]['node']
+    return item_data

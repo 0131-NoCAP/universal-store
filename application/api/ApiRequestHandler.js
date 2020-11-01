@@ -4,10 +4,10 @@ import Lambda from 'aws-sdk/clients/lambda'; // npm install aws-sdk
 const AWS = require('aws-sdk')
 AWS.config.update({region: 'us-east-2'});
 
-async function callAPI(api_name, store_url) {
+async function callAPI(payload) {
   var params = {
     FunctionName: 'shopify-api-handler',
-    Payload: JSON.stringify({ 'api_name': api_name, 'store_url': store_url }),
+    Payload: JSON.stringify(payload),
   }
   return Auth.currentCredentials()
     .then(async (credentials) => {
@@ -24,12 +24,23 @@ async function callAPI(api_name, store_url) {
     })
 }
 
-export async function createCheckout(store_url) {
-  response = await callAPI("createCheckout", store_url);
+export async function createCheckout(store_url, items) {
+  const payload = { 'api_name': 'createCheckout', 'store_url': store_url, 'items': items }
+  const response = await callAPI(payload);
   console.log(response);
 }
 
 export async function getStoreNames() {
-  response = await callAPI("getStoreNames", None);
-  return response;
+  const payload = { 'api_name': 'getStoreNames' }
+  const response = await callAPI(payload);
+  return response.get('body');
+}
+
+export async function getItemFromBarcode(barcode, store_url) {
+  const payload = { 'api_name': 'getItemFromBarcode', 'store_url': store_url, 'barcode': barcode }
+  console.log(payload)
+  const response = await callAPI(payload);
+  const responseJson = JSON.parse(response['Payload'])
+  console.log(responseJson);
+  return responseJson['body'];
 }

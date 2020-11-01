@@ -4,7 +4,7 @@ import { Text, View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, Tex
 import { Camera } from 'expo-camera';
 import Modal from 'react-native-modal';
 import { landingPageStyles as styles } from "../constants/Styles";
-import {getItemFromBarcode} from "../api/api"
+import { getItemFromBarcode } from "../api/ApiRequestHandler";
 
 export default class ScanScreen extends React.Component {
 
@@ -19,7 +19,6 @@ export default class ScanScreen extends React.Component {
     itemPrice: null,
     itemQuantity: null,
     previousCartTotal: null
-
   }
 
   // Checks if current screen is mounted to turn camera on or off
@@ -177,7 +176,7 @@ export default class ScanScreen extends React.Component {
       scanned: true,
       itemName: itemData[0],
       itemImage: itemData[1],
-      itemPrice: 5,
+      itemPrice: itemData[2],
       itemQuantity: 1
 
     });
@@ -191,11 +190,15 @@ async function getCameraAsync() {
 
 async function getBarcodeFromApiAsync(barcodeData) {
   try {
-    let responseJson = await getItemFromBarcode(barcodeData);
-    var name = responseJson['product']['title'];
+    let responseJson = await getItemFromBarcode(barcodeData, 'andrew-and-david-bridal-services.myshopify.com');
+    var name = responseJson['displayName'];
+    if (name.includes(' - Default Title')) {
+      name = name.substring(0, name.length - 16);
+    }
     if (name.length > 50) name = name.slice(0, 49) + "...";
-    var image = responseJson['product']['images'][0]['src'];
-    return [name, image];
+    var image = responseJson['product']['media']['edges'][0]['node']['preview']['image']['originalSrc'];
+    var price = responseJson['price']
+    return [name, image, price];
   } catch (error) {
     console.log("ERROR:\n" + error);
     return ['No item', 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'];
