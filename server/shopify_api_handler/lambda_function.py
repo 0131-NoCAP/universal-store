@@ -5,7 +5,7 @@ from base64 import b64encode
 def lambda_handler(event, context):
     # TODO implement
     response = json.dumps(get_merchant_access_key('andrew-and-david-bridal-services.myshopify.com'))
-    if event.get(api_name) == 'getStoreNames':
+    if event.get('api_name') == 'getStoreNames':
         response = get_store_names()
     elif event.get('api_name') == 'createCheckout':
         store_url = event.get('store_url')
