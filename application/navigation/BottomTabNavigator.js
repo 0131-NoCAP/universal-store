@@ -6,9 +6,15 @@ import HomeScreen from "../screens/HomeScreen";
 import PaymentMethodScreen from "../screens/PaymentMethodScreen";
 import ScanScreen from "../screens/ScanScreen";
 import AccountScreen from "../screens/AccountScreen";
+import CartScreen from "../screens/CartScreen";
+import { CartContext } from "../providers/cart";
 
 const INITIAL_ROUTE_NAME = "Home";
 const BottomTab = createBottomTabNavigator();
+
+const cartContext = {
+  items: []
+}
 
 export default function BottomTabNavigator({ navigation, route }) {
   // Set the header title on the parent stack navigator depending on the
@@ -20,49 +26,53 @@ export default function BottomTabNavigator({ navigation, route }) {
   });
 
   return (
-    <BottomTab.Navigator
-      initialRouteName={INITIAL_ROUTE_NAME}
-      tabBarOptions={{
-        showLabel: false,
-      }}
-    >
-      <BottomTab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="home" />
-          ),
+    <CartContext.Provider value = {cartContext}>
+      <BottomTab.Navigator
+        initialRouteName={INITIAL_ROUTE_NAME}
+        tabBarOptions={{
+          showLabel: false,
         }}
-      />
-      <BottomTab.Screen
-        name="Account"
-        component={AccountScreen}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="account" />
-          ),
-        }}
-      />
-      <BottomTab.Screen
-        name="Scan"
-        component={ScanScreen}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="barcode-scan" />
-          ),
-        }}
-      />
-      <BottomTab.Screen
-        name="Cart"
-        component={PaymentMethodScreen}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="cart" />
-          ),
-        }}
-      />
-    </BottomTab.Navigator>
+      >
+        <BottomTab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <TabBarIcon focused={focused} name="home" />
+            ),
+          }}
+        />
+        <BottomTab.Screen
+          name="Account"
+          component={AccountScreen}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <TabBarIcon focused={focused} name="account" />
+            ),
+          }}
+        />
+
+        <BottomTab.Screen
+          name="Scan"
+          component={ScanScreen}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <TabBarIcon focused={focused} name="barcode-scan" />
+            ),
+          }}
+        />
+        <BottomTab.Screen
+          name="Cart"
+          component={CartScreen}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <TabBarIcon focused={focused} name="cart" />
+            ),
+          }}
+        />
+
+      </BottomTab.Navigator>
+    </CartContext.Provider>
   );
 }
 

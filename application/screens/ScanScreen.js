@@ -5,8 +5,10 @@ import { Camera } from 'expo-camera';
 import Modal from 'react-native-modal';
 import { landingPageStyles as styles } from "../constants/Styles";
 import { getItemFromBarcode } from "../api/ApiRequestHandler";
+import { CartContext } from "../providers/cart";
 
 export default class ScanScreen extends React.Component {
+  static contextType = CartContext;
 
   // Instance variables
   state = {
@@ -64,8 +66,6 @@ export default class ScanScreen extends React.Component {
       return <Text>No access to camera</Text>;
     }
 
-    console.log(this.state);
-
     return (
       <View style={{ flex: 1 }}>
         {(this.state.cameraOn &&
@@ -91,13 +91,13 @@ export default class ScanScreen extends React.Component {
           <View style={{
             flex: 3,
             justifyContent: 'center',
+            alignItems: 'center',
             backgroundColor: 'white',
-            borderRadius: 20,
-            alignItems: 'stretch'
+            borderRadius: 20
           }}>
 
 
-            <View style = {{flex: 1, flexDirection: 'row', alignItems: 'left', justifyContent: 'left', borderBottomWidth: 1, padding: 5, margin: 'auto'}}>
+            <View style = {{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, padding: 5, margin: 'auto'}}>
               <Text style = {{fontSize: 20, fontWeight: "bold"}}>
                 Item Added
               </Text>
@@ -141,6 +141,17 @@ export default class ScanScreen extends React.Component {
                 Cart Total: ${this.state.previousCartTotal + (this.state.itemQuantity * this.state.itemPrice)}
               </Text>
             </View>
+            <TouchableOpacity
+              onPress={() => {
+                let toCart = this.state.itemData;
+                toCart["quantity"] = this.state.itemQuantity;
+                this.context['items'].push(toCart);
+                this.exitPopup();
+              }}
+              style={styles.wideBtn}
+            >
+                <Text style={styles.buttonText}> Confirm </Text>
+            </TouchableOpacity>
           </View>
           <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
             <View style={{flex: 1}} />
@@ -168,15 +179,23 @@ export default class ScanScreen extends React.Component {
     let barcodeType = type;
     let barcodeData = data;
     let itemData = await getBarcodeFromApiAsync(barcodeData);
+    let name = itemData['displayName'];
+    if (name.includes(' - Default Title')) {
+      name = name.substring(0, name.length - 16);
+    }
+    if (name.length > 50) name = name.slice(0, 49) + "...";
+    let image = itemData['product']['media']['edges'][0]['node']['preview']['image']['originalSrc'];
+    let price = itemData['price']
 
     this.setState({
       barcodeType: barcodeType,
       barcodeData: barcodeData,
       cameraOn: false,
       scanned: true,
-      itemName: itemData[0],
-      itemImage: itemData[1],
-      itemPrice: itemData[2],
+      itemData: itemData,
+      itemName: name,
+      itemImage: image,
+      itemPrice: price,
       itemQuantity: 1
 
     });
@@ -193,14 +212,7 @@ async function getBarcodeFromApiAsync(barcodeData) {
     // TODO: Add store selection options
     // TODO: Store item in a cart with persistence
     let responseJson = await getItemFromBarcode(barcodeData, 'andrew-and-david-bridal-services.myshopify.com');
-    var name = responseJson['displayName'];
-    if (name.includes(' - Default Title')) {
-      name = name.substring(0, name.length - 16);
-    }
-    if (name.length > 50) name = name.slice(0, 49) + "...";
-    var image = responseJson['product']['media']['edges'][0]['node']['preview']['image']['originalSrc'];
-    var price = responseJson['price']
-    return [name, image, price];
+    return responseJson;
   } catch (error) {
     console.log("ERROR:\n" + error);
     return ['No item', 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'];
