@@ -78,14 +78,13 @@ def create_checkout(store_url: str, items: list):
         'Content-Type': 'application/graphql'
     }
 
-    line_items = '[{ '
+    line_items = ''
     for item in items:
-        line_items += 'variantId: "{}", quantity: {}'.format(item['id'], item['quantity'])
-    line_items += '}]'
+        line_items += '{ variantId: "%s", quantity: %d },' % (item['id'], item['quantity'])
 
     mutation = """mutation {
         checkoutCreate(input: {
-            lineItems: %s
+            lineItems: [%s]
         }) {
             userErrors{
                 field
@@ -120,14 +119,13 @@ def modify_checkout(store_url: str, items: list, checkout_id: str):
         'Content-Type': 'application/graphql'
     }
 
-    line_items = '[{ '
+    line_items = ''
     for item in items:
-        line_items += 'variantId: "{}", quantity: {}'.format(item['id'], item['quantity'])
-    line_items += '}]'
+        line_items += '{ variantId: "%s", quantity: %d },' % (item['id'], item['quantity'])
 
     mutation = """mutation {
         checkoutLineItemsReplace(
-            lineItems: %s, checkoutId: "%s"
+            lineItems: [%s], checkoutId: "%s"
         ) {
             userErrors{
                 field
