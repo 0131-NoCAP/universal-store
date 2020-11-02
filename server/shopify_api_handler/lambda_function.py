@@ -78,6 +78,7 @@ def create_checkout(store_url: str, items: list):
         'Content-Type': 'application/graphql'
     }
 
+<<<<<<< HEAD
     line_items = ''
     for item in items:
         line_items += '{ variantId: "%s", quantity: %d },' % (item['id'], item['quantity'])
@@ -85,6 +86,16 @@ def create_checkout(store_url: str, items: list):
     mutation = """mutation {
         checkoutCreate(input: {
             lineItems: [%s]
+=======
+    line_items = '[{ '
+    for item in items:
+        line_items += 'variantId: "{}", quantity: {}'.format(item['id'], item['quantity'])
+    line_items += '}]'
+
+    mutation = """mutation {
+        checkoutCreate(input: {
+            lineItems: %s
+>>>>>>> master
         }) {
             userErrors{
                 field
@@ -110,7 +121,11 @@ def create_checkout(store_url: str, items: list):
     return r.json()
 
 
+<<<<<<< HEAD
 def modify_checkout(store_url: str, items: list, checkout_id: str):
+=======
+def modify_checkout(store_url: str, items: dict, checkout_id: str):
+>>>>>>> master
 
     url = 'https://' + store_url + '/api/2020-10/graphql.json'
     storefront_token = get_storefront_access_key(store_url)
@@ -119,6 +134,7 @@ def modify_checkout(store_url: str, items: list, checkout_id: str):
         'Content-Type': 'application/graphql'
     }
 
+<<<<<<< HEAD
     line_items = ''
     for item in items:
         line_items += '{ variantId: "%s", quantity: %d },' % (item['id'], item['quantity'])
@@ -127,6 +143,17 @@ def modify_checkout(store_url: str, items: list, checkout_id: str):
         checkoutLineItemsReplace(
             lineItems: [%s], checkoutId: "%s"
         ) {
+=======
+    line_items = '[{ '
+    for item in items:
+        line_items += 'variantId: "{}", quantity: {}'.format(item['id'], item['quantity'])
+    line_items += '}]'
+
+    mutation = """mutation {
+        checkoutLineItemsReplace(input: {
+            lineItems: %s, checkoutId: "%s"
+        }) {
+>>>>>>> master
             userErrors{
                 field
                 message
