@@ -10,9 +10,8 @@ export default class CartScreen extends Component {
   renderItem({ item, index }) {
 
     return (
-    <View style={/*() index + 1 === this.context.items.length) ? styles.lastItemStyle :  */styles.containerItemStyle}>
-      <Image source={item.product.media.edges[0].node.preview.image} style={styles.imageCartStyle} />
-
+    <View style={styles.containerItemStyle}>
+      <Image source={{url: item.product.media.edges[0].node.preview.image.originalSrc}} style={styles.imageCartStyle} />
       <View style={styles.textCartStyle}>
         <Text style={{ color: '#2e2f30' }}>{item.displayName}</Text>
         <View style={styles.priceCartStyle}>
@@ -59,12 +58,12 @@ export default class CartScreen extends Component {
             renderItem={this.renderItem}
             keyExtractor={(item) => item.id}
           />
-          <TouchableOpacity
-            onPress={() => console.log(this.context.items)}
+          {/* <TouchableOpacity
+            onPress={() => console.log(this.context.items[0].product.media.edges[0].node.preview.image.originalSrc)}
             style={styles.wideBtn}
           >
             <Text style={styles.buttonText}>TEST BUTTON</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     );
