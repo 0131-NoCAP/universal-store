@@ -110,6 +110,50 @@ const landingPageStyles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
   },
+
+  removeAddButton: {
+    borderRadius: 15, 
+    backgroundColor: '#bbb', 
+    height: 30, 
+    width: 30, 
+    paddingLeft: 10, 
+    paddingTop: 5
+  },
+  cartStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderColor: '#9c27b0',
+    backgroundColor: '#27B09B'
+  },
+  containerItemStyle: {
+    flexDirection: 'row',
+    flex: 1,
+    borderBottomWidth: 1,
+    borderColor: '#e2e2e2',
+    padding: 10,
+    paddingLeft: 15,
+    backgroundColor: '#fff'
+  },
+  imageCartStyle: {
+    width: 50,
+    height: 50,
+    marginRight: 20
+  },
+  textCartStyle: {
+    flex: 2,
+    justifyContent: 'center'
+  },
+  counterCartStyle: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
 });
 
 export { landingPageStyles };
