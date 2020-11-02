@@ -7,6 +7,11 @@ def lambda_handler(event, context):
     response = 'nothing'
     if event.get('api_name') == 'getStoreNames':
         response = get_store_names()
+    elif event.get('api_name') == 'modifyCheckout':
+        store_url = event.get('store_url')
+        items = event.get('items')
+        checkout_id = event.get('checkout_id')
+        response = modify_checkout(store_url, items, checkout_id)
     elif event.get('api_name') == 'createCheckout':
         store_url = event.get('store_url')
         items = event.get('items')
@@ -21,7 +26,7 @@ def lambda_handler(event, context):
     }
 
 
-def get_merchant_access_key(store_url):
+def get_merchant_access_key(store_url: str):
 
     dynamodb = boto3.resource('dynamodb', region_name='us-east-2')
     table = dynamodb.Table('merchant_access_token-dev')
@@ -45,7 +50,7 @@ def get_store_names():
     return data
 
 
-def get_storefront_access_key(store_url):
+def get_storefront_access_key(store_url: str):
 
     url = 'https://' + store_url + '/admin/api/2020-10/storefront_access_tokens.json'
     headers = {
@@ -73,14 +78,13 @@ def create_checkout(store_url: str, items: list):
         'Content-Type': 'application/graphql'
     }
 
-    line_items = '[{ '
+    line_items = ''
     for item in items:
-        line_items += 'variantId: "{}", quantity: {}'.format(item['id'], item['quantity'])
-    line_items += '}]'
+        line_items += '{ variantId: "%s", quantity: %d },' % (item['id'], item['quantity'])
 
     mutation = """mutation {
         checkoutCreate(input: {
-            lineItems: %s
+            lineItems: [%s]
         }) {
             userErrors{
                 field
@@ -106,7 +110,7 @@ def create_checkout(store_url: str, items: list):
     return r.json()
 
 
-def modify_checkout(store_url: str, items: dict, checkout_id: str):
+def modify_checkout(store_url: str, items: list, checkout_id: str):
 
     url = 'https://' + store_url + '/api/2020-10/graphql.json'
     storefront_token = get_storefront_access_key(store_url)
@@ -115,15 +119,14 @@ def modify_checkout(store_url: str, items: dict, checkout_id: str):
         'Content-Type': 'application/graphql'
     }
 
-    line_items = '[{ '
+    line_items = ''
     for item in items:
-        line_items += 'variantId: "{}", quantity: {}'.format(item['id'], item['quantity'])
-    line_items += '}]'
+        line_items += '{ variantId: "%s", quantity: %d },' % (item['id'], item['quantity'])
 
     mutation = """mutation {
-        checkoutLineItemsReplace(input: {
-            lineItems: %s, checkoutId: "%s"
-        }) {
+        checkoutLineItemsReplace(
+            lineItems: [%s], checkoutId: "%s"
+        ) {
             userErrors{
                 field
                 message
