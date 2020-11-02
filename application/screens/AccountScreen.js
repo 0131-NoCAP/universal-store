@@ -14,12 +14,6 @@ export default function AccountScreen() {
       >
         <Text style={styles.buttonText}>Log Out</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => createCheckout('andrew-and-david-bridal-services.myshopify.com')}
-        style={styles.wideBtn}
-      >
-        <Text style={styles.buttonText}>TEST BUTTON</Text>
-      </TouchableOpacity>
     </View>
   );
 }
