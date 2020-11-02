@@ -11,6 +11,11 @@ def lambda_handler(event, context):
         store_url = event.get('store_url')
         items = event.get('items')
         response = create_checkout(store_url, items)
+    elif event.get('api_name') == 'modifyCheckout':
+        store_url = event.get('store_url')
+        items = event.get('items')
+        checkout_id = event.get('checkout_id')
+        response = modify_checkout(store_url, items, checkout_id)
     elif event.get('api_name') == 'getItemFromBarcode':
         store_url = event.get('store_url')
         barcode = event.get('barcode')
@@ -106,7 +111,7 @@ def create_checkout(store_url: str, items: list):
     return r.json()
 
 
-def modify_checkout(store_url: str, items: dict, checkout_id: str):
+def modify_checkout(store_url: str, items: list, checkout_id: str):
 
     url = 'https://' + store_url + '/api/2020-10/graphql.json'
     storefront_token = get_storefront_access_key(store_url)
@@ -121,9 +126,9 @@ def modify_checkout(store_url: str, items: dict, checkout_id: str):
     line_items += '}]'
 
     mutation = """mutation {
-        checkoutLineItemsReplace(input: {
+        checkoutLineItemsReplace(
             lineItems: %s, checkoutId: "%s"
-        }) {
+        ) {
             userErrors{
                 field
                 message
