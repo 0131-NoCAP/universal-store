@@ -25,7 +25,11 @@ async function callAPI(payload) {
 }
 
 export async function createCheckout(store_url, items) {
-  const payload = { 'api_name': 'createCheckout', 'store_url': store_url, 'items': items }
+  const payload = {
+    'api_name': 'createCheckout',
+    'store_url': store_url,
+    'items': items
+  }
   const response = await callAPI(payload);
   console.log(response);
 }
@@ -36,11 +40,26 @@ export async function getStoreNames() {
   return response.get('body');
 }
 
-export async function getItemFromBarcode(barcode, store_url) {
-  const payload = { 'api_name': 'getItemFromBarcode', 'store_url': store_url, 'barcode': barcode }
+export async function getItemFromBarcode(store_url, barcode) {
+  const payload = {
+    'api_name': 'getItemFromBarcode',
+    'store_url': store_url,
+    'barcode': barcode
+  }
   console.log(payload)
   const response = await callAPI(payload);
   const responseJson = JSON.parse(response['Payload'])
   console.log(responseJson);
   return responseJson['body'];
+}
+
+export async function modifyCheckout(store_url, items, checkout_id) {
+  const payload = {
+    'api_name': 'modifyCheckout',
+    'store_url': store_url,
+    'items': items,
+    'checkout_id': checkout_id
+  }
+  const response = await callAPI(payload);
+  console.log(response);
 }
