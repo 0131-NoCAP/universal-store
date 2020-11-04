@@ -188,6 +188,37 @@ def get_item_from_barcode(store_url: str, barcode: str):
         }
     }""" % barcode
 
-    r = requests.post(url, data=query, headers=headers)
-    item_data = r.json()['data']['productVariants']['edges'][0]['node']
+    try:
+        r = requests.post(url, data=query, headers=headers)
+        item_data = r.json()['data']['productVariants']['edges'][0]['node']
+    except:
+        item_data = no_item_found(barcode)
+    
     return item_data
+
+def no_item_found(barcode):
+    return {
+        'barcode': barcode,
+        'id': 'N/A',
+        'displayName': 'Item Not Found',
+        'product': {
+            'media': {
+                'edges': [
+                    {
+                        'node': {
+                            'preview': {
+                                'image': {
+                                    'originalSrc': 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg',
+                                    'transformedSrc': 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        'availableForSale': 'false',
+        'inventoryQuantity': 0,
+        'price': '0',
+        'sku': 'N/A'
+    }
