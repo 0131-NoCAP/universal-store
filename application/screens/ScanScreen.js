@@ -214,7 +214,7 @@ async function getBarcodeFromApiAsync(barcodeData) {
   } catch (error) {
     console.log("ERROR:\n" + error);
     return {
-      'barcode': barcode,
+      'barcode': barcodeData,
       'id': 'N/A',
       'displayName': 'Item Not Found',
       'product': {
