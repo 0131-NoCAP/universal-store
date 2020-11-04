@@ -55,8 +55,6 @@ export default class ScanScreen extends React.Component {
 
   render() {
 
-// I don't think it asks for permissions properly
-    // Asks for camera permissions hopefully :(
     const { hasCameraPermissions } = getCameraAsync();
     // Edge cases
     if (hasCameraPermissions === null) {
@@ -215,6 +213,30 @@ async function getBarcodeFromApiAsync(barcodeData) {
     return responseJson;
   } catch (error) {
     console.log("ERROR:\n" + error);
-    return ['No item', 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'];
+    return {
+      'barcode': barcode,
+      'id': 'N/A',
+      'displayName': 'Item Not Found',
+      'product': {
+        'media': {
+          'edges': [
+            {
+              'node': {
+                'preview': {
+                  'image': {
+                      'originalSrc': 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg',
+                      'transformedSrc': 'https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      'availableForSale': 'false',
+      'inventoryQuantity': 0,
+      'price': '0',
+      'sku': 'N/A'
+    };
   }
 }
