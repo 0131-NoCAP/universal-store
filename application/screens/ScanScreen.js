@@ -72,89 +72,116 @@ export default class ScanScreen extends React.Component {
           style={StyleSheet.absoluteFill}
         />
         )}
-
-        <Modal
-          isVisible={this.state.scanned}
-          customBackdrop={
-            <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
-              <View style={{flex: 1, backgroundColor: 'white'}} />
-            </TouchableWithoutFeedback>
-          }
-          animationIn='zoomIn'
-          animationOut='zoomOut'
-        >
-          <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
-              <View style={{flex: 1}} />
-          </TouchableWithoutFeedback>
-          <View style={{
-            flex: 3,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'white',
-            borderRadius: 20
-          }}>
-
-
-            <View style = {{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, padding: 5, margin: 'auto'}}>
-              <Text style = {{fontSize: 20, fontWeight: "bold"}}>
-                Item Added
-              </Text>
-            </View>
+              {/* This Modal displays on a successful scan */}
+                    <Modal 
+                      isVisible={this.state.scanned && this.itemData !== null} 
+                      customBackdrop={
+                        <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
+                          <View style={{flex: 1, backgroundColor: 'white'}} />
+                        </TouchableWithoutFeedback>
+                      }
+                      animationIn='zoomIn'
+                      animationOut='zoomOut'
+                    >
+                      <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
+                          <View style={{flex: 1}} />
+                      </TouchableWithoutFeedback>
+                      <View style={{
+                        flex: 3,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'white',
+                        borderRadius: 20
+                      }}>
 
 
-            <View style = {{alignItems: 'center', flex: 8, justifyContent: 'center', margin: 'auto' }}>
+                        <View style = {{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, padding: 5, margin: 'auto'}}>
+                          <Text style = {{fontSize: 20, fontWeight: "bold"}}>
+                            Item Added
+                          </Text>
+                        </View>
 
 
-              <Text style = {{fontSize: 20, textAlign: 'center', margin: 'auto' }}>
-                {this.state.itemName}{"\n"}has been added to your cart.{"\n"}
-              </Text>
+                        <View style = {{alignItems: 'center', flex: 8, justifyContent: 'center', margin: 'auto' }}>
+                        
+                              <Text style = {{fontSize: 20, textAlign: 'center', margin: 'auto' }}>
+                                {this.state.itemName}{"\n"}has been added to your cart.{"\n"}
+                              </Text>
+
+                        </View>
+                        <TouchableOpacity
+                          onPress={() => {
+                            let toCart = this.state.itemData;
+                            toCart["quantity"] = this.state.itemQuantity;
+                            this.context['items'].push(toCart);
+                            this.exitPopup();
+                          }}
+                          style={styles.wideBtn}
+                        >
+                            <Text style={styles.buttonText}> Confirm </Text>
+                        </TouchableOpacity>
+                      </View>
+                      <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
+                        <View style={{flex: 1}} />
+                      </TouchableWithoutFeedback>
+                    </Modal>
 
 
-              <Image
-                style={{width: 100, height: 100}}
-                source={{url: this.state.itemImage}}
-              />
+                      {/* This Modal displays on a null scan. */}
+
+                    <Modal 
+                      isVisible={this.state.itemData === null}
+                      customBackdrop={
+                        <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
+                          <View style={{flex: 1, backgroundColor: 'white'}} />
+                        </TouchableWithoutFeedback>
+                      }
+                      animationIn='zoomIn'
+                      animationOut='zoomOut'
+                    >
+                      <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
+                          <View style={{flex: 1}} />
+                      </TouchableWithoutFeedback>
+                      <View style={{
+                        flex: 3,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'white',
+                        borderRadius: 20
+                      }}>
 
 
-              <View style={{ fontSize: 20, display: 'flex', flexDirection: 'row', padding: 5, margin: 'auto' }}>
-                   <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center',marginTop: 5 }}>
-                      <Text style={{ fontSize: 20}}>Quantity: </Text>
-                       <TouchableOpacity onPress={this.decreaseQuantity}>
-                           <Text style={{fontSize: 20, fontWeight: "bold", color: styles.logo.color}}> - </Text>
-                       </TouchableOpacity>
-                       <TextInput
-                           style = {{fontSize: 20, textAlign: 'center', padding: 5}}
-                           onChangeText={(itemQuantity) => this.setState({ itemQuantity })}
-                           value={`${this.state.itemQuantity}`}
-                           keyboardType="numeric"
-                       />
-                       <TouchableOpacity onPress={this.increaseQuantity} >
-                           <Text style={{fontSize: 20, fontWeight: "bold", color: styles.logo.color}}> + </Text>
-                       </TouchableOpacity>
-                   </View>
-              </View>
+                        <View style = {{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, padding: 5, margin: 'auto'}}>
+                          <Text style = {{fontSize: 20, fontWeight: "bold"}}>
+                            Scan Error: No Item to Add
+                          </Text>
+                        </View>
 
-              <Text style = {{fontSize: 20, textAlign: 'center', padding: 5}}>
-                Item Price: ${this.state.itemPrice}{"\n"}
-                Cart Total: ${this.state.previousCartTotal + (this.state.itemQuantity * this.state.itemPrice)}
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => {
-                let toCart = this.state.itemData;
-                toCart["quantity"] = this.state.itemQuantity;
-                this.context['items'].push(toCart);
-                this.exitPopup();
-              }}
-              style={styles.wideBtn}
-            >
-                <Text style={styles.buttonText}> Confirm </Text>
-            </TouchableOpacity>
-          </View>
-          <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
-            <View style={{flex: 1}} />
-          </TouchableWithoutFeedback>
-        </Modal>
+
+                        <View style = {{alignItems: 'center', flex: 8, justifyContent: 'center', margin: 'auto' }}>
+                        
+                              <Text style = {{fontSize: 20, textAlign: 'center', margin: 'auto' }}>
+                                {"\n"}Please try rescanning or scanning another item.{"\n"}
+                              </Text>
+
+                        </View>
+                        <TouchableOpacity
+                          onPress={() => {
+                            // let toCart = this.state.itemData;
+                            // toCart["quantity"] = this.state.itemQuantity;
+                            // this.context['items'].push(toCart);
+                            this.exitPopup();
+                          }}
+                          style={styles.wideBtn}
+                        >
+                            <Text style={styles.buttonText}> Confirm </Text>
+                        </TouchableOpacity>
+                      </View>
+                      <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
+                        <View style={{flex: 1}} />
+                      </TouchableWithoutFeedback>
+                    </Modal>
+
       </View>
     );
 
@@ -178,25 +205,38 @@ export default class ScanScreen extends React.Component {
     let barcodeData = data;
     let itemData = await getBarcodeFromApiAsync(barcodeData);
     let name = itemData['displayName'];
+
+
     if (name.includes(' - Default Title')) {
       name = name.substring(0, name.length - 16);
     }
     if (name.length > 50) name = name.slice(0, 49) + "...";
-    let image = itemData['product']['media']['edges'][0]['node']['preview']['image']['originalSrc'];
-    let price = itemData['price']
 
-    this.setState({
-      barcodeType: barcodeType,
-      barcodeData: barcodeData,
-      cameraOn: false,
-      scanned: true,
-      itemData: itemData,
-      itemName: name,
-      itemImage: image,
-      itemPrice: price,
-      itemQuantity: 1
+      let image = itemData['product']['media']['edges'][0]['node']['preview']['image']['originalSrc'];
+      let price = itemData['price']
 
-    });
+      this.setState({
+        barcodeType: barcodeType,
+        barcodeData: barcodeData,
+        cameraOn: false,
+        scanned: true,
+        itemData: itemData,
+        itemName: name,
+        itemImage: image,
+        itemPrice: price,
+        itemQuantity: 1
+
+      });
+
+
+          //TODO:
+    //itemData check if it's null, then assign the
+    if (name === 'Item Not Found') {
+      this.setState({
+        itemData: null
+      });
+    }
+   
   };
 }
 
@@ -214,6 +254,7 @@ async function getBarcodeFromApiAsync(barcodeData) {
   } catch (error) {
     console.log("ERROR:\n" + error);
     return {
+
       'barcode': barcodeData,
       'id': 'N/A',
       'displayName': 'Item Not Found',
@@ -237,6 +278,8 @@ async function getBarcodeFromApiAsync(barcodeData) {
       'inventoryQuantity': 0,
       'price': '0',
       'sku': 'N/A'
+
+
     };
-  }
+  } 
 }
