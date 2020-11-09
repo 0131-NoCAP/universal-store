@@ -33,14 +33,14 @@ export async function createCheckout(store_url, items) {
 export async function getStoreNames() {
   const payload = { 'api_name': 'getStoreNames' }
   const response = await callAPI(payload);
-  return response.get('body');
+  const responseJson = JSON.parse(response['Payload'])
+  console.log(responseJson);
+  return responseJson['body'];
 }
 
 export async function getItemFromBarcode(barcode, store_url) {
   const payload = { 'api_name': 'getItemFromBarcode', 'store_url': store_url, 'barcode': barcode }
-  console.log(payload)
   const response = await callAPI(payload);
   const responseJson = JSON.parse(response['Payload'])
-  console.log(responseJson);
   return responseJson['body'];
 }
