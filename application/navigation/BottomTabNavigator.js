@@ -20,10 +20,14 @@ export default function BottomTabNavigator({ navigation, route }) {
   // Set the header title on the parent stack navigator depending on the
   // currently active tab. Learn more in the documentation:
   // https://reactnavigation.org/docs/en/screen-options-resolution.html
-  navigation.setOptions({
-    headerTitle: getHeaderTitle(route),
-    headerTitleStyle: getHeaderTitleStyle(route),
-  });
+
+
+  React.useEffect(() => {
+    navigation.setOptions({
+      headerTitle: getHeaderTitle(route),
+      headerTitleStyle: getHeaderTitleStyle(route),
+    });
+  })
 
   return (
     <CartContext.Provider value = {cartContext}>
