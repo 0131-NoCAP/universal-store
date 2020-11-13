@@ -65,97 +65,103 @@ export default class ScanScreen extends React.Component {
     }
 
     return (
-      <View style={{ flex: 1 }}>
-        {(this.state.cameraOn &&
-        <Camera
-          onBarCodeScanned={this.handleBarCodeScanned}
-          style={StyleSheet.absoluteFill}
-        />
-        )}
+      <CartContext.Consumer>
+        {({items, setCart}) => (
+          <View style={{ flex: 1 }}>
+            {(this.state.cameraOn &&
+            <Camera
+              onBarCodeScanned={this.handleBarCodeScanned}
+              style={StyleSheet.absoluteFill}
+            />
+            )}
 
-        <Modal
-          isVisible={this.state.scanned}
-          customBackdrop={
-            <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
-              <View style={{flex: 1, backgroundColor: 'white'}} />
-            </TouchableWithoutFeedback>
-          }
-          animationIn='zoomIn'
-          animationOut='zoomOut'
-        >
-          <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
-              <View style={{flex: 1}} />
-          </TouchableWithoutFeedback>
-          <View style={{
-            flex: 3,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'white',
-            borderRadius: 20
-          }}>
-
-
-            <View style = {{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, padding: 5, margin: 'auto'}}>
-              <Text style = {{fontSize: 20, fontWeight: "bold"}}>
-                Item Added
-              </Text>
-            </View>
-
-
-            <View style = {{alignItems: 'center', flex: 8, justifyContent: 'center', margin: 'auto' }}>
-
-
-              <Text style = {{fontSize: 20, textAlign: 'center', margin: 'auto' }}>
-                {this.state.itemName}{"\n"}has been added to your cart.{"\n"}
-              </Text>
-
-
-              <Image
-                style={{width: 100, height: 100}}
-                source={{url: this.state.itemImage}}
-              />
-
-
-              <View style={{ fontSize: 20, display: 'flex', flexDirection: 'row', padding: 5, margin: 'auto' }}>
-                   <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center',marginTop: 5 }}>
-                      <Text style={{ fontSize: 20}}>Quantity: </Text>
-                       <TouchableOpacity onPress={this.decreaseQuantity}>
-                           <Text style={{fontSize: 20, fontWeight: "bold", color: styles.logo.color}}> - </Text>
-                       </TouchableOpacity>
-                       <TextInput
-                           style = {{fontSize: 20, textAlign: 'center', padding: 5}}
-                           onChangeText={(itemQuantity) => this.setState({ itemQuantity })}
-                           value={`${this.state.itemQuantity}`}
-                           keyboardType="numeric"
-                       />
-                       <TouchableOpacity onPress={this.increaseQuantity} >
-                           <Text style={{fontSize: 20, fontWeight: "bold", color: styles.logo.color}}> + </Text>
-                       </TouchableOpacity>
-                   </View>
-              </View>
-
-              <Text style = {{fontSize: 20, textAlign: 'center', padding: 5}}>
-                Item Price: ${this.state.itemPrice}{"\n"}
-                Cart Total: ${this.state.previousCartTotal + (this.state.itemQuantity * this.state.itemPrice)}
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => {
-                let toCart = this.state.itemData;
-                toCart["quantity"] = this.state.itemQuantity;
-                this.context['items'].push(toCart);
-                this.exitPopup();
-              }}
-              style={styles.wideBtn}
+            <Modal
+              isVisible={this.state.scanned}
+              customBackdrop={
+                <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
+                  <View style={{flex: 1, backgroundColor: 'white'}} />
+                </TouchableWithoutFeedback>
+              }
+              animationIn='zoomIn'
+              animationOut='zoomOut'
             >
-                <Text style={styles.buttonText}> Confirm </Text>
-            </TouchableOpacity>
+              <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
+                  <View style={{flex: 1}} />
+              </TouchableWithoutFeedback>
+              <View style={{
+                flex: 3,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRadius: 20
+              }}>
+
+
+                <View style = {{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, padding: 5, margin: 'auto'}}>
+                  <Text style = {{fontSize: 20, fontWeight: "bold"}}>
+                    Item Added
+                  </Text>
+                </View>
+
+
+                <View style = {{alignItems: 'center', flex: 8, justifyContent: 'center', margin: 'auto' }}>
+
+
+                  <Text style = {{fontSize: 20, textAlign: 'center', margin: 'auto' }}>
+                    {this.state.itemName}{"\n"}has been added to your cart.{"\n"}
+                  </Text>
+
+
+                  <Image
+                    style={{width: 100, height: 100}}
+                    source={{url: this.state.itemImage}}
+                  />
+
+
+                  <View style={{ fontSize: 20, display: 'flex', flexDirection: 'row', padding: 5, margin: 'auto' }}>
+                      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center',marginTop: 5 }}>
+                          <Text style={{ fontSize: 20}}>Quantity: </Text>
+                          <TouchableOpacity onPress={this.decreaseQuantity}>
+                              <Text style={{fontSize: 20, fontWeight: "bold", color: styles.logo.color}}> - </Text>
+                          </TouchableOpacity>
+                          <TextInput
+                              style = {{fontSize: 20, textAlign: 'center', padding: 5}}
+                              onChangeText={(itemQuantity) => this.setState({ itemQuantity })}
+                              value={`${this.state.itemQuantity}`}
+                              keyboardType="numeric"
+                          />
+                          <TouchableOpacity onPress={this.increaseQuantity} >
+                              <Text style={{fontSize: 20, fontWeight: "bold", color: styles.logo.color}}> + </Text>
+                          </TouchableOpacity>
+                      </View>
+                  </View>
+
+                  <Text style = {{fontSize: 20, textAlign: 'center', padding: 5}}>
+                    Item Price: ${this.state.itemPrice}{"\n"}
+                    Cart Total: ${this.state.previousCartTotal + (this.state.itemQuantity * this.state.itemPrice)}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    let toCart = this.state.itemData;
+                    toCart["quantity"] = this.state.itemQuantity;
+                    let updatedCart = items;
+                    updatedCart.push(toCart);
+                    setCart(updatedCart);
+                    this.exitPopup();
+                  }}
+                  style={styles.wideBtn}
+                >
+                    <Text style={styles.buttonText}> Confirm </Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
+                <View style={{flex: 1}} />
+              </TouchableWithoutFeedback>
+            </Modal>
           </View>
-          <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
-            <View style={{flex: 1}} />
-          </TouchableWithoutFeedback>
-        </Modal>
-      </View>
+        )}
+      </CartContext.Consumer>
     );
 
   }

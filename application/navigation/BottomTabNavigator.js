@@ -12,9 +12,6 @@ import { CartContext } from "../providers/cart";
 const INITIAL_ROUTE_NAME = "Home";
 const BottomTab = createBottomTabNavigator();
 
-const cartContext = {
-  items: []
-}
 
 export default function BottomTabNavigator({ navigation, route }) {
   // Set the header title on the parent stack navigator depending on the
@@ -26,6 +23,13 @@ export default function BottomTabNavigator({ navigation, route }) {
       headerTitleStyle: getHeaderTitleStyle(route),
     });
   })
+  const [items, setItems] = React.useState([]);
+  const cartContext = {
+    items: items,
+    setCart: (newItems) => {
+      setItems(newItems);
+    },  
+  }
 
   return (
     <CartContext.Provider value = {cartContext}>
