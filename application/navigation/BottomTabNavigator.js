@@ -3,7 +3,6 @@ import * as React from "react";
 
 import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
-import PaymentMethodScreen from "../screens/PaymentMethodScreen";
 import ScanScreen from "../screens/ScanScreen";
 import AccountScreen from "../screens/AccountScreen";
 import CartScreen from "../screens/CartScreen";

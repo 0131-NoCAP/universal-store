@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text, Image, TouchableOpacity } from 'react-native';
+import { View, FlatList, Text, Image } from 'react-native';
 import { landingPageStyles as styles } from '../constants/Styles';
 import { CartContext } from "../providers/cart";
 import Icon from 'react-native-vector-icons/Ionicons';
