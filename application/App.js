@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Platform, StatusBar, StyleSheet } from "react-native";
-import { SplashScreen } from "expo";
+import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
@@ -65,9 +65,8 @@ export default function App(props) {
     async function loadResourcesAndDataAsync() {
       let userToken;
       try {
-        SplashScreen.preventAutoHide();
+        await SplashScreen.preventAutoHideAsync();
         userToken = await AsyncStorage.getItem("userToken");
-
         // Load our initial navigation state
         setInitialNavigationState(await getInitialState());
 
@@ -83,7 +82,7 @@ export default function App(props) {
       } finally {
         dispatch({ type: "RESTORE_TOKEN", token: userToken });
         setLoadingComplete(true);
-        SplashScreen.hide();
+        await SplashScreen.hideAsync();
       }
     }
 
@@ -95,7 +94,6 @@ export default function App(props) {
       signIn: async (email, password) => {
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `AsyncStorage`
-        console.log("Email: " + email + " Pass: " + password)
         await Auth.signIn(email, password)
         Auth.currentSession().then(data => {
           dispatch({ type: 'SIGN_IN', token: data.accessToken.jwtToken });
@@ -113,7 +111,6 @@ export default function App(props) {
         // We will also need to handle errors if sign up failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
-        console.log("First: " + firstName + " Last: " + lastName + " Email: " + email + " Pass: " + password);
         await Auth.signUp({
           username: email,
           password: password,
