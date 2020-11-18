@@ -117,6 +117,7 @@ const landingPageStyles = StyleSheet.create({
     height: 30, 
     width: 30, 
     paddingLeft: 10, 
+    paddingRight: 5,
     paddingTop: 5
   },
   cartStyle: {
