@@ -106,7 +106,7 @@ function getHeaderTitle(route) {
     case "Scan":
       return "Scan Item";
     case "Cart":
-      return "Cart";
+      return "Shopping Cart";
     default:
       return "Nothing Yet";
   }
