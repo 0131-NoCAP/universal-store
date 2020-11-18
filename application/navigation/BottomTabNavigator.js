@@ -15,7 +15,7 @@ const BottomTab = createBottomTabNavigator();
 
 var cartContext = {
   items: [],
-  selectedStore: 'none',
+  selectedStore: 'andrew-and-david-bridal-services.myshopify.com',
   storeList: null,
 }
 
@@ -105,6 +105,8 @@ function getHeaderTitle(route) {
       return "Account Details";
     case "Scan":
       return "Scan Item";
+    case "Cart":
+      return "Cart";
     default:
       return "Nothing Yet";
   }

@@ -6,6 +6,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 // import CartFooter from '../components/checkout/CartFooter';
 
 export default class CartScreen extends Component {
+  componentDidMount () {
+      this.props.navigation.addListener('focus', () =>
+        this.forceUpdate()
+      );
+  }
 
   renderItem({ item, index }) {
 
@@ -20,12 +25,12 @@ export default class CartScreen extends Component {
       </View>
 
       <View style={styles.counterCartStyle}>
-      <Icon.Button 
-          name="ios-remove" 
-          size={20} 
-          color='#fff' 
-          backgroundColor='#fff' 
-          style={styles.removeAddButton} 
+      <Icon.Button
+          name="ios-remove"
+          size={20}
+          color='#fff'
+          backgroundColor='#fff'
+          style={styles.removeAddButton}
           iconStyle={{ marginRight: 0 }}
           //onPress={this.onPressPlus(index)}
         />
@@ -49,7 +54,7 @@ export default class CartScreen extends Component {
   static contextType = CartContext;
 
   render() {
-    
+
     return (
       <View style={{flex: 1}}>
         <View style={styles.cartStyle}>

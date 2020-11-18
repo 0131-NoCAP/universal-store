@@ -13,7 +13,7 @@ export default class HomeScreen extends React.Component {
 
   render() {
 
-    console.log(this.context.selectedStore)
+    console.log(this.context.items)
     const storeListFormatted = this.context.storeList.map((x, i) => (<Picker.Item key={i} label={x.store_name} value={x.store_url}/>))
     return (
       <View style={{ flex: 1, alignItems: "center" }}>
@@ -29,6 +29,7 @@ export default class HomeScreen extends React.Component {
           onValueChange={(itemValue, itemIndex) => {
             this.setState({selectedStore: itemValue});
             this.context.selectedStore = itemValue;
+            this.context.items = [];
           }}>
           {storeListFormatted}
         </Picker>
