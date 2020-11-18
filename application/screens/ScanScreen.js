@@ -182,7 +182,7 @@ export default class ScanScreen extends React.Component {
   handleBarCodeScanned = async ({ type, data }) => {
     let barcodeType = type;
     let barcodeData = data;
-    let itemData = await getBarcodeFromApiAsync(barcodeData);
+    let itemData = await getBarcodeFromApiAsync(barcodeData, this.context.selectedStore);
     let name = itemData['displayName'];
     if (name.includes(' - Default Title')) {
       name = name.substring(0, name.length - 16);
@@ -201,7 +201,6 @@ export default class ScanScreen extends React.Component {
       itemImage: image,
       itemPrice: price,
       itemQuantity: 1
-
     });
   };
 }
@@ -211,11 +210,11 @@ async function getCameraAsync() {
   return status === 'granted';
 }
 
-async function getBarcodeFromApiAsync(barcodeData) {
+async function getBarcodeFromApiAsync(barcodeData, selectedStore) {
   try {
     // TODO: Add store selection options
     // TODO: Store item in a cart with persistence
-    let responseJson = await getItemFromBarcode(barcodeData, 'andrew-and-david-bridal-services.myshopify.com');
+    let responseJson = await getItemFromBarcode(barcodeData, selectedStore);
     return responseJson;
   } catch (error) {
     console.log("ERROR:\n" + error);
