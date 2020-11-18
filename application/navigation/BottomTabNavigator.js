@@ -13,11 +13,13 @@ import { getStoreNames } from "../api/ApiRequestHandler";
 const INITIAL_ROUTE_NAME = "Home";
 const BottomTab = createBottomTabNavigator();
 
+
 var cartContext = {
   items: [],
   selectedStore: 'andrew-and-david-bridal-services.myshopify.com',
   storeList: null,
 }
+
 
 export default function BottomTabNavigator({ navigation, route }) {
   const [ isLoading, setLoading ] = React.useState(true);
@@ -37,6 +39,7 @@ export default function BottomTabNavigator({ navigation, route }) {
       headerTitleStyle: getHeaderTitleStyle(route),
     });
   })
+
   if (isLoading) {
     return null;
   }
