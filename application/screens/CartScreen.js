@@ -5,13 +5,19 @@ import { CartContext } from "../providers/cart";
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-
 export default class CartScreen extends Component {
+  componentDidMount () {
+      this.props.navigation.addListener('focus', () =>
+        this.forceUpdate()
+      );
+  }
+
+  
   
   static contextType = CartContext;
 
   render() {
-    
+
     return (
       <CartContext.Consumer>
         {({items, setCart}) => (

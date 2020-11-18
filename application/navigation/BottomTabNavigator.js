@@ -8,27 +8,40 @@ import ScanScreen from "../screens/ScanScreen";
 import AccountScreen from "../screens/AccountScreen";
 import CartScreen from "../screens/CartScreen";
 import { CartContext } from "../providers/cart";
+import { getStoreNames } from "../api/ApiRequestHandler";
 
 const INITIAL_ROUTE_NAME = "Home";
 const BottomTab = createBottomTabNavigator();
 
 
+var cartContext = {
+  items: [],
+  selectedStore: 'andrew-and-david-bridal-services.myshopify.com',
+  storeList: null,
+}
+
+
 export default function BottomTabNavigator({ navigation, route }) {
+  const [ isLoading, setLoading ] = React.useState(true);
+
+  React.useEffect(async () => {
+    await getStoreNames().then(response => {
+      cartContext.storeList = response;
+      setLoading(false);
+    });
+    console.log(cartContext);
+  }, []);
   // Set the header title on the parent stack navigator depending on the
-  // currently active tab. Learn more in the documentation:
-  // https://reactnavigation.org/docs/en/screen-options-resolution.html
+  // currently active tab.
   React.useEffect(() => {
     navigation.setOptions({
       headerTitle: getHeaderTitle(route),
       headerTitleStyle: getHeaderTitleStyle(route),
     });
   })
-  const [items, setItems] = React.useState([]);
-  const cartContext = {
-    items: items,
-    setCart: (newItems) => {
-      setItems(newItems);
-    },  
+
+  if (isLoading) {
+    return null;
   }
 
   return (
@@ -80,6 +93,8 @@ export default function BottomTabNavigator({ navigation, route }) {
       </BottomTab.Navigator>
     </CartContext.Provider>
   );
+
+
 }
 
 function getHeaderTitle(route) {
