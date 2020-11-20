@@ -10,7 +10,7 @@ const landingPageStyles = StyleSheet.create({
   logo: {
     fontFamily: "pacifico",
     fontSize: 120,
-    color: "#9c27b0",
+    color: "#906bff",
     marginBottom: 60,
   },
   inputView: {
@@ -37,12 +37,12 @@ const landingPageStyles = StyleSheet.create({
   forgot: {
     textAlign: "left",
     alignSelf: "stretch",
-    color: "#27B09B",
+    color: "#906bff",
     fontSize: 11,
   },
   wideBtn: {
     width: "80%",
-    backgroundColor: "#27B09B",
+    backgroundColor: "#906bff",
     borderRadius: 25,
     height: 50,
     alignItems: "center",
@@ -65,7 +65,7 @@ const landingPageStyles = StyleSheet.create({
   },
   signupText: {
     marginTop: 20,
-    color: "#27B09B",
+    color: "#906bff",
   },
   registerText: {
     marginBottom: 20,
@@ -100,7 +100,7 @@ const landingPageStyles = StyleSheet.create({
     elevation: 5,
   },
   openButton: {
-    backgroundColor: "#27B09B",
+    backgroundColor: "#906bff",
     borderRadius: 20,
     paddingVertical: 10,
     paddingHorizontal: 40,
@@ -112,13 +112,17 @@ const landingPageStyles = StyleSheet.create({
   },
 
   removeAddButton: {
-    borderRadius: 15, 
+    borderRadius: 20, 
     backgroundColor: '#bbb', 
-    height: 30, 
-    width: 30, 
-    paddingLeft: 10, 
+    height: 25, 
+    width: 25, 
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 8, 
     paddingRight: 5,
-    paddingTop: 5
+    paddingTop: 5,
+    paddingBottom: 5
+
   },
   cartStyle: {
     flexDirection: 'row',
