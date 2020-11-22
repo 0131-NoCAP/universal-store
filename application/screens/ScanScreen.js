@@ -1,4 +1,3 @@
-// TODO: Test Camera Permissions
 import React from 'react';
 import { Text, View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, TextInput, Image } from 'react-native';
 import { Camera } from 'expo-camera';
@@ -206,6 +205,7 @@ export default class ScanScreen extends React.Component {
   }
 
   handleBarCodeScanned = async ({ type, data }) => {
+    this.setState({cameraOn: false});
     let barcodeType = type;
     let barcodeData = data;
     let itemData = await getBarcodeFromApiAsync(barcodeData, this.context.selectedStore);

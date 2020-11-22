@@ -3,7 +3,6 @@ import * as React from "react";
 
 import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
-import PaymentMethodScreen from "../screens/PaymentMethodScreen";
 import ScanScreen from "../screens/ScanScreen";
 import AccountScreen from "../screens/AccountScreen";
 import CartScreen from "../screens/CartScreen";
@@ -131,7 +130,7 @@ function getHeaderTitleStyle(route) {
   const homeStyle = {
     fontFamily: "pacifico",
     fontSize: 32,
-    color: "#9c27b0",
+    color: "#906bff",
     textAlign: "center",
     height: 70,
   };
