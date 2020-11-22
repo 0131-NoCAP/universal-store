@@ -46,8 +46,9 @@
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
     "react-native-web": "~0.13.7",
-    "yargs-parser": ">=13.1.2",
-    "@react-native-community/picker": "1.6.6"
+    "@react-native-community/picker": "1.6.6",
+    "react-native-webview": "10.7.0",
+    "yargs-parser": ">=13.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
