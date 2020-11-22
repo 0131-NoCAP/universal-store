@@ -155,6 +155,7 @@ export default class ScanScreen extends React.Component {
                       if (duplicateItem === undefined) {
                         let toCart = this.state.itemData;
                         toCart["quantity"] = this.state.itemQuantity;
+                        toCart["displayName"] = this.state.itemName;
                         let updatedCart = items;
                         updatedCart.push(toCart);
                         setCart(updatedCart);
