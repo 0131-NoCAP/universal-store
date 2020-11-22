@@ -14,22 +14,32 @@ const INITIAL_ROUTE_NAME = "Home";
 const BottomTab = createBottomTabNavigator();
 
 
-var cartContext = {
-  items: [],
-  selectedStore: 'andrew-and-david-bridal-services.myshopify.com',
-  storeList: null,
-}
 
 
 export default function BottomTabNavigator({ navigation, route }) {
   const [ isLoading, setLoading ] = React.useState(true);
+  const [items, setItems] = React.useState([]);
+  const [storeList, setStoreList] = React.useState([]);
+  var cartContext = {
+    items: items,
+    selectedStore: 'andrew-and-david-bridal-services.myshopify.com',
+    storeList: storeList,
+    setCart: (newItems) => {
+      setItems(newItems);
+    },
+    setStoreList: (newStoreList) => {
+      setStoreList(newStoreList);
+    }
+  }
 
-  React.useEffect(async () => {
-    await getStoreNames().then(response => {
-      cartContext.storeList = response;
-      setLoading(false);
-    });
-    console.log(cartContext);
+  React.useEffect(() => {
+    async function getStoreNamesAsync() {
+      await getStoreNames().then(response => {
+        setStoreList(response);
+        setLoading(false);
+      });
+    }
+    getStoreNamesAsync()
   }, []);
   // Set the header title on the parent stack navigator depending on the
   // currently active tab.
