@@ -145,6 +145,7 @@ export default class ScanScreen extends React.Component {
                   onPress={() => {
                     let toCart = this.state.itemData;
                     toCart["quantity"] = this.state.itemQuantity;
+                    toCart["displayName"] = this.state.itemName;
                     let updatedCart = items;
                     updatedCart.push(toCart);
                     setCart(updatedCart);
@@ -190,7 +191,7 @@ export default class ScanScreen extends React.Component {
     if (name.length > 50) name = name.slice(0, 49) + "...";
     let image = itemData['product']['media']['edges'][0]['node']['preview']['image']['originalSrc'];
     let price = itemData['price']
-
+    
     this.setState({
       barcodeType: barcodeType,
       barcodeData: barcodeData,
