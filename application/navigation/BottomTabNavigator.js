@@ -32,12 +32,14 @@ export default function BottomTabNavigator({ navigation, route }) {
     }
   }
 
-  React.useEffect(async () => {
-    await getStoreNames().then(response => {
-      setStoreList(response);
-      setLoading(false);
-    });
-    console.log(cartContext);
+  React.useEffect(() => {
+    async function getStoreNamesAsync() {
+      await getStoreNames().then(response => {
+        setStoreList(response);
+        setLoading(false);
+      });
+    }
+    getStoreNamesAsync()
   }, []);
   // Set the header title on the parent stack navigator depending on the
   // currently active tab.
