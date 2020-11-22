@@ -20,7 +20,10 @@ export default class ScanScreen extends React.Component {
     itemImage: null,
     itemPrice: null,
     itemQuantity: null,
-    previousCartTotal: null
+    previousCartTotal: null,
+    errorModalVisible: false,
+    errorModalTitle: "",
+    errorModalText: ""
   }
 
   // Checks if current screen is mounted to turn camera on or off
@@ -143,12 +146,23 @@ export default class ScanScreen extends React.Component {
                 </View>
                 <TouchableOpacity
                   onPress={() => {
-                    let toCart = this.state.itemData;
-                    toCart["quantity"] = this.state.itemQuantity;
-                    let updatedCart = items;
-                    updatedCart.push(toCart);
-                    setCart(updatedCart);
-                    this.exitPopup();
+                    duplicateItem = items.find(item => item.id == this.state.itemData.id)
+                    console.log(`DUPLICATE ITEM: ${duplicateItem}`)
+                    if (duplicateItem === undefined) {
+                      let toCart = this.state.itemData;
+                      toCart["quantity"] = this.state.itemQuantity;
+                      let updatedCart = items;
+                      updatedCart.push(toCart);
+                      setCart(updatedCart);
+                      this.exitPopup();
+                    } else {
+                      this.setState({scanned: false})
+                      this.setState({
+                        errorModalVisible: true,
+                        errorModalTitle: "Duplicate Item",
+                        errorModalText: "This item is already in your cart. Please edit the quantity on the cart screen."
+                      });
+                    }
                   }}
                   style={styles.wideBtn}
                 >
@@ -158,6 +172,37 @@ export default class ScanScreen extends React.Component {
               <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
                 <View style={{flex: 1}} />
               </TouchableWithoutFeedback>
+            </Modal>
+            <Modal
+              isVisible={this.state.errorModalVisible}
+              customBackdrop={
+                <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
+                  <View style={{flex: 1, backgroundColor: 'white'}} />
+                </TouchableWithoutFeedback>
+              }
+              animationIn='zoomIn'
+              animationOut='zoomOut'
+            >
+              <View style={{
+                flex: 3,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRadius: 20
+              }}>                       
+                <Text style = {{fontSize: 20, fontWeight: "bold"}}>
+                  {this.state.errorModalTitle}
+                </Text>
+                <Text style = {{fontSize: 20, textAlign: 'center', margin: 'auto' }}>
+                  {this.state.errorModalText}
+                </Text>
+                <TouchableOpacity
+                    onPress={this.exitPopup}
+                    style={styles.wideBtn}
+                  >
+                      <Text style={styles.buttonText}> OK </Text>
+                  </TouchableOpacity>
+                </View>
             </Modal>
           </View>
         )}
@@ -175,7 +220,8 @@ export default class ScanScreen extends React.Component {
       itemData: null,
       itemPrice: null,
       itemQuantity: null,
-      previousCartTotal: null
+      previousCartTotal: null,
+      errorModalVisible: false
     });
   }
 
@@ -184,24 +230,34 @@ export default class ScanScreen extends React.Component {
     let barcodeData = data;
     let itemData = await getBarcodeFromApiAsync(barcodeData, this.context.selectedStore);
     let name = itemData['displayName'];
-    if (name.includes(' - Default Title')) {
-      name = name.substring(0, name.length - 16);
+    if (name == "Item Not Found") {
+      this.setState({
+        errorModalVisible: true,
+        cameraOn: false,
+        errorModalTitle: "Invalid Barcode Scanned",
+        errorModalText: "Please ensure that the barcode scanned belongs to the selected store on the home page."
+      })
+    } else {
+      if (name.includes(' - Default Title')) {
+        name = name.substring(0, name.length - 16);
+      }
+      if (name.length > 50) name = name.slice(0, 49) + "...";
+      let image = itemData['product']['media']['edges'][0]['node']['preview']['image']['originalSrc'];
+      let price = itemData['price']
+  
+      this.setState({
+        barcodeType: barcodeType,
+        barcodeData: barcodeData,
+        cameraOn: false,
+        scanned: true,
+        itemData: itemData,
+        itemName: name,
+        itemImage: image,
+        itemPrice: price,
+        itemQuantity: 1
+      });
     }
-    if (name.length > 50) name = name.slice(0, 49) + "...";
-    let image = itemData['product']['media']['edges'][0]['node']['preview']['image']['originalSrc'];
-    let price = itemData['price']
 
-    this.setState({
-      barcodeType: barcodeType,
-      barcodeData: barcodeData,
-      cameraOn: false,
-      scanned: true,
-      itemData: itemData,
-      itemName: name,
-      itemImage: image,
-      itemPrice: price,
-      itemQuantity: 1
-    });
   };
 }
 
