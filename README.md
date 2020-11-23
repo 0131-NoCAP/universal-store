@@ -7,9 +7,10 @@ Universal Store is an app for scanning and checking out items while shopping in 
 ## Release Notes version 1.0
 
 ### New Features
-Added ability to select store\
-Added ability to scan barcodes for items\
-Added ability to checkout
+* Added functionality to select Shopify partner stores from the Home Screen.\
+* Added ability to scan barcodes for items from Shopify partner stores.\
+* Added ability to checkout in the app with Shopify.
+
 ### Bug Fixes
 
 ### Known Bugs
