@@ -18,13 +18,10 @@ Universal Store is an app for scanning and checking out items while shopping in 
 ### Known Bugs
 * When adding too many items to cart, checkout and subtotal are pushed off.
 * On scan item, the text will sometimes overlap on top.
+
 ## Installation
 
 ### Mobile Application Installation
-
-#### Install
-
-Clone or download the application directory in master
 
 #### Pre-requisites
 
@@ -34,6 +31,9 @@ You must have the following installed:\
 ```bash
 npm install -g expo-cli
 ```
+#### Download/Installation
+
+Clone or download the application directory in master anywhere on your computer
 
 #### Dependencies
 To download all project dependencies:
@@ -47,4 +47,12 @@ In the application directory:
 ```bash
 expo start
 ```
-Run on the Expo app on iOS or Android or on a simulator
+Run on the Expo app on iOS or Android or on a simulator.
+
+#### Troubleshooting
+* Make sure you are in the application directory when installing dependencies.
+* If AWS issues arise, install AWS Amplify using:
+```bash
+npm install -g @aws-amplify/cli
+```
+* If you get permission errors while trying to run npm install with the global flag "-g", run using sudo.
