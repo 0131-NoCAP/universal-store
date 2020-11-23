@@ -1,4 +1,4 @@
-import React, { isValidElement } from "react";
+import React from "react";
 import {
   Modal,
   Text,
@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { AuthContext } from "../providers/auth";
 import { landingPageStyles as styles } from "../constants/Styles";
-import { register } from "../api/mockapi";
 import ValidationComponent from "react-native-form-validator";
 import DismissKeyboard from "../components/DismissKeyboard";
 
