@@ -47,10 +47,10 @@ export default class CartScreen extends Component {
                         <View style={styles.counterCartStyle}>
                           <Icon.Button
                             name="ios-trash"
-                            size={20} 
-                            color='#000' 
-                            backgroundColor='#fff' 
-                            // style={styles.removeAddButton} 
+                            size={20}
+                            color='#000'
+                            backgroundColor='#fff'
+                            // style={styles.removeAddButton}
                             onPress={() => {
                               const updatedCart = items.filter(cartItem => cartItem.id !== item.id);
                               setCart(updatedCart);
@@ -58,12 +58,12 @@ export default class CartScreen extends Component {
                             }}
 
                           />
-                          <Icon.Button 
-                              name="ios-remove" 
-                              size={15} 
-                              color='#fff' 
-                              backgroundColor='#fff' 
-                              style={styles.removeAddButton} 
+                          <Icon.Button
+                              name="ios-remove"
+                              size={15}
+                              color='#fff'
+                              backgroundColor='#fff'
+                              style={styles.removeAddButton}
                               iconStyle={{ marginRight: 0 }}
                               onPress={() => {
                                 let selecteditem = items[index];
@@ -103,7 +103,7 @@ export default class CartScreen extends Component {
                 </View>
 
                 <View>
-            
+
                   <Text>Subtotal: ${calculateSubtotal(items).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
 
                 </View>
@@ -131,18 +131,26 @@ export default class CartScreen extends Component {
 
                 }} style={styles.wideBtn}>
                   <Text style={styles.wide}>Checkout</Text>
-                </TouchableOpacity> 
+                </TouchableOpacity>
               </View>
-              
+
 
             ) : (
               <View style={{ flex: 1, alignItems: "center" }}>
                 <Text style={{fontSize: 24}}>Your cart is empty!</Text>
               </View>
             )}
-          
-          
+
+
             <Modal isVisible={ this.state.webCheckout }>
+
+              <View style={{ flex: 1}}/>
+              <View style={{ flex: 19 }}>
+                <WebView
+                  source={{ uri: this.state.checkoutURL }}
+                  originWhitelist={['*']}
+                />
+              </View>
               <View style={{ flex: 1 }}>
                 <View style={{
                     flex: 1,
@@ -150,22 +158,18 @@ export default class CartScreen extends Component {
                   }}
                 >
                   <TouchableWithoutFeedback onPress={() => this.exitCheckout()}>
-                    <View style={{flex: 1, backgroundColor: '#2b2b2b'}} />
+                    <View style={{flex: 1, backgroundColor: '#2b2b2b', alignItems: 'center', justifyContent: 'center'}}>
+                      <Text style={{color: 'white', textDecorationLine: 'underline'}}>Exit</Text>
+                    </View>
                   </TouchableWithoutFeedback>
                 </View>
-              </View>
-
-              <View style={{ flex: 19 }}>
-                <WebView
-                  source={{ uri: this.state.checkoutURL }}
-                />
               </View>
             </Modal>
 
           </View>
         )}
       </CartContext.Consumer>
-      
+
     );
   }
 
@@ -177,7 +181,7 @@ export default class CartScreen extends Component {
 
     return shopifyResponse;
   }
-  
+
   modifyCheckoutWithAPI = async (items) => {
     // modify existing checkout with Shopify API
     let formattedItems = formatItems(items);
@@ -199,7 +203,7 @@ export default class CartScreen extends Component {
 
 function calculateSubtotal(items) {
   let subtotal = 0;
-  
+
   items.forEach(item => {
     subtotal += (item.price) * item.quantity
   });
