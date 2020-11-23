@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text, Image, TouchableOpacity } from 'react-native';
-import { Button } from 'react-native-elements';
+import { View, FlatList, Text, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { landingPageStyles as styles } from '../constants/Styles';
 import { CartContext } from "../providers/cart";
 import { createCheckout, modifyCheckout } from "../api/ApiRequestHandler";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WebView } from 'react-native-webview';
 import Modal from 'react-native-modal';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import base64 from 'react-native-base64';
 
 export default class CartScreen extends Component {
 
@@ -105,26 +104,30 @@ export default class CartScreen extends Component {
 
                 <View>
             
-                  <Text style={{flex: 'row'}}>Subtotal: ${calculateSubtotal(items).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+                  <Text>Subtotal: ${calculateSubtotal(items).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
 
                 </View>
 
 
-                <TouchableOpacity onPress={() => {
-                  console.log(items);
-                  
-                  // only go into webview if there are items in the cart
-                  if (this.context.items.length > 0) {
-                    console.log("going into webview");
-                    if (this.state.checkoutID != '') {
-                      createCheckoutWithAPI(items);
-                    } else {
-                      modifyCheckoutWithAPI(items);
-                    }
+                <TouchableOpacity onPress={async () => {
+
+                  console.log(`going into webview. checkoutID: ${this.state.checkoutID}`);
+                  if (this.state.checkoutID == '') {
+                    let shopifyResponse = await this.createCheckoutWithAPI(items);
+                    let shopifyCheckoutID = shopifyResponse.id;
+                    let shopifyCheckoutURL = shopifyResponse.webUrl;
+                    console.log(`shopify checkout url: ${shopifyCheckoutURL}`);
+
                     this.setState({
-                      webCheckout: true
+                      checkoutID: shopifyCheckoutID,
+                      checkoutURL: shopifyCheckoutURL
                     });
+                  } else {
+                    await this.modifyCheckoutWithAPI(items);
                   }
+                  this.setState({
+                    webCheckout: true
+                  });
 
                 }} style={styles.wideBtn}>
                   <Text style={styles.wide}>Checkout</Text>
@@ -146,12 +149,9 @@ export default class CartScreen extends Component {
                     backgroundColor: '#2b2b2b'
                   }}
                 >
-                  <MaterialCommunityIcons
-                    name="close-box"
-                    size={30}
-                    style={{marginTop: 2, marginLeft: 1}}
-                    color={"#fa5c5c"}
-                  />
+                  <TouchableWithoutFeedback onPress={() => this.exitCheckout()}>
+                    <View style={{flex: 1, backgroundColor: '#2b2b2b'}} />
+                  </TouchableWithoutFeedback>
                 </View>
               </View>
 
@@ -169,38 +169,31 @@ export default class CartScreen extends Component {
     );
   }
 
+  createCheckoutWithAPI = async (items) => {
+    // create checkout with Shopify API
+    let formattedItems = formatItems(items);
+    let responseJson = await createCheckout(this.context.selectedStore, formattedItems);
+    let shopifyResponse = responseJson.data.checkoutCreate.checkout;
+
+    return shopifyResponse;
+  }
+  
+  modifyCheckoutWithAPI = async (items) => {
+    // modify existing checkout with Shopify API
+    let formattedItems = formatItems(items);
+    let responseJson = await modifyCheckout(
+      this.context.selectedStore,
+      formattedItems,
+      this.state.checkoutID
+    );
+    //let shopifyResponse = responseJson.data.checkoutLineItemsReplace.checkout;
+  }
+
   exitCheckout = () => {
     this.setState({
       webCheckout: false
-    })
+    });
   }
-}
-
-
-async function createCheckoutWithAPI(items) {
-  // create checkout with Shopify API
-  let formattedItems = formatItems(items);
-  let responseJson = await createCheckout(this.context.selectedStore, formattedItems);
-  let shopifyResponse = responseJson.body.data.checkoutLineItemsReplace.checkout;
-  let shopifyCheckoutID = shopifyResponse.id;
-  let shopifyCheckoutURL = shopifyResponse.webUrl;
-  this.setState({
-    checkoutExists: true,
-    checkoutID: shopifyCheckoutID,
-    checkoutURL: shopifyCheckoutURL
-  });
-}
-
-
-async function modifyCheckoutWithAPI(items) {
-  // modify existing checkout with Shopify API
-  let formattedItems = formatItems(items);
-  let responseJson = await modifyCheckout(
-    this.context.selectedStore,
-    formattedItems,
-    this.state.checkoutID
-  );
-  let shopifyResponse = responseJson.body.data.checkoutLineItemsReplace.checkout;
 }
 
 
@@ -208,7 +201,7 @@ function calculateSubtotal(items) {
   let subtotal = 0;
   
   items.forEach(item => {
-    subtotal += (item.price) * item.quantity  
+    subtotal += (item.price) * item.quantity
   });
 
   return subtotal;
@@ -216,14 +209,14 @@ function calculateSubtotal(items) {
 
 
 function formatItems(items) {
-  console.log(items);
   var formattedItems = [];
   for (let i = 0; i < items.length; i++) {
     formattedItems.push({
-      "id": item[i].id,
-      "quantity": item[i].quantity
-    })
+      "id": base64.encode(items[i].id),
+      "quantity": items[i].quantity
+    });
   }
-  console.log(formatttedItems)
+  console.log(`formatted items:`);
+  console.log(formattedItems)
   return formattedItems;
 }

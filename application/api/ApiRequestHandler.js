@@ -31,7 +31,9 @@ export async function createCheckout(store_url, items) {
     'items': items
   }
   const response = await callAPI(payload);
-  console.log(response);
+  const responseJson = JSON.parse(response['Payload'])
+  console.log(responseJson);
+  return responseJson['body'];
 }
 
 export async function modifyCheckout(store_url, items, checkout_id) {
@@ -42,7 +44,9 @@ export async function modifyCheckout(store_url, items, checkout_id) {
     'checkout_id': checkout_id
   }
   const response = await callAPI(payload);
-  console.log(response);
+  const responseJson = JSON.parse(response['Payload'])
+  console.log(responseJson);
+  return responseJson['body'];
 } 
 
 export async function getStoreNames() {
