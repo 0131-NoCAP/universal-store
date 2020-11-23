@@ -28,8 +28,8 @@ export default class HomeScreen extends React.Component {
           style={{height: 50, width: 350}}
           onValueChange={(itemValue, itemIndex) => {
             this.setState({selectedStore: itemValue});
-            this.context.selectedStore = itemValue;
-            this.context.items = [];
+            this.context.setSelectedStore(itemValue);
+            this.context.setCart([]);
           }}>
           {storeListFormatted}
         </Picker>

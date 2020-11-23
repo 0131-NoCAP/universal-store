@@ -13,21 +13,23 @@ const INITIAL_ROUTE_NAME = "Home";
 const BottomTab = createBottomTabNavigator();
 
 
-
-
 export default function BottomTabNavigator({ navigation, route }) {
   const [ isLoading, setLoading ] = React.useState(true);
   const [items, setItems] = React.useState([]);
   const [storeList, setStoreList] = React.useState([]);
+  const [selectedStore, setSelectedStore] = React.useState("andrew-and-david-bridal-services.myshopify.com");
   var cartContext = {
     items: items,
-    selectedStore: 'andrew-and-david-bridal-services.myshopify.com',
+    selectedStore: selectedStore,
     storeList: storeList,
     setCart: (newItems) => {
       setItems(newItems);
     },
     setStoreList: (newStoreList) => {
       setStoreList(newStoreList);
+    },
+    setSelectedStore: (newSelectedStore) => {
+        setSelectedStore(newSelectedStore);
     }
   }
 

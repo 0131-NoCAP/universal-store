@@ -111,7 +111,7 @@ export default class ScanScreen extends React.Component {
                   {this.state.error ? (
                     <Text style = {{fontSize: 20, textAlign: 'center', margin: 'auto' }}>
                      {this.state.errorModalText}
-                    </Text>             
+                    </Text>
                   ) : (
                     <View style = {{alignItems: 'center', flex: 8, justifyContent: 'center', margin: 'auto' }}>
                       <Text style = {{fontSize: 20, textAlign: 'center', margin: 'auto' }}>
@@ -232,7 +232,7 @@ export default class ScanScreen extends React.Component {
       if (name.length > 50) name = name.slice(0, 49) + "...";
       let image = itemData['product']['media']['edges'][0]['node']['preview']['image']['originalSrc'];
       let price = itemData['price']
-  
+
       this.setState({
         barcodeType: barcodeType,
         barcodeData: barcodeData,
@@ -258,6 +258,7 @@ async function getBarcodeFromApiAsync(barcodeData, selectedStore) {
   try {
     // TODO: Add store selection options
     // TODO: Store item in a cart with persistence
+    console.log(selectedStore);
     let responseJson = await getItemFromBarcode(barcodeData, selectedStore);
     return responseJson;
   } catch (error) {
