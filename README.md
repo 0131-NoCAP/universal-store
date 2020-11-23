@@ -16,7 +16,7 @@ Universal Store is an app for scanning and checking out items while shopping in 
 * Handles adding incorrect item to cart correctly.
 
 ### Known Bugs
-* When adding too many items to cart, checkout and subtotal are pushed off.
+* When adding too many items to cart, checkout and subtotal are pushed below the view of the screen.
 * On scan item, the text will sometimes overlap on top.
 
 ## Installation
