@@ -21,9 +21,7 @@ Universal Store is an app for scanning and checking out items while shopping in 
 
 ## Installation
 
-### Mobile Application Installation
-
-#### Pre-requisites
+### Pre-requisites
 
 You must have the following installed:\
 [Node.js LTS release](https://nodejs.org/en/) or greater\
@@ -31,25 +29,25 @@ You must have the following installed:\
 ```bash
 npm install -g expo-cli
 ```
-#### Download/Installation
+### Download/Installation
 
 Clone or download the application directory in master anywhere on your computer
 
-#### Dependencies
+### Dependencies
 To download all project dependencies:
 ```bash
 cd {install_path}/application
 npm install
 ```
 
-#### Building and Running
+### Building and Running
 In the application directory:
 ```bash
 expo start
 ```
 Run on the Expo app on iOS or Android or on a simulator.
 
-#### Troubleshooting
+### Troubleshooting
 * Make sure you are in the application directory when installing dependencies.
 * If AWS issues arise, install AWS Amplify using:
 ```bash
