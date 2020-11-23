@@ -133,7 +133,7 @@ const landingPageStyles = StyleSheet.create({
     paddingBottom: 10,
     borderBottomWidth: 1,
     borderColor: '#9c27b0',
-    backgroundColor: '#27B09B'
+    backgroundColor: '#ebcfc4'
   },
   containerItemStyle: {
     flexDirection: 'row',
