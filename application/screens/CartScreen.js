@@ -100,7 +100,7 @@ export default class CartScreen extends Component {
 
                 <View>
             
-                  <Text style={{align: 'left', flex: 'row'}}>Subtotal: ${calculateSubtotal(items).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+                  <Text style={{flex: 'row'}}>Subtotal: ${calculateSubtotal(items).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
 
                 </View>
 
