@@ -1,4 +1,3 @@
-// TODO: Test Camera Permissions
 import React from 'react';
 import { Text, View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, TextInput, Image } from 'react-native';
 import { Camera } from 'expo-camera';
@@ -20,7 +19,10 @@ export default class ScanScreen extends React.Component {
     itemImage: null,
     itemPrice: null,
     itemQuantity: null,
-    previousCartTotal: null
+    previousCartTotal: null,
+    modalTitle: "",
+    error: false,
+    errorModalText: ""
   }
 
   // Checks if current screen is mounted to turn camera on or off
@@ -99,67 +101,89 @@ export default class ScanScreen extends React.Component {
 
                 <View style = {{flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, padding: 5, margin: 'auto'}}>
                   <Text style = {{fontSize: 20, fontWeight: "bold"}}>
-                    Item Added
+                    {this.state.modalTitle}
                   </Text>
                 </View>
 
 
                 <View style = {{alignItems: 'center', flex: 8, justifyContent: 'center', margin: 'auto' }}>
 
-
-                  <Text style = {{fontSize: 20, textAlign: 'center', margin: 'auto' }}>
-                    {this.state.itemName}{"\n"}has been added to your cart.{"\n"}
-                  </Text>
-
-
-                  <Image
-                    style={{width: 100, height: 100}}
-                    source={{url: this.state.itemImage}}
-                  />
-
-
-                  <View style={{ fontSize: 20, display: 'flex', flexDirection: 'row', padding: 5, margin: 'auto' }}>
-                      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center',marginTop: 5 }}>
-                          <Text style={{ fontSize: 20}}>Quantity: </Text>
-                          <TouchableOpacity onPress={this.decreaseQuantity}>
-                              <Text style={{fontSize: 20, fontWeight: "bold", color: styles.logo.color}}> - </Text>
-                          </TouchableOpacity>
-                          <TextInput
-                              style = {{fontSize: 20, textAlign: 'center', padding: 5}}
-                              onChangeText={(itemQuantity) => this.setState({ itemQuantity })}
-                              value={`${this.state.itemQuantity}`}
-                              keyboardType="numeric"
-                          />
-                          <TouchableOpacity onPress={this.increaseQuantity} >
-                              <Text style={{fontSize: 20, fontWeight: "bold", color: styles.logo.color}}> + </Text>
-                          </TouchableOpacity>
+                  {this.state.error ? (
+                    <Text style = {{fontSize: 20, textAlign: 'center', margin: 'auto' }}>
+                     {this.state.errorModalText}
+                    </Text>             
+                  ) : (
+                    <View style = {{alignItems: 'center', flex: 8, justifyContent: 'center', margin: 'auto' }}>
+                      <Text style = {{fontSize: 20, textAlign: 'center', margin: 'auto' }}>
+                        {this.state.itemName}{"\n"}has been added to your cart.{"\n"}
+                      </Text>
+                      <Image
+                        style={{width: 100, height: 100}}
+                        source={{url: this.state.itemImage}}
+                      />
+                      <View style={{ fontSize: 20, display: 'flex', flexDirection: 'row', padding: 5, margin: 'auto' }}>
+                        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center',marginTop: 5 }}>
+                            <Text style={{ fontSize: 20}}>Quantity: </Text>
+                            <TouchableOpacity onPress={this.decreaseQuantity}>
+                                <Text style={{fontSize: 20, fontWeight: "bold", color: styles.logo.color}}> - </Text>
+                            </TouchableOpacity>
+                            <TextInput
+                                style = {{fontSize: 20, textAlign: 'center', padding: 5}}
+                                onChangeText={(itemQuantity) => this.setState({ itemQuantity })}
+                                value={`${this.state.itemQuantity}`}
+                                keyboardType="numeric"
+                            />
+                            <TouchableOpacity onPress={this.increaseQuantity} >
+                                <Text style={{fontSize: 20, fontWeight: "bold", color: styles.logo.color}}> + </Text>
+                            </TouchableOpacity>
+                        </View>
                       </View>
-                  </View>
-
-                  <Text style = {{fontSize: 20, textAlign: 'center', padding: 5}}>
-                    Item Price: ${this.state.itemPrice}{"\n"}
-                    Cart Total: ${this.state.previousCartTotal + (this.state.itemQuantity * this.state.itemPrice)}
-                  </Text>
+                      <Text style = {{fontSize: 16, textAlign: 'center', padding: 5}}>
+                        Item Price: ${this.state.itemPrice}{"\n"}
+                        Cart Total: ${this.state.previousCartTotal + (this.state.itemQuantity * this.state.itemPrice)}
+                      </Text>
+                    </View>
+                  )}
                 </View>
                 <TouchableOpacity
                   onPress={() => {
-                    let toCart = this.state.itemData;
-                    toCart["quantity"] = this.state.itemQuantity;
-                    let updatedCart = items;
-                    updatedCart.push(toCart);
-                    setCart(updatedCart);
-                    this.exitPopup();
+                    if (this.state.error) {
+                      this.exitPopup();
+                    } else {
+                      duplicateItem = items.find(item => item.id == this.state.itemData.id)
+                      if (duplicateItem === undefined) {
+                        let toCart = this.state.itemData;
+                        toCart["quantity"] = this.state.itemQuantity;
+                        toCart["displayName"] = this.state.itemName;
+                        let updatedCart = items;
+                        updatedCart.push(toCart);
+                        setCart(updatedCart);
+                        this.exitPopup();
+                      } else {
+                        this.setState({
+                          barcodeData: '',
+                          barcodeType: '',
+                          itemData: null,
+                          itemPrice: null,
+                          itemQuantity: null,
+                          previousCartTotal: null,
+                          error: true,
+                          modalTitle: "Duplicate Item",
+                          errorModalText: `${this.state.itemName} is already in your cart. Please edit the item's quantity on the cart screen.`
+                        });
+                      }
+                    }
                   }}
                   style={styles.wideBtn}
                 >
-                    <Text style={styles.buttonText}> Confirm </Text>
+                    <Text style={styles.buttonText}> {this.state.error ? ("OK"):("Confirm")} </Text>
                 </TouchableOpacity>
               </View>
               <TouchableWithoutFeedback onPress={() => this.exitPopup()}>
                 <View style={{flex: 1}} />
               </TouchableWithoutFeedback>
             </Modal>
-          </View>
+           </View>
         )}
       </CartContext.Consumer>
     );
@@ -175,33 +199,53 @@ export default class ScanScreen extends React.Component {
       itemData: null,
       itemPrice: null,
       itemQuantity: null,
-      previousCartTotal: null
+      previousCartTotal: null,
+      error: false
     });
   }
 
   handleBarCodeScanned = async ({ type, data }) => {
+    this.setState({cameraOn: false});
     let barcodeType = type;
     let barcodeData = data;
     let itemData = await getBarcodeFromApiAsync(barcodeData, this.context.selectedStore);
     let name = itemData['displayName'];
-    if (name.includes(' - Default Title')) {
-      name = name.substring(0, name.length - 16);
+    if (name == "Item Not Found") {
+      console.log("INVALID BARCODE")
+      this.setState({
+        barcodeData: '',
+        barcodeType: '',
+        itemData: null,
+        itemPrice: null,
+        itemQuantity: null,
+        previousCartTotal: null,
+        error: true,
+        scanned: true,
+        cameraOn: false,
+        modalTitle: "Invalid Barcode Scanned",
+        errorModalText: "Please ensure that the barcode scanned belongs to the selected store on the home page."
+      })
+    } else {
+      if (name.includes(' - Default Title')) {
+        name = name.substring(0, name.length - 16);
+      }
+      if (name.length > 50) name = name.slice(0, 49) + "...";
+      let image = itemData['product']['media']['edges'][0]['node']['preview']['image']['originalSrc'];
+      let price = itemData['price']
+  
+      this.setState({
+        barcodeType: barcodeType,
+        barcodeData: barcodeData,
+        cameraOn: false,
+        scanned: true,
+        itemData: itemData,
+        itemName: name,
+        itemImage: image,
+        itemPrice: price,
+        itemQuantity: 1,
+        modalTitle: "Item Added"
+      });
     }
-    if (name.length > 50) name = name.slice(0, 49) + "...";
-    let image = itemData['product']['media']['edges'][0]['node']['preview']['image']['originalSrc'];
-    let price = itemData['price']
-
-    this.setState({
-      barcodeType: barcodeType,
-      barcodeData: barcodeData,
-      cameraOn: false,
-      scanned: true,
-      itemData: itemData,
-      itemName: name,
-      itemImage: image,
-      itemPrice: price,
-      itemQuantity: 1
-    });
   };
 }
 

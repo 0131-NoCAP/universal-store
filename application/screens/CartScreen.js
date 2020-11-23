@@ -8,9 +8,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { WebView } from 'react-native-webview';
 import Modal from 'react-native-modal';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-// import CartFooter from '../components/checkout/CartFooter';
 
 export default class CartScreen extends Component {
+
   componentDidMount () {
       this.props.navigation.addListener('focus', () =>
         this.forceUpdate()
@@ -19,114 +19,153 @@ export default class CartScreen extends Component {
 
   state = {
     webCheckout: false,
-  }
-
-  state = {
-    webCheckout: false,
-    checkoutExists: false,
     checkoutID: '',
     checkoutURL: ''
   }
-
-  renderItem({ item, index }) {
-
-    return (
-    <View style={styles.containerItemStyle}>
-      <Image source={{url: item.product.media.edges[0].node.preview.image.originalSrc}} style={styles.imageCartStyle} />
-      <View style={styles.textCartStyle}>
-        <Text style={{ color: '#2e2f30' }}>{item.displayName}</Text>
-        <View style={styles.priceCartStyle}>
-          <Text style={{ color: '#2e2f30', fontSize: 12 }}>${item.price}</Text>
-        </View>
-      </View>
-
-      <View style={styles.counterCartStyle}>
-      <Icon.Button
-          name="ios-remove"
-          size={20}
-          color='#fff'
-          backgroundColor='#fff'
-          style={styles.removeAddButton}
-          iconStyle={{ marginRight: 0 }}
-          //onPress={this.onPressPlus(index)}
-        />
-
-        <Text>{item.quantity}</Text>
-
-        <Icon.Button
-          name="ios-add"
-          size={20}
-          color='#fff'
-          backgroundColor='#fff'
-          style={styles.removeAddButton}
-          iconStyle={{ marginRight: 0 }}
-          //onPress={this.onPressPlus(index)}
-        />
-
-      </View>
-    </View>);
-  }
-
   static contextType = CartContext;
 
   render() {
 
     return (
-      <View style={{flex: 1}}>
-        <View style={styles.cartStyle}>
-          <FlatList
-            data={this.context.items}
-            renderItem={this.renderItem}
-            keyExtractor={(item) => item.id}
-          />
+      <CartContext.Consumer>
+        {({items, setCart}) => (
 
-          <TouchableOpacity
-            onPress={() => {
-              // if there are no items in the cart, do nothing
-              if (this.context.items.length > 0) {
-                console.log("going into webview");
-                if (!this.state.checkoutExists) {
-                  await createCheckoutWithAPI();
-                } else {
-                  await modifyCheckoutWithAPI();
-                }
-                this.setState({
-                  webCheckout: true
-                });
-              }
-            }}
-            style={styles.wideBtn}
-          >
-            <Text style={styles.buttonText}>TEST BUTTON</Text>
-          </TouchableOpacity>
-        </View>
-        
+          <View style={{flex: 1}}>
+            {items.length > 0 ? (
+              <View style={{ flex: 1, alignItems: "center" }}>
+                <View style={styles.cartStyle}>
+                  <FlatList
+                    data={items}
+                    renderItem={({ item, index }) => (
+                      <View style={styles.containerItemStyle}>
+                        <Image source={{url: item.product.media.edges[0].node.preview.image.originalSrc}} style={styles.imageCartStyle} />
+                        <View style={styles.textCartStyle}>
+                          <Text style={{ color: '#2e2f30', fontSize: 11 }}>{item.displayName}</Text>
+                          <View style={styles.priceCartStyle}>
+                            <Text style={{ color: '#2e2f30', fontSize: 8 }}>${item.price}</Text>
+                          </View>
+                        </View>
+                        <View style={styles.counterCartStyle}>
+                          <Icon.Button
+                            name="ios-trash"
+                            size={20} 
+                            color='#000' 
+                            backgroundColor='#fff' 
+                            // style={styles.removeAddButton} 
+                            onPress={() => {
+                              const updatedCart = items.filter(cartItem => cartItem.id !== item.id);
+                              setCart(updatedCart);
+                              this.forceUpdate();
+                            }}
 
-        <Modal
-          isVisible={ this.state.webCheckout }
-        >
-          <View style={{ flex: 1 }}>
-            <View style={{
-                flex: 1,
-                backgroundColor: '#2b2b2b'
-              }}
-            >
-              <MaterialCommunityIcons
-                name="close-box"
-                size={30}
-                style={{marginTop: 2, marginLeft: 1}}
-                color={"#fa5c5c"}
-              />
-            </View>
+                          />
+                          <Icon.Button 
+                              name="ios-remove" 
+                              size={15} 
+                              color='#fff' 
+                              backgroundColor='#fff' 
+                              style={styles.removeAddButton} 
+                              iconStyle={{ marginRight: 0 }}
+                              onPress={() => {
+                                let selecteditem = items[index];
+                                if (selecteditem.quantity > 1) selecteditem.quantity = selecteditem.quantity - 1;
+                                let updatedCart = items;
+                                updatedCart[index] = selecteditem;
+                                setCart(updatedCart);
+                                this.forceUpdate();
+                              }}
+                            />
+
+                            <Text style={{fontSize: 10, padding: 10}}>{item.quantity}</Text>
+
+                            <Icon.Button
+                              name="ios-add"
+                              size={15}
+                              color='#fff'
+                              backgroundColor='#fff'
+                              style={styles.removeAddButton}
+                              iconStyle={{ marginRight: 0 }}
+                              onPress={ () => {
+                                let selecteditem = items[index];
+                                selecteditem.quantity = selecteditem.quantity + 1;
+                                let updatedCart = items;
+                                updatedCart[index] = selecteditem;
+                                setCart(updatedCart);
+                                this.forceUpdate();
+                              }}
+                            />
+
+                        </View>
+
+                      </View>
+                    )}
+                    keyExtractor={(item) => item.id}
+                  />
+                </View>
+
+                <View>
+            
+                  <Text style={{align: 'left', flex: 'row'}}>Subtotal: ${calculateSubtotal(items).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+
+                </View>
+
+
+                <TouchableOpacity onPress={() => {
+                  console.log(items);
+                  
+                  // only go into webview if there are items in the cart
+                  if (this.context.items.length > 0) {
+                    console.log("going into webview");
+                    if (this.state.checkoutID != '') {
+                      createCheckoutWithAPI(items);
+                    } else {
+                      modifyCheckoutWithAPI(items);
+                    }
+                    this.setState({
+                      webCheckout: true
+                    });
+                  }
+
+                }} style={styles.wideBtn}>
+                  <Text style={styles.wide}>Checkout</Text>
+                </TouchableOpacity> 
+              </View>
+              
+
+            ) : (
+              <View style={{ flex: 1, alignItems: "center" }}>
+                <Text style={{fontSize: 24}}>Your cart is empty!</Text>
+              </View>
+            )}
+          
+          
+            <Modal isVisible={ this.state.webCheckout }>
+              <View style={{ flex: 1 }}>
+                <View style={{
+                    flex: 1,
+                    backgroundColor: '#2b2b2b'
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="close-box"
+                    size={30}
+                    style={{marginTop: 2, marginLeft: 1}}
+                    color={"#fa5c5c"}
+                  />
+                </View>
+              </View>
+
+              <View style={{ flex: 19 }}>
+                <WebView
+                  source={{ uri: this.state.checkoutURL }}
+                />
+              </View>
+            </Modal>
+
           </View>
-
-          <View style={{ flex: 19 }}>
-            <WebView
-              source={{ uri: 'https://shopify.com/partners' }}
-            />
-          </View>
-        </Modal>
-      </View>
+        )}
+      </CartContext.Consumer>
+      
     );
   }
 
@@ -138,9 +177,10 @@ export default class CartScreen extends Component {
 }
 
 
-async function createCheckoutWithAPI() {
+async function createCheckoutWithAPI(items) {
   // create checkout with Shopify API
-  let responseJson = await createCheckout(this.context.selectedStore, this.context.items);
+  let formattedItems = formatItems(items);
+  let responseJson = await createCheckout(this.context.selectedStore, formattedItems);
   let shopifyResponse = responseJson.body.data.checkoutLineItemsReplace.checkout;
   let shopifyCheckoutID = shopifyResponse.id;
   let shopifyCheckoutURL = shopifyResponse.webUrl;
@@ -151,12 +191,39 @@ async function createCheckoutWithAPI() {
   });
 }
 
-async function modifyCheckoutWithAPI() {
+
+async function modifyCheckoutWithAPI(items) {
   // modify existing checkout with Shopify API
+  let formattedItems = formatItems(items);
   let responseJson = await modifyCheckout(
     this.context.selectedStore,
-    this.context.items,
+    formattedItems,
     this.state.checkoutID
   );
   let shopifyResponse = responseJson.body.data.checkoutLineItemsReplace.checkout;
+}
+
+
+function calculateSubtotal(items) {
+  let subtotal = 0;
+  
+  items.forEach(item => {
+    subtotal += (item.price) * item.quantity  
+  });
+
+  return subtotal;
+}
+
+
+function formatItems(items) {
+  console.log(items);
+  var formattedItems = [];
+  for (let i = 0; i < items.length; i++) {
+    formattedItems.push({
+      "id": item[i].id,
+      "quantity": item[i].quantity
+    })
+  }
+  console.log(formatttedItems)
+  return formattedItems;
 }
