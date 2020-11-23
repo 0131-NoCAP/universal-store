@@ -1,8 +1,8 @@
-tintColor = '#fff'
+tintColor = '#000'
 export default {
   tintColor,
   tabIconDefault: '#ccc',
-  tabIconSelected: '#fff',
+  tabIconSelected: '#000',
   tabBar: '#fefefe',
   errorBackground: 'red',
   errorText: '#fff',
