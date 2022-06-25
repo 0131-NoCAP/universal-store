@@ -36,7 +36,7 @@
     "expo-web-browser": "~8.5.0",
     "logkitty": ">=0.7.1",
     "mem": ">=4.0.0",
-    "node-fetch": ">=2.6.1",
+    "node-fetch": ">=2.6.7",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.3.tar.gz",
